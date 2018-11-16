@@ -52,7 +52,7 @@ echo "Upgrading THold..."
 git -C cacti/plugins/thold/ pull --no-edit
 echo "Upgrading Routerconfigs..."
 git -C cacti/plugins/routerconfigs/ pull --no-edit
-echo "Upgrading FLowView..."
+echo "Upgrading FlowView..."
 git -C cacti/plugins/flowview/ pull --no-edit
 echo "Upgrading Maint..."
 git -C cacti/plugins/maint/ pull --no-edit
