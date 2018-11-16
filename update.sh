@@ -16,7 +16,7 @@ rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7
 
 function backup-db () {
 echo "Backing up DB..."
-mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 }
 
 function upgrade-cacti () {
