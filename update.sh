@@ -21,7 +21,7 @@ mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > mysql.
 
 function upgrade-cacti () {
 echo "Begining Cacti upgrade..."
-cd /var/www/html/cacti
+cd /var/www/html/
 git -C cacti/ pull --no-edit
 }
 
