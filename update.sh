@@ -60,4 +60,3 @@ echo "Upgrading spine..."
 backup-db
 upgrade-cacti
 upgrade-plugins
-update-config
