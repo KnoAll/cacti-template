@@ -3,6 +3,15 @@
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update.sh)
 echo "Welcome!"
 
+if [ -f "~/.cacti-template" ]
+then
+	echo "Found preexisting Cacti Install, proceeding to upgrade..."
+else
+	echo "Cacti is not already insdalled, sorry cannot upgrade. Exiting..."
+    sleep 10
+    exit 1
+fi
+
 if [[ `whoami` == "root" ]]; then
     echo "You ran me as root! Do not run me as root!"
     exit 1
