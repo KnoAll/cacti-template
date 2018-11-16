@@ -38,17 +38,29 @@ git -C cacti/ pull --no-edit
 function upgrade-plugins () {
 echo "Upgrading plugins..."
 cd /var/www/html/
+echo "Upgrading Mactrack..."
 git -C cacti/plugins/mactrack/ pull --no-edit
+echo "Upgrading Monitor..."
 git -C cacti/plugins/monitor/ pull --no-edit
+echo "Upgrading Webseer..."
 git -C cacti/plugins/webseer/ pull --no-edit
+echo "Upgrading GExport..."
 git -C cacti/plugins/gexport/ pull --no-edit
+echo "Upgrading Syslog..."
 git -C cacti/plugins/syslog/ pull --no-edit
+echo "Upgrading THold..."
 git -C cacti/plugins/thold/ pull --no-edit
+echo "Upgrading Routerconfigs..."
 git -C cacti/plugins/routerconfigs/ pull --no-edit
+echo "Upgrading FLowView..."
 git -C cacti/plugins/flowview/ pull --no-edit
+echo "Upgrading Maint..."
 git -C cacti/plugins/maint/ pull --no-edit
+echo "Upgrading Audit..."
 git -C cacti/plugins/audit/ pull --no-edit
+echo "Upgrading Cycle..."
 git -C cacti/plugins/cycle/ pull --no-edit
+echo "Upgrading Weathermap..."
 git -C cacti/plugins/weathermap/ pull --no-edit
 echo "Installing Weathermap plugin"
 cd cacti/plugins/weathermap/
