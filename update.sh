@@ -79,7 +79,7 @@ echo ""
 echo "Upgrading Weathermap..."
 git -C cacti/plugins/weathermap/ pull --no-edit
 echo ""
-echo "Installing Weathermap plugin"
+echo "Installing Weathermap..."
 cd cacti/plugins/weathermap/
 bower install --allow-root
 composer update --no-dev
