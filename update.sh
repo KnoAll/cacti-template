@@ -48,6 +48,7 @@ composer update --no-dev
 
 function update-config () {
 echo "Updating cacti config..."
+cd /var/www/html/
 cp cacti/include/config.php.dist cacti/include/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
 }
