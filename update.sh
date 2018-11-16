@@ -54,3 +54,8 @@ echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/inc
 function upgrade-spine () {
 echo "Upgrading spine..."
 }
+
+backup-db
+upgrade-cacti
+upgrade-plugins
+update-config
