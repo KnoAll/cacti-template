@@ -7,7 +7,7 @@ fi
 
 if [ -f ~/kacti-upgrade.sh ]
 then
-	echo""
+	echo ""
 else
 	echo "Downloading kacti-upgrade.sh"
   wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/kacti-upgrade.sh
