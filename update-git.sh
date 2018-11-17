@@ -9,10 +9,10 @@ fi
 
 if [ -f ~/.cacti-template ]
 then
-	echo "Found preexisting Cacti Install, proceeding to upgrade..."
+	echo "Found preexisting Cacti-template v1.2.x Install, proceeding to upgrade..."
 	echo ""
 else
-	echo "Cacti is not already installed, sorry cannot upgrade. Exiting..."
+	echo "Cacti-template based install not present, sorry cannot upgrade. Exiting..."
     sleep 5
     exit 1
 fi
