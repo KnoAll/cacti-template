@@ -5,18 +5,18 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 fi
 
-if [ -f ~/kacti-upgrade.sh ]
+if [ -f ~/cacti-upgrade.sh ]
 then
 	echo ""
 else
-	echo "Downloading kacti-upgrade.sh"
-  wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/kacti-upgrade.sh
+	echo "Downloading cacti-upgrade.sh"
+  wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
 exit 1
 fi
 
-if [ -f ~/.kacti-template ]
+if [ -f ~/.cacti-template ]
 then
-	echo "Found preexisting Kacti-template Install, proceeding to upgrade..."
+	echo "Found preexisting cacti-template Install, proceeding to upgrade..."
 	echo ""
   bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-git.sh)
 else
