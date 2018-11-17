@@ -11,7 +11,6 @@ then
 else
 	echo "Downloading cacti-upgrade.sh"
   wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
-exit 1
 fi
 
 if [ -f ~/.cacti-template ]
