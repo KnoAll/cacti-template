@@ -66,6 +66,7 @@ git clone https://github.com/Cacti/plugin_gexport.git cacti/plugins/gexport
 echo ""
 echo "Upgrading Syslog..."
 git clone https://github.com/Cacti/plugin_syslog.git cacti/plugins/syslog
+echo "Updating syslog config..."
 update-syslog-config
 echo ""
 echo "Upgrading THold..."
