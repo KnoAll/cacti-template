@@ -38,6 +38,7 @@ echo ""
 
 function upgrade-cacti () {
 echo "Begining Cacti upgrade..."
+update-permissions
 cd /var/www/html/
 mv cacti/ cacti_old/
 git clone -b master https://github.com/cacti/cacti.git --single-branch
