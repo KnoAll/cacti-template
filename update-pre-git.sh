@@ -128,6 +128,7 @@ echo "Upgrading spine..."
 echo ""
 }
 
+upgrade-git
 backup-db
 upgrade-cacti
 upgrade-plugins
