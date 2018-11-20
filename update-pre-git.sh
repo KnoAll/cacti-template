@@ -32,7 +32,7 @@ then
   bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-git.sh)
   exit 1
 else
-	echo "Cacti-template v1.1.x based install found, proceeding to upgrade..."
+	echo ""
 fi
 
 echo "Welcome to Kevin's Cacti Template upgrade script!"
