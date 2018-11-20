@@ -11,7 +11,7 @@ if [[ `whoami` == "root" ]]; then
     echo "Uh-oh. You are not logged in as the cacti user. Exiting..."
 fi
 
-cactivar=$( cat /var/www/html/cacti/cacti_version )
+cactiver=$( cat /var/www/html/cacti/cacti_version )
 
 if [ -f ~/.cacti-template ]
 then
@@ -34,7 +34,7 @@ echo ""
 
 function backup-db () {
 echo "Backing up DB..."
-mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti-v$cactivar_$(date +\%Y\%m\%d).sql.gz
+mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti-v$cactiver_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
 
