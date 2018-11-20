@@ -62,7 +62,7 @@ echo "Begining Cacti upgrade..."
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
 wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
-tar xzvf cacti-1.*.tar.gz
+tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
 cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
@@ -153,7 +153,7 @@ echo "Upgrading spine..."
 sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-tar xvzf cacti-spine-*.tar.gz
+tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
 ./configure
@@ -162,7 +162,9 @@ sudo make install
 cd
 rm -rf cacti-spine-*
 cd /usr/local/spine/bin
-sudo chown root:root spine;chmod +s spine
+sudo su
+	sudo chown root:root spine;chmod +s spine
+	exit
 echo ""
 }
 
