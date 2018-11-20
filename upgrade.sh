@@ -42,7 +42,7 @@ fi
 #fi
 
 echo "Welcome to Kevin's Cacti Template upgrade script!"
-echo ""
+sudo echo ""
 
 function upgrade-git () {
 echo "Upgrading Git"
