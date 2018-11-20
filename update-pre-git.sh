@@ -126,6 +126,7 @@ echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > ca
 }
 
 function update-permissions () {
+touch /var/www/html/cacti/log/cacti.log
 sudo chgrp -R apache /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
 sudo find /var/www/html -type f -exec chmod g+r {} +
