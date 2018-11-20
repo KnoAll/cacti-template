@@ -148,7 +148,7 @@ chmod g+w cacti/log/cacti.log
 function upgrade-spine () {
 echo "Upgrading spine..."
 cd
-wget https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
+wget https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 tar xvzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
