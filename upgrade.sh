@@ -163,7 +163,7 @@ cd
 rm -rf cacti-spine-*
 cd /usr/local/spine/bin
 sudo chown root:root spine
-chmod +s spine
+sudo chmod +s spine
 echo ""
 }
 
