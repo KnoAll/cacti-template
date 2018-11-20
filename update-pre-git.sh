@@ -47,7 +47,6 @@ echo ""
 
 function backup-db () {
 echo "Backing up DB..."
-echo v$cactiver
 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$$cactiver_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
