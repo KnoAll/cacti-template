@@ -13,7 +13,6 @@ then
 	echo ""
 else
 	echo "Cacti-template based install not present, sorry cannot upgrade. Exiting..."
-    sleep 5
     exit 1
 fi
 
@@ -29,6 +28,7 @@ if version_gt $cactiver $upgrade_version; then
      echo "Installed cacti version $cactiver is greater than required $upgrade_version! Proceeding to upgrade..."
 else
 	echo "Current version is not compatible with upgrade version, exiting..."
+	exit 1
 fi
 
 
