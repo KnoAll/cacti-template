@@ -172,5 +172,5 @@ backup-db
 upgrade-cacti
 upgrade-spine
 #upgrade-plugins
-echo "Everything done, exiting..."
-exit 1
+echo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+exit 0
