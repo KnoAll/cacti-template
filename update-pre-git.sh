@@ -14,7 +14,7 @@ fi
 # get the Cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 upgrade_version=1.1.0
-prod_version=1.1.28
+prod_version=1.1.38
 
 function version_gt() { 
 test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
@@ -22,7 +22,7 @@ test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
 
 if version_gt $cactiver $upgrade_version; then
 	if version_gt $cactiver $prod_version; then
-		echo "Current installed Cacti v$cacti is current! No need to upgrade, exiting..."
+		echo "Current installed Cacti v$cactiver is current! No need to upgrade, exiting..."
 		exit 0
 	else
 		echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
@@ -132,6 +132,7 @@ echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > ca
 }
 
 function update-permissions () {
+echo "Fixing file permissions..."
 touch /var/www/html/cacti/log/cacti.log
 sudo chgrp -R apache /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
@@ -145,6 +146,9 @@ chmod g+w cacti/log/cacti.log
 
 function upgrade-spine () {
 echo "Upgrading spine..."
+cd
+git clone -b master https://github.com/Cacti/spine.git --single-branch
+cd spine
 echo ""
 }
 
