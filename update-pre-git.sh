@@ -13,14 +13,17 @@ fi
 
 # get the Cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+upgrade_version=1.1.0
+current_version=1.1.28
 
 function version_gt() { 
 test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
 }
 
-upgrade_version=1.1.20
 if version_gt $cactiver $upgrade_version; then
      echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
+elif version_gt $cactiver $current_version; then
+	echo "Current installed Cacti v$cacti is current! No need to upgrade, exiting..."
 else
 	echo "Current cacti install v$cactiver is not compatible with upgrade version v$upgrade_version, exiting..."
 	exit 1
@@ -142,10 +145,10 @@ echo "Upgrading spine..."
 echo ""
 }
 
-upgrade-git
+#upgrade-git
 backup-db
 upgrade-cacti
-upgrade-plugins
+#upgrade-plugins
 touch .cacti-template
 echo "Everything done, exiting..."
 exit 1
