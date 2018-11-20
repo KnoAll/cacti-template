@@ -101,9 +101,9 @@ echo ""
 echo "Upgrading Cycle..."
 git clone https://github.com/Cacti/plugin_cycle.git cacti/plugins/cycle
 echo ""
-echo "Upgrading Weathermap..."
-git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
-echo ""
+#echo "Upgrading Weathermap..."
+#git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
+#echo ""
 #echo "Installing Weathermap..."
 #cd cacti/plugins/weathermap/
 #bower install --allow-root
