@@ -87,7 +87,7 @@ echo "Upgrading THold..."
 git clone https://github.com/Cacti/plugin_thold.git cacti/plugins/thold
 echo ""
 echo "Upgrading Routerconfigs..."
-git -C cacti/plugins/routerconfigs/ pull --no-edit
+git clone https://github.com/Cacti/plugin_routerconfigs.git cacti/plugins/routerconfigs
 echo ""
 echo "Upgrading FlowView..."
 git clone https://github.com/Cacti/plugin_flowview.git cacti/plugins/flowview
@@ -104,11 +104,11 @@ echo ""
 echo "Upgrading Weathermap..."
 git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
 echo ""
-echo "Installing Weathermap..."
-cd cacti/plugins/weathermap/
-bower install --allow-root
-composer update --no-dev
-echo ""
+#echo "Installing Weathermap..."
+#cd cacti/plugins/weathermap/
+#bower install --allow-root
+#composer update --no-dev
+#echo ""
 }
 
 function update-config () {
