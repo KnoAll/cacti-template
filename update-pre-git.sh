@@ -11,6 +11,8 @@ if [[ `whoami` == "root" ]]; then
     echo "Uh-oh. You are not logged in as the cacti user. Exiting..."
 fi
 
+cactivar=$( cat /var/www/html/cacti/cacti_version )
+
 if [ -f ~/.cacti-template ]
 then
 	echo "Found preexisting Cacti-template v1.2.x Install, proceeding to upgrade..."
@@ -25,14 +27,14 @@ echo ""
 
 function upgrade-git () {
 echo "Upgrading Git"
-sudo rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm \
-    && sudo yum install -y git	
+sudo rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+sudo yum install -y git	
 echo ""
 }
 
 function backup-db () {
 echo "Backing up DB..."
-mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti-v$cactivar_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
 
