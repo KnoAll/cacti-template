@@ -32,14 +32,14 @@ else
 	exit 1
 fi
 
-if [ -f ~/.cacti-template ]
-then
-	echo "Found preexisting Cacti-template v1.2.x Install, proceeding to upgrade..."
-  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-git.sh)
-  exit 1
-else
-	echo ""
-fi
+#if [ -f ~/.cacti-template ]
+#then
+#echo "Found preexisting Cacti-template v1.2.x Install, proceeding to upgrade..."
+#  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-git.sh)
+#  exit 1
+#else
+#	echo ""
+#fi
 
 echo "Welcome to Kevin's Cacti Template upgrade script!"
 echo ""
