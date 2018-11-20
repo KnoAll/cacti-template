@@ -135,5 +135,4 @@ upgrade-cacti
 upgrade-plugins
 touch .cacti-template
 echo "Everything done, exiting..."
-sleep 5
 exit 1
