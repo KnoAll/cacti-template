@@ -53,13 +53,13 @@ echo ""
 
 function upgrade-cacti () {
 echo "Begining Cacti upgrade..."
-update-permissions
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
 git clone -b master https://github.com/cacti/cacti.git --single-branch
 cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
 cp -u -R cacti_$cactiver/resource/* cacti/resource/
 update-config
+update-permissions
 echo ""
 }
 
