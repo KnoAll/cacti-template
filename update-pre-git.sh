@@ -149,6 +149,5 @@ echo ""
 backup-db
 upgrade-cacti
 #upgrade-plugins
-touch .cacti-template
 echo "Everything done, exiting..."
 exit 1
