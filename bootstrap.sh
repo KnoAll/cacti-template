@@ -15,7 +15,7 @@ if [ -f ~/cacti-upgrade.sh ]
 then
 	echo ""
 else
-	echo "Downloading cacti-upgrade.sh"
+	echo "Downloading cacti-upgrade.sh..."
   wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
   chmod +x cacti-upgrade.sh
 fi
