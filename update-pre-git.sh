@@ -148,7 +148,7 @@ chmod g+w cacti/log/cacti.log
 function upgrade-spine () {
 echo "Upgrading spine..."
 cd
-wget https://www.cacti.net/downloads/spine/cacti-spine-1.1.38.tar.gz
+wget https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
 tar xvzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
@@ -160,12 +160,12 @@ rm -rf cacti-spine-*
 cd /usr/local/spine/bin
 sudo chown root:root spine;chmod +s spine
 echo ""
-
 }
 
 #upgrade-git
 backup-db
 upgrade-cacti
+upgrade-spine
 #upgrade-plugins
 echo "Everything done, exiting..."
 exit 1
