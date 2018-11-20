@@ -22,7 +22,7 @@ upgrade_version=1.1.40
 if version_gt $cactiver $upgrade_version; then
      echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
 else
-	echo "Current version is not compatible with upgrade version, exiting..."
+	echo "Current version v$cactiver is not compatible with upgrade version v$upgrade_version, exiting..."
 	exit 1
 fi
 
