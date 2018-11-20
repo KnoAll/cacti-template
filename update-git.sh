@@ -17,6 +17,9 @@ else
     exit 1
 fi
 
+# get the Cacti version
+cactiver=$( cat /var/www/html/cacti/cacti_version )
+
 echo "Welcome to Kevin's Cacti Template upgrade script!"
 echo ""
 
@@ -29,7 +32,7 @@ echo ""
 
 function backup-db () {
 echo "Backing up DB..."
-mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti-v$cactiver_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
 
