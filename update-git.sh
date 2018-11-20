@@ -20,6 +20,18 @@ fi
 # get the Cacti version
 cactiver=$( cat /var/www/html/cacti/cacti_version )
 
+function version_gt() { 
+test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
+}
+
+upgrade_version=1.1.20
+if version_gt $cactiver $upgrade_version; then
+     echo "Installed cacti version $cactiver is greater than required $upgrade_version! Proceeding to upgrade..."
+else
+	echo "Current version is not compatible with upgrade version, exiting..."
+fi
+
+
 echo "Welcome to Kevin's Cacti Template upgrade script!"
 echo ""
 
