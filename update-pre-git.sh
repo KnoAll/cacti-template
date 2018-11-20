@@ -61,7 +61,6 @@ git clone -b master https://github.com/cacti/cacti.git --single-branch
 cp -u -R cacti_old/scripts/* cacti/scripts/
 cp -u -R cacti_old/resource/* cacti/resource/
 update-config
-chmod g+w cacti/log/cacti.log
 echo ""
 }
 
