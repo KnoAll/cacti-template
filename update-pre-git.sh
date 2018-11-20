@@ -18,11 +18,12 @@ function version_gt() {
 test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
 }
 
-upgrade_version=1.1.20
+upgrade_version=1.1.40
 if version_gt $cactiver $upgrade_version; then
-     echo "Installed cacti version $cactiver is greater than required $upgrade_version! Proceeding to upgrade..."
+     echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
 else
 	echo "Current version is not compatible with upgrade version, exiting..."
+	exit 1
 fi
 
 if [ -f ~/.cacti-template ]
