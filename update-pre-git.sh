@@ -56,7 +56,7 @@ function upgrade-cacti () {
 echo "Begining Cacti upgrade..."
 update-permissions
 cd /var/www/html/
-mv cacti/ cacti_old/
+mv cacti/ cacti_$cactiver/
 git clone -b master https://github.com/cacti/cacti.git --single-branch
 cp -u -R cacti_old/scripts/* cacti/scripts/
 cp -u -R cacti_old/resource/* cacti/resource/
