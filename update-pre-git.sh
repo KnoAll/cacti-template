@@ -64,6 +64,7 @@ mv cacti/ cacti_$cactiver/
 git clone -b master https://github.com/cacti/cacti.git --single-branch
 cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
 cp -u -R cacti_$cactiver/resource/* cacti/resource/
+cp -u -R cacti_$cactiver/plugins/* cacti/plugins/
 update-config
 update-permissions
 echo ""
