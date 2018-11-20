@@ -48,7 +48,7 @@ echo ""
 function backup-db () {
 echo "Backing up DB..."
 echo v$cactiver
-mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$cactiver_$(date +\%Y\%m\%d).sql.gz
+mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$$cactiver_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
 
@@ -58,8 +58,8 @@ update-permissions
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
 git clone -b master https://github.com/cacti/cacti.git --single-branch
-cp -u -R cacti_old/scripts/* cacti/scripts/
-cp -u -R cacti_old/resource/* cacti/resource/
+cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
+cp -u -R cacti_$cactiver/resource/* cacti/resource/
 update-config
 echo ""
 }
