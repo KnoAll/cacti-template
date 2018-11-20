@@ -23,7 +23,7 @@ if version_gt $cactiver $upgrade_version; then
 		echo "Current installed Cacti v$cactiver is current! No need to upgrade, exiting..."
 		exit 0
 	else
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-pre-git.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
 	fi
 else
 	echo "Current cacti install v$cactiver is not compatible with upgrade version v$upgrade_version, exiting..."
