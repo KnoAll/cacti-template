@@ -116,7 +116,6 @@ echo "Updating cacti config..."
 cd /var/www/html/
 cp cacti/include/config.php.dist cacti/include/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
-echo ""
 }
 
 function update-syslog-config () {
@@ -124,7 +123,6 @@ echo "Updating syslog plugin config..."
 cd /var/www/html/
 cp cacti/plugins/syslog/config.php.dist cacti/plugins/syslog/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > cacti/plugins/syslog/config.php
-echo ""
 }
 
 function update-permissions () {
