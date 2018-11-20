@@ -61,7 +61,10 @@ function upgrade-cacti () {
 echo "Begining Cacti upgrade..."
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
-git clone -b master https://github.com/cacti/cacti.git --single-branch
+wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
+tar xzvf cacti-1.*.tar.gz
+rm cacti-1.*.tar.gz
+mv cacti-$prod_version cacti
 cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
 cp -u -R cacti_$cactiver/resource/* cacti/resource/
 cp -u -R cacti_$cactiver/plugins/* cacti/plugins/
