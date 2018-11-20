@@ -11,10 +11,8 @@ if [[ `whoami` == "root" ]]; then
     echo "Uh-oh. You are not logged in as the cacti user. Exiting..."
 fi
 
-cactiver=$( cat /var/www/html/cacti/cacti_version )
-
 # get the Cacti version
-cactiver=$( cat /var/www/html/cacti/cacti_version )
+cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
 function version_gt() { 
 test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
