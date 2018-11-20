@@ -124,7 +124,7 @@ echo ""
 function update-config () {
 echo "Updating cacti config..."
 cd /var/www/html/
-cp cacti/include/config.php.dist cacti/include/config.php
+#cp cacti/include/config.php.dist cacti/include/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
 }
 
@@ -150,6 +150,7 @@ chmod g+w cacti/log/cacti.log
 
 function upgrade-spine () {
 echo "Upgrading spine..."
+sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 tar xvzf cacti-spine-*.tar.gz
