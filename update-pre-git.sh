@@ -148,9 +148,19 @@ chmod g+w cacti/log/cacti.log
 function upgrade-spine () {
 echo "Upgrading spine..."
 cd
-git clone -b master https://github.com/Cacti/spine.git --single-branch
-cd spine
+wget https://www.cacti.net/downloads/spine/cacti-spine-1.1.38.tar.gz
+tar xvzf cacti-spine-*.tar.gz
+rm cacti-spine-*.tar.gz
+cd cacti-spine-*
+./configure
+make
+make install
+cd
+rm -rf cacti-spine-*
+cd /usr/local/spine/bin
+sudo chown root:root spine;chmod +s spine
 echo ""
+
 }
 
 #upgrade-git
