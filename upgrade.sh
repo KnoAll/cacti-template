@@ -162,9 +162,8 @@ sudo make install
 cd
 rm -rf cacti-spine-*
 cd /usr/local/spine/bin
-sudo su
-	sudo chown root:root spine;chmod +s spine
-	exit
+sudo chown root:root spine
+chmod +s spine
 echo ""
 }
 
