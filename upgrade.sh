@@ -158,7 +158,7 @@ rm cacti-spine-*.tar.gz
 cd cacti-spine-*
 ./configure
 make
-make install
+sudo make install
 cd
 rm -rf cacti-spine-*
 cd /usr/local/spine/bin
