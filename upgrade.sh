@@ -57,7 +57,7 @@ if wget -q "https://www.cacti.net/downloads/cacti-$prod_version.tar.gz"; then
 fi
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
-wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
+wget -q https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
@@ -168,7 +168,7 @@ echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
-wget https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
