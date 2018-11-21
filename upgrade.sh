@@ -3,12 +3,15 @@
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
 
 if [[ `whoami` == "root" ]]; then
-    echo "You ran me as root! Do not run me as root!"
+    echo -e "\033[31m You ran me as root! Do not run me as root!"
+    echo -e -n "\033[0m"
     exit 1
     elif [[ `whoami` == "cacti" ]]; then
     echo ""
     else
-    echo "Uh-oh. You are not logged in as the cacti user. Exiting..."
+    echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
+    echo -e -n "\033[0m"
+    exit
 fi
 
 # get the Cacti version
@@ -20,27 +23,33 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
-                echo "Cacti v$cactiver is up to date or with production v$prod_version, nothing to do, exiting!"
+                echo -e "\033[31m Cacti v$cactiver is up to date or with production v$prod_version, nothing to do, exiting!"
+		echo -e -n "\033[0m"
                 exit 0
         else
-		echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
+		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
+		echo -e -n "\033[0m"
         fi
 else
-                echo "Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
+                echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
+		echo -e -n "\033[0m"
                 exit
 fi
 
-echo "Welcome to Kevin's Cacti Template upgrade script!"
+echo -e "\033[32m Welcome to Kevin's Cacti Template upgrade script!"
+echo -e -n "\033[0m"
 sudo echo ""
 
 function backup-db () {
-echo "Backing up DB..."
+echo -e "\033[32m Backing up DB..."
+echo -e -n "\033[0m"
 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
 
 function upgrade-cacti () {
-echo "Begining Cacti upgrade..."
+echo -e "\033[32m Begining Cacti upgrade..."
+echo -e -n "\033[0m"
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
 wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
@@ -57,47 +66,62 @@ echo ""
 }
 
 function upgrade-plugins () {
-echo "Upgrading plugins..."
+echo -e "\033[32m Upgrading plugins..."
+echo -e -n "\033[0m"
 cd /var/www/html/
-echo "Upgrading Mactrack..."
+echo -e "\033[32m Upgrading Mactrack..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_mactrack.git cacti/plugins/mactrack
 echo ""
-echo "Upgrading Monitor..."
+echo -e "\033[32m Upgrading Monitor..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_monitor.git cacti/plugins/monitor
 echo ""
-echo "Upgrading Webseer..."
+echo -e "\033[32m Upgrading Webseer..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_webseer.git cacti/plugins/webseer
 echo ""
-echo "Upgrading GExport..."
+echo -e "\033[32m Upgrading GExport..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_gexport.git cacti/plugins/gexport
 echo ""
-echo "Upgrading Syslog..."
+echo -e "\033[32m Upgrading Syslog..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_syslog.git cacti/plugins/syslog
-echo "Updating syslog config..."
+echo -e "\033[32m Updating syslog config..."
+echo -e -n "\033[0m"
 update-syslog-config
 echo ""
-echo "Upgrading THold..."
+echo -e "\033[32m Upgrading THold..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_thold.git cacti/plugins/thold
 echo ""
-echo "Upgrading Routerconfigs..."
+echo -e "\033[32m Upgrading Routerconfigs..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_routerconfigs.git cacti/plugins/routerconfigs
 echo ""
-echo "Upgrading FlowView..."
+echo -e "\033[32m Upgrading FlowView..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_flowview.git cacti/plugins/flowview
 echo ""
-echo "Upgrading Maint..."
+echo -e "\033[32m Upgrading Maint..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_maint.git cacti/plugins/maint
 echo ""
-echo "Upgrading Audit..."
+echo -e "\033[32m Upgrading Audit..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_audit.git cacti/plugins/audit
 echo ""
-echo "Upgrading Cycle..."
+echo -e "\033[32m Upgrading Cycle..."
+echo -e -n "\033[0m"
 git clone https://github.com/Cacti/plugin_cycle.git cacti/plugins/cycle
 echo ""
 #echo "Upgrading Weathermap..."
+#echo -e -n "\033[0m"
 #git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
 #echo ""
 #echo "Installing Weathermap..."
+#echo -e -n "\033[0m"
 #cd cacti/plugins/weathermap/
 #bower install --allow-root
 #composer update --no-dev
@@ -105,21 +129,24 @@ echo ""
 }
 
 function update-config () {
-echo "Updating cacti config..."
+echo -e "\033[32m Updating cacti config..."
+echo -e -n "\033[0m"
 cd /var/www/html/
 #cp cacti/include/config.php.dist cacti/include/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
 }
 
 function update-syslog-config () {
-echo "Updating syslog plugin config..."
+echo -e "\033[32m Updating syslog plugin config..."
+echo -e -n "\033[0m"
 cd /var/www/html/
 cp cacti/plugins/syslog/config.php.dist cacti/plugins/syslog/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > cacti/plugins/syslog/config.php
 }
 
 function update-permissions () {
-echo "Fixing file permissions..."
+echo -e "\033[32m Fixing file permissions..."
+echo -e -n "\033[0m"
 sudo chgrp -R apache /var/www/html
 sudo chown -R cacti /var/www/html/
 sudo find /var/www/html -type d -exec chmod g+rx {} +
@@ -132,7 +159,8 @@ chmod g+w cacti/log/cacti.log
 }
 
 function upgrade-spine () {
-echo "Upgrading spine..."
+echo -e "\033[32m Upgrading spine..."
+echo -e -n "\033[0m"
 sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
@@ -155,5 +183,6 @@ backup-db
 upgrade-cacti
 upgrade-spine
 #upgrade-plugins
-echo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+echo -e -n "\033[0m"
 exit 0
