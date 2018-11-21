@@ -47,10 +47,10 @@ wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
-cp -u -R cacti_$cactiver/rra/* cacti/rra/
-cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
-cp -u -R cacti_$cactiver/resource/* cacti/resource/
-cp -u -R cacti_$cactiver/plugins/* cacti/plugins/
+cp -a cacti_$cactiver/rra/* cacti/rra/
+cp -a cacti_$cactiver/scripts/* cacti/scripts/
+cp -a cacti_$cactiver/resource/* cacti/resource/
+cp -a cacti_$cactiver/plugins/* cacti/plugins/
 update-config
 update-permissions
 echo ""
@@ -120,14 +120,14 @@ echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > ca
 
 function update-permissions () {
 echo "Fixing file permissions..."
-touch /var/www/html/cacti/log/cacti.log
 sudo chgrp -R apache /var/www/html
+sudo chown -R cacti /var/www/html/
 sudo find /var/www/html -type d -exec chmod g+rx {} +
 sudo find /var/www/html -type f -exec chmod g+r {} +
-sudo chown -R cacti /var/www/html/
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
 sudo find /var/www/html -type d -exec chmod g+s {} +
+touch /var/www/html/cacti/log/cacti.log
 chmod g+w cacti/log/cacti.log
 }
 
