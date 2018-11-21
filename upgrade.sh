@@ -17,13 +17,13 @@ fi
 # get the Cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 upgrade_version=1.1.0
-prod_version=1.1.38
+prod_version=1.2.0-beta2
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
-                echo -e "\033[31m Cacti v$cactiver is up to date or with production v$prod_version, nothing to do, exiting!"
+                echo -e "\033[32m Cacti v$cactiver is up to date or with production v$prod_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
                 exit 0
         else
@@ -50,6 +50,11 @@ echo ""
 function upgrade-cacti () {
 echo -e "\033[32m Begining Cacti upgrade..."
 echo -e -n "\033[0m"
+if wget -q "https://www.cacti.net/downloads/cacti-$prod_version.tar.gz"; then
+                echo -e "\033[31m Cacti download not found cannot install, exiting..."
+		echo -e -n "\033[0m"
+		exit
+fi
 cd /var/www/html/
 mv cacti/ cacti_$cactiver/
 wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
