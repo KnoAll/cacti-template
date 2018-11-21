@@ -50,12 +50,13 @@ echo ""
 function upgrade-cacti () {
 echo -e "\033[32m Begining Cacti upgrade..."
 echo -e -n "\033[0m"
-if wget -q "https://www.cacti.net/downloads/cacti-$prod_version.tar.gz"; then
-                echo -e "\033[31m Cacti download not found cannot install, exiting..."
-		echo -e -n "\033[0m"
-		exit
-fi
 cd /var/www/html/
+wget -q https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
+if [ $? -ne 0 ];then
+                echo -e "\033[31m Cacti download error cannot install, exiting..."
+                echo -e -n "\033[0m"
+		exit 1
+fi
 mv cacti/ cacti_$cactiver/
 wget -q https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
@@ -169,6 +170,11 @@ echo -e -n "\033[0m"
 sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+if [ $? -ne 0 ];then
+                echo -e "\033[31m Cacti download error cannot install, exiting..."
+                echo -e -n "\033[0m"
+		exit
+fi
 tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
