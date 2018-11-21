@@ -47,6 +47,7 @@ wget https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
+cp -u -R cacti_$cactiver/rra/* cacti/rra/
 cp -u -R cacti_$cactiver/scripts/* cacti/scripts/
 cp -u -R cacti_$cactiver/resource/* cacti/resource/
 cp -u -R cacti_$cactiver/plugins/* cacti/plugins/
