@@ -9,7 +9,6 @@ if [[ `whoami` == "root" ]]; then
     echo "Uh-oh. You are not logged in as the cacti user. Exiting..."
 fi
 
-# get the Cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 upgrade_version=1.1.0
 prod_version=1.1.38
