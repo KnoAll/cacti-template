@@ -28,7 +28,7 @@ if version_ge $cactiver $upgrade_version; then
                 exit
         fi
 else
-                echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
+                echo -e "\033[31m Cacti v$cactiver is less than minimum upgrade version v$upgrade_version cannot install, exiting..."
 		echo -e -n "\033[0m"
                 exit
 fi
