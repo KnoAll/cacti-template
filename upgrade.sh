@@ -30,24 +30,8 @@ else
                 exit
 fi
 
-#if [ -f ~/.cacti-template ]
-#then
-#echo "Found preexisting Cacti-template v1.2.x Install, proceeding to upgrade..."
-#  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-git.sh)
-#  exit 1
-#else
-#	echo ""
-#fi
-
 echo "Welcome to Kevin's Cacti Template upgrade script!"
 sudo echo ""
-
-function upgrade-git () {
-echo "Upgrading Git"
-sudo rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
-sudo yum install -y git	
-echo ""
-}
 
 function backup-db () {
 echo "Backing up DB..."
