@@ -35,19 +35,3 @@ else
                 fi
         fi
 fi
-
-
-function version_gt() { 
-test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
-}
-
-if version_gt $cactiver $upgrade_version; then
-	if version_gt $cactiver $prod_version; then
-		echo "Current installed Cacti v$cactiver is current! No need to upgrade, exiting..."
-		exit 0
-	else
-	fi
-else
-	echo "Current cacti install v$cactiver is not compatible with upgrade version v$upgrade_version, exiting..."
-	exit 1
-fi
