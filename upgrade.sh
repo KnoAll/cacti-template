@@ -23,8 +23,7 @@ if version_ge $cactiver $upgrade_version; then
                 echo "Cacti v$cactiver is up to date or newer than production v$prod_version, nothing to do, exiting!"
                 exit 0
         else
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
-                exit
+		echo "Installed cacti v$cactiver is greater than required v$upgrade_version! Proceeding to upgrade..."
         fi
 else
                 echo "Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
