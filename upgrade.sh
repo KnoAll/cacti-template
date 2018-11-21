@@ -11,7 +11,7 @@ if [[ `whoami` == "root" ]]; then
     else
     echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
     echo -e -n "\033[0m"
-    exit
+    exit 1
 fi
 
 # get the Cacti version
@@ -33,7 +33,7 @@ if version_ge $cactiver $upgrade_version; then
 else
                 echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
 		echo -e -n "\033[0m"
-                exit
+                exit 1
 fi
 
 echo -e "\033[32m Welcome to Kevin's Cacti Template upgrade script!"
@@ -173,7 +173,7 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Cacti download error cannot install, exiting..."
                 echo -e -n "\033[0m"
-		exit
+		exit 1
 fi
 tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
