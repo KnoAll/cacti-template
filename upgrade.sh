@@ -55,7 +55,7 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	update-permissions
 else
-	rm /var/ww/htm/perm
+	rm /var/www/htm/perm
 	echo ""
 fi
 }
