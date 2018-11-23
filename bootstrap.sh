@@ -20,7 +20,7 @@ then
 else
 	echo -e "\033[32m Downloading cacti-upgrade.sh..."
 	echo -e -n "\033[0m"
-  wget https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
+  wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
   chmod +x cacti-upgrade.sh
 fi
 
