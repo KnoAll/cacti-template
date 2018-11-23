@@ -59,7 +59,7 @@ if [ $? -ne 0 ];then
 		exit 1
 fi
 mv cacti/ cacti_$cactiver/
-wget -q https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
+wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
