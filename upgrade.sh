@@ -7,7 +7,7 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
     elif [[ `whoami` == "cacti" ]]; then
-    echo ""
+    	echo ""
     else
     echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
     echo -e -n "\033[0m"
@@ -32,9 +32,9 @@ if version_ge $cactiver $upgrade_version; then
 		echo -e -n "\033[0m"
         fi
 else
-                echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
-		echo -e -n "\033[0m"
-                exit 1
+	echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
 fi
 
 echo -e "\033[32m Welcome to Kevin's Cacti Template upgrade script!"
@@ -51,9 +51,9 @@ echo ""
 function check-permissions () {
 touch /var/www/html/perm
 if [ $? -ne 0 ];then
-                echo -e "\033[31m File permissions not sufficient, attempting to repair..."
-                echo -e -n "\033[0m"
-		update-permissions
+	echo -e "\033[31m File permissions not sufficient, attempting to repair..."
+	echo -e -n "\033[0m"
+	update-permissions
 else
 	rm /var/ww/htm/perm
 	echo ""
@@ -193,18 +193,18 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
-tar -xzf cacti-spine-*.tar.gz
-rm cacti-spine-*.tar.gz
-cd cacti-spine-*
-./configure
-make
-sudo make install
-cd
-rm -rf cacti-spine-*
-cd /usr/local/spine/bin
-sudo chown root:root spine
-sudo chmod +s spine
-echo ""
+	tar -xzf cacti-spine-*.tar.gz
+	rm cacti-spine-*.tar.gz
+	cd cacti-spine-*
+	./configure
+	make
+	sudo make install
+	cd
+	rm -rf cacti-spine-*
+	cd /usr/local/spine/bin
+	sudo chown root:root spine
+	sudo chmod +s spine
+	echo ""
 fi
 }
 
