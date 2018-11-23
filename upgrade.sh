@@ -48,7 +48,7 @@ mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/w
 echo ""
 }
 
-function test-permissions () {
+function check-permissions () {
 touch /var/www/html
 if [ $? -ne 0 ];then
                 echo -e "\033[31m File permissions not sufficient attempting to repair..."
@@ -206,7 +206,7 @@ fi
 }
 
 #upgrade-git
-test-permissions
+check-permissions
 backup-db
 upgrade-cacti
 upgrade-spine
