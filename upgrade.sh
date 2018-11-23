@@ -49,12 +49,13 @@ echo ""
 }
 
 function check-permissions () {
-touch /var/www/html
+touch /var/www/html/perm
 if [ $? -ne 0 ];then
                 echo -e "\033[31m File permissions not sufficient, attempting to repair..."
                 echo -e -n "\033[0m"
 		update-permissions
 else
+	rm /var/ww/htm/perm
 	echo ""
 fi
 }
