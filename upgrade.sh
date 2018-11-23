@@ -197,6 +197,7 @@ fi
 }
 
 #upgrade-git
+update-permissions
 backup-db
 upgrade-cacti
 upgrade-spine
