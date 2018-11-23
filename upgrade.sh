@@ -57,18 +57,25 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Cacti download error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
-fi
+else
 mv cacti/ cacti_$cactiver/
-tar -xzf cacti-1.*.tar.gz
-rm cacti-1.*.tar.gz
-mv cacti-$prod_version cacti
-cp -a cacti_$cactiver/rra/* cacti/rra/
-cp -a cacti_$cactiver/scripts/* cacti/scripts/
-cp -a cacti_$cactiver/resource/* cacti/resource/
-cp -a cacti_$cactiver/plugins/* cacti/plugins/
-update-config
-update-permissions
-echo ""
+tar -xzf $prod_version.tar.gz
+	if [ $? -ne 0 ];then
+                echo -e "\033[31m Cacti unpack error cannot install, exiting..."
+                echo -e -n "\033[0m"
+		exit 1
+	else
+		rm $prod_version.tar.gz
+		mv cacti-release-$prod_version cacti
+		cp -a cacti_$cactiver/rra/* cacti/rra/
+		cp -a cacti_$cactiver/scripts/* cacti/scripts/
+		cp -a cacti_$cactiver/resource/* cacti/resource/
+		cp -a cacti_$cactiver/plugins/* cacti/plugins/
+		update-config
+		update-permissions
+		echo ""
+	fi
+fi
 }
 
 function upgrade-plugins () {
@@ -171,10 +178,10 @@ sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 if [ $? -ne 0 ];then
-                echo -e "\033[31m Cacti download error cannot install, exiting..."
+                echo -e "\033[31m Spine download error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
-fi
+else
 tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
 cd cacti-spine-*
@@ -187,6 +194,7 @@ cd /usr/local/spine/bin
 sudo chown root:root spine
 sudo chmod +s spine
 echo ""
+fi
 }
 
 #upgrade-git
