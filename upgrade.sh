@@ -159,6 +159,10 @@ echo -e -n "\033[0m"
 cd /var/www/html/
 #cp cacti/include/config.php.dist cacti/include/config.php
 echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+if [ $? -ne 0 ];then
+	mv cacti/include/config.php.dist cacti/include/config.php
+	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+fi
 }
 
 function update-syslog-config () {
