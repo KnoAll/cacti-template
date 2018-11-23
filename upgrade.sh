@@ -52,14 +52,13 @@ function upgrade-cacti () {
 echo -e "\033[32m Begining Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-wget -q https://www.cacti.net/downloads/cacti-$prod_version.tar.gz
+wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Cacti download error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
 fi
 mv cacti/ cacti_$cactiver/
-wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 tar -xzf cacti-1.*.tar.gz
 rm cacti-1.*.tar.gz
 mv cacti-$prod_version cacti
