@@ -60,6 +60,10 @@ else
 fi
 }
 
+function check-prerequisites () {
+
+}
+
 function upgrade-cacti () {
 echo -e "\033[32m Begining Cacti upgrade..."
 echo -e -n "\033[0m"
