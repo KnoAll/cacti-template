@@ -178,9 +178,8 @@ sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 if [ $? -ne 0 ];then
-                echo -e "\033[31m Spine download error cannot install, exiting..."
+                echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
-		exit 1
 else
 tar -xzf cacti-spine-*.tar.gz
 rm cacti-spine-*.tar.gz
