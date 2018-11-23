@@ -157,7 +157,7 @@ function update-config () {
 echo -e "\033[32m Updating cacti config..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-if [ -f  cacti/include/config.php]
+if [ -f  cacti/include/config.php ];
 then
 	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
 else
