@@ -55,6 +55,8 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		update-permissions
 else
+	echo ""
+fi
 }
 
 function upgrade-cacti () {
