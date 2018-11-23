@@ -67,13 +67,13 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		exit 1
 else
-mv cacti/ cacti_$cactiver/
 tar -xzf $prod_version.tar.gz
 	if [ $? -ne 0 ];then
                 echo -e "\033[31m Cacti unpack error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
 	else
+		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
 		cp -a cacti_$cactiver/rra/* cacti/rra/
