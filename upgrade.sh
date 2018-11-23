@@ -61,7 +61,7 @@ fi
 }
 
 function check-prerequisites () {
-
+	echo ""
 }
 
 function upgrade-cacti () {
