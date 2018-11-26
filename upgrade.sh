@@ -217,6 +217,15 @@ else
 fi
 }
 
+function compress-delete () {
+echo -e "\033[31m Creating compressed archive..."
+echo -e -n "\033[0m"
+tar -czf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/ --exclude=/var/www/html/cacti/log
+rm -rf /var/www/html/cacti-$cactiver
+echo -e "\033[31m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
+echo -e -n "\033[0m"
+}
+
 #upgrade-git
 check-permissions
 backup-db
