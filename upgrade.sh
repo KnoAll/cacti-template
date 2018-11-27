@@ -224,7 +224,7 @@ function compress-delete () {
         if [ "$cleanup" = "y" ]; then
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -pczf ~/cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
+		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Archive creation failed."
 			echo -e -n "\033[0m"
