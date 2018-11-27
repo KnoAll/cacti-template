@@ -230,7 +230,7 @@ function compress-delete () {
 			echo -e -n "\033[0m"
 		else
 			rm -rf /var/www/html/cacti_$cactiver
-			echo -e "\033[32m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
+			echo -e "\033[32m Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
 			echo -e -n "\033[0m"			
 		fi
         elif [ "$cleanup" = "n" ]; then
