@@ -182,7 +182,7 @@ function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
 sudo chgrp -R apache /var/www/html
-sudo chown -R cacti /var/www/html/
+sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
 sudo find /var/www/html -type f -exec chmod g+r {} +
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
@@ -224,10 +224,15 @@ function compress-delete () {
         if [ "$cleanup" = "y" ]; then
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -czf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/ --exclude=/var/www/html/cacti/log
-		rm -rf /var/www/html/cacti-$cactiver
-		echo -e "\033[32m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
-		echo -e -n "\033[0m"
+		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Archive creation failed."
+			echo -e -n "\033[0m"
+		else
+			rm -rf /var/www/html/cacti_$cactiver
+			echo -e "\033[32m Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
+			echo -e -n "\033[0m"			
+		fi
         elif [ "$cleanup" = "n" ]; then
 		echo ""
         else
@@ -244,7 +249,7 @@ backup-db
 upgrade-cacti
 upgrade-spine
 #upgrade-plugins
+compress-delete
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
-compress-delete
 exit 0
