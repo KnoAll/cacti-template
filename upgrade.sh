@@ -217,6 +217,27 @@ else
 fi
 }
 
+function compress-delete () {
+	echo -e "\033[32m Do you want to archive the original cacti directory?"
+	echo -e -n "\033[0m"
+	read -n 1 -p "y/n: " cleanup
+        if [ "$cleanup" = "y" ]; then
+		echo -e "\033[32m Creating compressed archive..."
+		echo -e -n "\033[0m"
+		tar -czf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/ --exclude=/var/www/html/cacti/log
+		rm -rf /var/www/html/cacti-$cactiver
+		echo -e "\033[32m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
+		echo -e -n "\033[0m"
+        elif [ "$cleanup" = "n" ]; then
+		echo ""
+        else
+		echo -e "\033[31m You have entered an invallid selection!"
+		echo "Please try again!"
+		echo -e -n "\033[0m"
+            clear
+	fi
+}
+
 #upgrade-git
 check-permissions
 backup-db
@@ -225,4 +246,5 @@ upgrade-spine
 #upgrade-plugins
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
+compress-delete
 exit 0
