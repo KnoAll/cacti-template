@@ -225,7 +225,7 @@ function compress-delete () {
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
 		tar -czf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/ --exclude=/var/www/html/cacti/log
-		rm -rf /var/www/html/cacti-$cactiver
+		rm -rf /var/www/html/cacti_$cactiver
 		echo -e "\033[32m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
 		echo -e -n "\033[0m"
         elif [ "$cleanup" = "n" ]; then
@@ -244,7 +244,7 @@ backup-db
 upgrade-cacti
 upgrade-spine
 #upgrade-plugins
+compress-delete
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
-compress-delete
 exit 0
