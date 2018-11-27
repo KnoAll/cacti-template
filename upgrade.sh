@@ -182,7 +182,7 @@ function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
 sudo chgrp -R apache /var/www/html
-sudo chown -R cacti /var/www/html/
+sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
 sudo find /var/www/html -type f -exec chmod g+r {} +
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
