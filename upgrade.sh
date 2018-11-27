@@ -224,7 +224,7 @@ function compress-delete () {
         if [ "$cleanup" = "y" ]; then
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -czf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/
+		tar -pczf ~/cacti-$cactiver.tar.gz /var/www/html/cacti --exclude=/var/www/html/cacti/cache/
 		rm -rf /var/www/html/cacti_$cactiver
 		echo -e "\033[32m Archive created in home directory ~/cacti-$cactiver.tar.gz..."
 		echo -e -n "\033[0m"
