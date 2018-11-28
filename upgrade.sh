@@ -246,7 +246,7 @@ function compress-delete () {
 	fi
 }
 
-function update-cactidir () [
+function update-cactidir () {
 if version_lt $cactiver $symlink_cactidir; then
 	echo -e "\033[32m Legacy cacti install directory found, updating..."
 	echo -e -n "\033[0m"
