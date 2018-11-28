@@ -15,12 +15,16 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 # get the Cacti version
-cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-
 upgrade_version=1.1.6
 prod_version=1.1.38
 dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
+cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Cacti version is less than minimum required v$upgrade_version cannot install, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
