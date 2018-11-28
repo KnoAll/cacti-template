@@ -38,4 +38,5 @@ After the gui install has been done, you must go to Utilities > System Utilities
 
 
 ### Issues
+This is all still actively being worked on, so you may see changes to how things work and interact.
 If you run into trouble with the script please submit an issue in the Github system above.
