@@ -21,7 +21,7 @@ dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
-	echo -e "\033[31m Cacti version is less than minimum required version v$upgrade_version cannot install, exiting..."
+	echo -e "\033[31m Cacti version is less than minimum required v$upgrade_version cannot install, exiting..."
 	echo -e -n "\033[0m"
 	exit 1
 fi
