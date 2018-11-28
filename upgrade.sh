@@ -20,8 +20,10 @@ cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 upgrade_version=1.1.28
 prod_version=1.1.38
 dev_version=1.2.0-beta4
+symlink_cactidir=1.1.28
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
@@ -244,9 +246,25 @@ function compress-delete () {
 	fi
 }
 
+function update-cactidir () [
+if version_lt $cactiver $symlink_cactidir; then
+	echo -e "\033[32m Legacy cacti install directory found, updating..."
+	echo -e -n "\033[0m"
+	rm /var/www/html/cacti
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m cacti directory update failed, exiting."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+	mv /var/www/html/cacti-$cactiver /var/www/html/cacti
+	fi
+fi
+}
+
 #upgrade-git
 check-permissions
 backup-db
+update-cactidir
 upgrade-cacti
 upgrade-spine
 #upgrade-plugins
