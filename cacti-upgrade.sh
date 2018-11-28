@@ -13,6 +13,11 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Cacti version is less than minimum upgrade version v$upgrade_version cannot install, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
 upgrade_version=1.1.6
 prod_version=1.1.38
 
