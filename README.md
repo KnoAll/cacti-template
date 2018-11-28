@@ -33,3 +33,7 @@ The script will:
 
 Once the upgrade has been done, you must complete the installation from the cacti gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
+
+
+### Issues
+If you run into trouble with the script please submit an issue in the Github system above.
