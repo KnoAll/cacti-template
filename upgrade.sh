@@ -17,7 +17,7 @@ fi
 # get the Cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
-upgrade_version=1.1.28
+upgrade_version=1.1.6
 prod_version=1.1.38
 dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
