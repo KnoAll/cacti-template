@@ -5,6 +5,8 @@
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
 http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 
+As of the writing of this script, the current cacti release is v1.1.38. This script will upgrade to that release only. I am working on updates that will allow the upcoming development v1.2.x which is currently in beta 4. There are some significant changes required to support the new version which I am working through.
+
 ## Initial Upgrade Setup Instructions
 
 Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater:
