@@ -12,28 +12,4 @@ if [[ `whoami` == "root" ]]; then
     exit
 fi
 
-upgrade_version=1.1.6
-prod_version=1.1.38
-cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Cacti version is less than minimum required v$upgrade_version cannot install, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
-fi
-
-function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
-
-if version_ge $cactiver $upgrade_version; then
-        if version_ge $cactiver $prod_version; then
-                echo -e "\033[32m Cacti v$cactiver is up to date or newer than production v$prod_version, nothing to do, exiting!"
-		echo -e -n "\033[0m"
-                exit 0
-        else
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
-                exit
-        fi
-else
-                echo -e "\033[31m Cacti v$cactiver is less than minimum upgrade version v$upgrade_version cannot install, exiting..."
-		echo -e -n "\033[0m"
-                exit
-fi
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
