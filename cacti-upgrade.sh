@@ -13,7 +13,7 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-upgrade_version=1.1.0
+upgrade_version=1.1.6
 prod_version=1.1.38
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
