@@ -13,7 +13,7 @@ Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater:
 Run this from the command line...
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/bootstrap.sh)
 ```
 
 Subsequent updates can be run by simply 
