@@ -56,6 +56,7 @@ if [ $? -ne 0 ];then
 		exit 1
 else
 wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$prod_version.tar.gz
+
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping download error cannot install, exiting..."
                 echo -e -n "\033[0m"
@@ -86,6 +87,7 @@ cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
 		sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 		echo ""
 	fi
+fi
 fi
 }
 
