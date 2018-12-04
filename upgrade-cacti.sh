@@ -15,9 +15,9 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 # get the Cacti version
-# get ready for dynamic update
-#upgrade_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 upgrade_version=1.1.6
+# get ready for dynamic update
+#prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.1.38
 dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
