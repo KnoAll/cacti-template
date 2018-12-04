@@ -15,6 +15,7 @@ fi
 # get the Cacti version
 upgrade_version=2.006011
 prod_version=2.007002
+web_version=2.7.2
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
@@ -55,40 +56,38 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		exit 1
 else
-wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$prod_version.tar.gz
-
-if [ $? -ne 0 ];then
+	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+	if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping download error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
-else
-echo "smokeping-$prod_version.tar.gz"
-tar -xzf smokeping-$prod_version.tar.gz
-	if [ $? -ne 0 ];then
-                echo -e "\033[31m Smokeping unpack error cannot install, exiting..."
-                echo -e -n "\033[0m"
-		exit 1
 	else
-		sudo systemctl stop smokeping.service
-		sudo mv /opt/smokeping /opt/smokeping-$smokever
-		rm smokeping-$prod_version.tar.gz
-		cd smokeping-2.7.2
-		./configure --prefix=/opt/smokeping
-		make install
-		#do it twice for some reason
-		make install
-mkdir /opt/smokeping/var
-mkdir /opt/smokeping/htdocs/cache
-cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
-		update-config
-		cp -R /opt/smokeping-2.6.11/data /opt/smokeping/data
-		cp -a /opt/smokeping-2.6.11/etc/smokeping_secrets.dist /opt/smokeping/etc/
-		update-permissions
-		chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-		sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
-		echo ""
+	tar -xzf smokeping-$web_version.tar.gz
+		if [ $? -ne 0 ];then
+                	echo -e "\033[31m Smokeping unpack error cannot install, exiting..."
+                	echo -e -n "\033[0m"
+			exit 1
+		else
+			sudo systemctl stop smokeping.service
+			sudo mv /opt/smokeping /opt/smokeping-$smokever
+			rm smokeping-$prod_version.tar.gz
+			cd smokeping-2.7.2
+			./configure --prefix=/opt/smokeping
+			make install
+			#do it twice for some reason
+			make install
+			mkdir /opt/smokeping/var
+			mkdir /opt/smokeping/htdocs/cache
+			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
+			update-config
+			cp -R /opt/smokeping-2.6.11/data /opt/smokeping/data
+			cp -a /opt/smokeping-2.6.11/etc/smokeping_secrets.dist /opt/smokeping/etc/
+			update-permissions
+			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
+			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
+			echo ""
+		fi
 	fi
-fi
 fi
 }
 
