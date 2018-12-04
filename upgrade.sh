@@ -284,7 +284,7 @@ if version_ge $smokever $smokeping_version; then
         else
 		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Upgrading to v$smokeping-prod_version..."
 		echo -e -n "\033[0m"
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
+#		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
 
         fi
 else
