@@ -48,6 +48,7 @@ sudo echo ""
 
 function upgrade-smokeping () {
 echo -e "\033[32m Begining Smokeping upgrade..."
+echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
 sudo yum install -y perl-core perl-IO-Socket-SSL nano
@@ -56,6 +57,8 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		exit 1
 else
+	echo -e "\033[32m Getting Smokeping..."
+	echo -e -n "\033[0m"
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping download error cannot install, exiting..."
@@ -68,6 +71,8 @@ else
                 	echo -e -n "\033[0m"
 			exit 1
 		else
+			echo -e "\033[32m Setting up Smokeping..."
+			echo -e -n "\033[0m"
 			sudo systemctl stop smokeping.service
 			sudo mv /opt/smokeping /opt/smokeping-$smokever
 			rm smokeping-$prod_version.tar.gz
@@ -84,6 +89,8 @@ else
 			cp -a /opt/smokeping-$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
+			echo -e "\033[32m Restarting services..."
+			echo -e -n "\033[0m"
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 			echo ""
 		fi
@@ -92,7 +99,7 @@ fi
 }
 
 function update-config () {
-echo -e "\033[32m Updating smokeping config..."
+echo -e "\033[32m Updating Smokeping config..."
 echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ];
 then
@@ -114,7 +121,7 @@ sudo find /opt -type d -exec chmod g+s {} +
 }
 
 function compress-delete () {
-	echo -e "\033[32m Do you want to archive the original smokeping directory?"
+	echo -e "\033[32m Do you want to archive the original Smokeping directory?"
 	echo -e -n "\033[0m"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
@@ -143,6 +150,6 @@ update-permissions
 upgrade-smokeping
 update-permissions
 compress-delete
-echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+echo -e "\033[32m Smokeping upgraded to v$prod_version! Proceed to the web interface..."
 echo -e -n "\033[0m"
 exit 0
