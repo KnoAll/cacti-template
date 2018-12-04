@@ -16,6 +16,8 @@ fi
 
 # get the Cacti version
 upgrade_version=1.1.6
+# get ready for dynamic update
+#prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.1.38
 dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
@@ -267,6 +269,7 @@ function compress-delete () {
 	echo -e -n "\033[0m"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
+		echo ""
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
 		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
