@@ -1,6 +1,6 @@
 # cacti-template
 
-:warning: **[This assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your cacti install from Kevin's virtual appliance template .ova then this will work for you. If you have installed Cacti via your own method this will break your Cacti install!! :warning:
+:warning: **[This assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
 
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
 http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
@@ -32,8 +32,10 @@ The script will:
 * upgrade spine to the current production release
   * upgrade centos with any updates nessesary for compiling spine
 * archive your previous cacti install
+* ask if you would like to check for a compatible Smokeping upgrade
+ * walks through Smokeping upgrade if desired
 
-Once the upgrade has been done, you must complete the installation from the cacti gui.
+Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
 
 
