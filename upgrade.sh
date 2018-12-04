@@ -32,7 +32,7 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
-		echo -e -n "\033[0m"
+		echo ""
 		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
