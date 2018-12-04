@@ -50,7 +50,7 @@ function upgrade-smokeping () {
 echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y perl-core IO-Socket-SSL nano
+sudo yum install -y perl-core perl-IO-Socket-SSL nano
 if [ $? -ne 0 ];then
                 echo -e "\033[31m CentOS update error cannot install, exiting..."
                 echo -e -n "\033[0m"
@@ -75,7 +75,7 @@ else
 			./configure --prefix=/opt/smokeping
 			make install
 			#do it twice for some reason
-			make install
+			#make install
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
 			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
