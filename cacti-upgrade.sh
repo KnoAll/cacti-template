@@ -12,4 +12,4 @@ if [[ `whoami` == "root" ]]; then
     exit
 fi
 
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
