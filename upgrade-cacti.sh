@@ -29,10 +29,48 @@ fi
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
+function check-smokeping () {
+#get the smokeping version
+smokeping_version=2.006011
+smokeping_prod_version=2.007002
+smokever=$( /opt/smokeping/bin/smokeping --version )
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
+	echo -e -n "\033[0m"
+	exit
+fi
+if version_ge $smokever $smokeping_version; then
+        if version_ge $smokever $smokeping_prod_version; then
+                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
+		echo -e -n "\033[0m"
+        else
+		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeup
+        	if [ "$smokeup" = "y" ]; then
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-smokeping.sh)
+		else
+			echo -e "\033[32m Thanks for doing the Smokeping, bye!"
+			echo -e -n "\033[0m"
+		fi
+        fi
+else
+	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
+	echo -e -n "\033[0m"
+fi
+}
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
-                echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do, exiting!"
+                echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
+		echo ""
+		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
 		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeup
+        	if [ "$smokeup" = "y" ]; then
+			echo ""
+			check-smokeping
+		fi
                 exit 0
         else
 		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
@@ -273,6 +311,7 @@ upgrade-cacti
 upgrade-spine
 #upgrade-plugins
 compress-delete
+check-smokeping
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
