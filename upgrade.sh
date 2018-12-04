@@ -265,6 +265,35 @@ if version_lt $cactiver $symlink_cactidir; then
 fi
 }
 
+function check-smokeping () {
+#get the smokeping version
+smokeping_version=2.006011
+smokeping-prod_version=2.007002
+smokeping-web_version=2.7.2
+smokever=$( /opt/smokeping/bin/smokeping --version )
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
+if version_ge $smokever $smokeping_version; then
+        if version_ge $smokever $smokeping-prod_version; then
+                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
+		echo -e -n "\033[0m"
+                exit 0
+        else
+		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Upgrading to v$smokeping-prod_version..."
+		echo -e -n "\033[0m"
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
+
+        fi
+else
+	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping-upgrade_version cannot install, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
+}
+
 #upgrade-git
 check-permissions
 backup-db
