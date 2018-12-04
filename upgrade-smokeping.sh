@@ -127,7 +127,7 @@ function compress-delete () {
         if [ "$cleanup" = "y" ]; then
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
+		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping-$smokever
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Archive creation failed."
 			echo -e -n "\033[0m"
