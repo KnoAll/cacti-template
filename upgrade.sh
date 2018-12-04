@@ -44,12 +44,12 @@ if version_ge $smokever $smokeping_version; then
                 echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
         else
-		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping_version! Do you wish to upgrade?"
+		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
         	if [ "$smokeup" = "y" ]; then
-			echo "Do the Smokeping"
-#			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
+			echo ""
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
 		fi
         fi
 else
