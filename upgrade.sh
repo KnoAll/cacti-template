@@ -32,19 +32,19 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function check-smokeping () {
 #get the smokeping version
 smokeping_version=2.006011
-smokeping-prod_version=2.007002
-smokeping-web_version=2.7.2
+smokeping_prod_version=2.007002
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
-	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
+	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
 	echo -e -n "\033[0m"
+	exit
 fi
 if version_ge $smokever $smokeping_version; then
-        if version_ge $smokever $smokeping-prod_version; then
+        if version_ge $smokever $smokeping_prod_version; then
                 echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
         else
-		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Do you wish to upgrade?"
+		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
         	if [ "$smokeup" = "y" ]; then
@@ -53,7 +53,7 @@ if version_ge $smokever $smokeping_version; then
 		fi
         fi
 else
-	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping-upgrade_version cannot install, exiting..."
+	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
 	echo -e -n "\033[0m"
 fi
 }
