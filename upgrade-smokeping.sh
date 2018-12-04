@@ -75,12 +75,12 @@ else
 			echo -e -n "\033[0m"
 			sudo systemctl stop smokeping.service
 			sudo mv /opt/smokeping /opt/smokeping-$smokever
-			rm smokeping-$prod_version.tar.gz
+			rm smokeping-$web_version.tar.gz
 			cd smokeping-2.7.2
 			./configure --prefix=/opt/smokeping
 			make install
-			#do it twice for some reason
-			#make install
+			cd
+			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
 			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
