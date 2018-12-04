@@ -33,7 +33,7 @@ The script will:
   * upgrade centos with any updates nessesary for compiling spine
 * archive your previous cacti install
 * ask if you would like to check for a compatible Smokeping upgrade
- * walks through Smokeping upgrade if desired
+ * walks through Smokeping upgrade if desired backing up all data
 
 Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
