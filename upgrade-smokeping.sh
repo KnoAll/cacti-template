@@ -13,8 +13,8 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 # get the Cacti version
-upgrade_version=v2.006011
-prod_version=v2.00702
+upgrade_version=2.006011
+prod_version=2.007002
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
