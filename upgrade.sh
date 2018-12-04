@@ -274,13 +274,11 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
 	echo -e -n "\033[0m"
-	exit 1
 fi
 if version_ge $smokever $smokeping_version; then
         if version_ge $smokever $smokeping-prod_version; then
                 echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
-                exit 0
         else
 		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Upgrading to v$smokeping-prod_version..."
 		echo -e -n "\033[0m"
@@ -290,7 +288,6 @@ if version_ge $smokever $smokeping_version; then
 else
 	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping-upgrade_version cannot install, exiting..."
 	echo -e -n "\033[0m"
-	exit 1
 fi
 }
 
@@ -302,6 +299,7 @@ upgrade-cacti
 upgrade-spine
 #upgrade-plugins
 compress-delete
+check-smokeping
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
