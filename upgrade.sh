@@ -31,8 +31,15 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
-                echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do, exiting!"
+                echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		echo -e -n "\033[0m"
+		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeup
+        	if [ "$smokeup" = "y" ]; then
+			echo ""
+			check-smokeping
+		fi
                 exit 0
         else
 		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
@@ -280,10 +287,12 @@ if version_ge $smokever $smokeping_version; then
                 echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
         else
-		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Upgrading to v$smokeping-prod_version..."
+		echo -e "\033[32m Installed Smokeping v$smokever is greater than required v$smokeping-upgrade_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
-#		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
-
+		read -n 1 -p "y/n: " smokeup
+        	if [ "$smokeup" = "y" ]; then
+#			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
+		fi
         fi
 else
 	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping-upgrade_version cannot install, exiting..."
