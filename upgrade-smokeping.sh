@@ -80,8 +80,8 @@ else
 			mkdir /opt/smokeping/htdocs/cache
 			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
 			update-config
-			cp -R /opt/smokeping-2.6.11/data /opt/smokeping/data
-			cp -a /opt/smokeping-2.6.11/etc/smokeping_secrets.dist /opt/smokeping/etc/
+			cp -R /opt/smokeping-$smokever/data /opt/smokeping/data
+			cp -a /opt/smokeping-$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
