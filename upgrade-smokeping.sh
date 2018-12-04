@@ -62,6 +62,7 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		exit 1
 else
+echo "smokeping-$prod_version.tar.gz"
 tar -xzf smokeping-$prod_version.tar.gz
 	if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping unpack error cannot install, exiting..."
