@@ -48,6 +48,7 @@ if version_ge $smokever $smokeping_version; then
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
         	if [ "$smokeup" = "y" ]; then
+			echo "Do the Smokeping"
 #			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/smokeping-upgrade.sh)
 		fi
         fi
