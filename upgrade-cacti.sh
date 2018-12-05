@@ -132,6 +132,7 @@ else
 				echo -e -n "\033[0m"
 			fi
 fi
+fi
 }
 
 function backup-db () {
