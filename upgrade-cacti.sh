@@ -319,13 +319,13 @@ chmod g+w cacti/log/cacti.log
 function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
-sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
+	sudo yum install gcc glibc glibc-common gd gd-devel -y
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
