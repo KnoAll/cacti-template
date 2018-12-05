@@ -140,7 +140,7 @@ function update-mysqld () {
 if version_ge $prod_version 1.2.0; then
 	grep -q -w "mysqld" /etc/my.cnf
 	if [ $? -ne 0 ];then
-	cat >> /etc/my.cnf << EOF
+	sudo cat >> /etc/my.cnf << EOF
 
 [mysqld]
 max_allowed_packet=16M
