@@ -140,23 +140,20 @@ function update-mysqld () {
 if version_ge $prod_version 1.2.0; then
 	grep -q -w "mysqld" /etc/my.cnf
 	if [ $? -ne 0 ];then
-	sudo cat >> /etc/my.cnf << EOF
-
-[mysqld]
-max_allowed_packet=16M
-innodb_additional_mem_pool_size=80M
-innodb_flush_log_at_timeout=3
-innodb_read_io_threads=32
-innodb_write_io_threads=16
-max_heap_table_size=30M
-tmp_table_size=30M
-join_buffer_size=58M
-innodb_buffer_pool_size=450M
-character-set-server=utf8mb4
-collation-server=utf8mb4_unicode_ci
-
-EOF
-
+		#Fugly but works for now...
+		sudo sed  -i '$ a [mysqld]' /etc/my.cnf
+		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf
+		sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_read_io_threads=32' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_write_io_threads=16' /etc/my.cnf 
+		sudo sed  -i '$ a max_heap_table_size=30M' /etc/my.cnf 
+		sudo sed  -i '$ a tmp_table_size=30M' /etc/my.cnf 
+		sudo sed  -i '$ a join_buffer_size=58M' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_buffer_pool_size=450M' /etc/my.cnf 
+		sudo sed  -i '$ a character-set-server=utf8mb4' /etc/my.cnf 
+		sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' /etc/my.cnf 
+		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf 
 	else
 		echo "put in other mysqld stuff here"
 	fi
