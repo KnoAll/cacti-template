@@ -136,6 +136,35 @@ sudo systemctl restart httpd.service
 fi
 }
 
+function update-mysqld () {
+if version_ge $prod_version 1.2.0; then
+	grep -q -w "mysqld" /etc/my.cnf
+	if [ $? -ne 0 ];then
+	cat >> /etc/my.cnf << EOF
+
+[mysqld]
+max_allowed_packet=16M
+innodb_additional_mem_pool_size=80M
+innodb_flush_log_at_timeout=3
+innodb_read_io_threads=32
+innodb_write_io_threads=16
+max_heap_table_size=30M
+tmp_table_size=30M
+join_buffer_size=58M
+innodb_buffer_pool_size=450M
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+
+EOF
+
+	else
+		echo "put in other mysqld stuff here"
+	fi
+sudo systemctl restart mysqld.service
+fi
+
+}
+
 function backup-db () {
 echo -e "\033[32m Backing up DB..."
 echo -e -n "\033[0m"
@@ -360,6 +389,7 @@ backup-db
 update-cactidir
 upgrade-cacti
 update-php
+update-mysqld
 upgrade-spine
 #upgrade-plugins
 compress-delete
