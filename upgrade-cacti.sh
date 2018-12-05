@@ -132,6 +132,7 @@ else
 				echo -e -n "\033[0m"
 			fi
 fi
+sudo systemctl restart httpd.service
 fi
 }
 
