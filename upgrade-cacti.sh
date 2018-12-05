@@ -93,7 +93,7 @@ if version_ge $prod_version 1.2.0; then
 grep -q -w "memory_limit = 128M" /etc/php.ini
 if [ $? -ne 0 ];then
 	#NOT 128, check for 800
-	grep -w "memory_limit = 800M" /etc/php.ini
+	grep -q -w "memory_limit = 800M" /etc/php.ini
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
 		echo -e -n "\033[0m"
@@ -114,7 +114,7 @@ fi
 grep -q -w "max_execution_time = 30" /etc/php.ini
 if [ $? -ne 0 ];then
 	#NOT 128, check for 800
-	grep -w "max_execution_time = 60" /etc/php.ini
+	grep -q -w "max_execution_time = 60" /etc/php.ini
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
 		echo -e -n "\033[0m"
