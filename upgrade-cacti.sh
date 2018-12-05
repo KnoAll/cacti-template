@@ -358,6 +358,7 @@ check-permissions
 backup-db
 update-cactidir
 upgrade-cacti
+update-php
 upgrade-spine
 #upgrade-plugins
 compress-delete
