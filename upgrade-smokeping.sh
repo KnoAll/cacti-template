@@ -125,6 +125,7 @@ function compress-delete () {
 	echo -e -n "\033[0m"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
+		echo ""
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
 		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping-$smokever

@@ -52,7 +52,8 @@ if version_ge $smokever $smokeping_version; then
         	if [ "$smokeup" = "y" ]; then
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
 		else
-			echo -e "\033[32m Thanks for doing the Smokeping, bye!"
+			echo ""
+			echo -e "\033[32m OK, no Smokeping thing, bye!"
 			echo -e -n "\033[0m"
 		fi
         fi
@@ -72,6 +73,10 @@ if version_ge $cactiver $upgrade_version; then
         	if [ "$smokeup" = "y" ]; then
 			echo ""
 			check-smokeping
+		else
+			echo ""
+			echo -e "\033[32m OK, no Smokeping today, bye!"
+			echo -e -n "\033[0m"
 		fi
                 exit 0
         else
@@ -87,6 +92,83 @@ fi
 echo -e "\033[32m Welcome to Kevin's Cacti Template upgrade script!"
 echo -e -n "\033[0m"
 sudo echo ""
+
+function update-php () {
+if version_ge $prod_version 1.2.0; then
+echo -e "\033[32m Updating php settings for cacti v1.2.x..."
+echo -e -n "\033[0m"
+grep -q -w "memory_limit = 128M" /etc/php.ini
+if [ $? -ne 0 ];then
+	grep -q -w "memory_limit = 800M" /etc/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php memory_limit already = 800."
+		echo -e -n "\033[0m"
+	fi
+else
+        sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' /etc/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m ERROR, php memory_limit NOT updated."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php memory_limit updated to 800."
+		echo -e -n "\033[0m"
+	fi
+fi
+grep -q -w "max_execution_time = 30" /etc/php.ini
+if [ $? -ne 0 ];then
+	#NOT 128, check for 800
+	grep -q -w "max_execution_time = 60" /etc/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php max_execution_time already = 60."
+		echo -e -n "\033[0m"
+	fi
+else
+        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php.ini
+			if [ $? -ne 0 ];then
+				echo -e "\033[31m ERROR, php max_execution_time NOT updated."
+				echo -e -n "\033[0m"
+			else
+				echo -e "\033[32m php max_execution_time updated to 60."
+				echo -e -n "\033[0m"
+			fi
+fi
+sudo systemctl restart httpd.service
+fi
+}
+
+function update-mysqld () {
+if version_ge $prod_version 1.2.0; then
+echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
+echo -e -n "\033[0m"
+	grep -q -w "mysqld" /etc/my.cnf
+	if [ $? -ne 0 ];then
+		#Fugly but works for now...
+		sudo sed  -i '$ a [mysqld]' /etc/my.cnf
+		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf
+		sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_read_io_threads=32' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_write_io_threads=16' /etc/my.cnf 
+		sudo sed  -i '$ a max_heap_table_size=30M' /etc/my.cnf 
+		sudo sed  -i '$ a tmp_table_size=30M' /etc/my.cnf 
+		sudo sed  -i '$ a join_buffer_size=58M' /etc/my.cnf 
+		sudo sed  -i '$ a innodb_buffer_pool_size=450M' /etc/my.cnf 
+		sudo sed  -i '$ a character-set-server=utf8mb4' /etc/my.cnf 
+		sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' /etc/my.cnf 
+		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf 
+	else
+		echo "put in other mysqld stuff here"
+	fi
+sudo systemctl restart mysqld.service
+fi
+
+}
 
 function backup-db () {
 echo -e "\033[32m Backing up DB..."
@@ -242,13 +324,13 @@ chmod g+w cacti/log/cacti.log
 function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
-sudo yum install gcc glibc glibc-common gd gd-devel -y
 cd
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
+	sudo yum install gcc glibc glibc-common gd gd-devel -y
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
@@ -311,6 +393,8 @@ check-permissions
 backup-db
 update-cactidir
 upgrade-cacti
+update-php
+update-mysqld
 upgrade-spine
 #upgrade-plugins
 compress-delete
