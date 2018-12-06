@@ -53,7 +53,7 @@ if version_ge $smokever $smokeping_version; then
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
 		else
 			echo ""
-			echo -e "\033[32m Thanks for doing the Smokeping, bye!"
+			echo -e "\033[32m OK, no Smokeping thing, bye!"
 			echo -e -n "\033[0m"
 		fi
         fi
