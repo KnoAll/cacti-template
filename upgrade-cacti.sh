@@ -73,6 +73,10 @@ if version_ge $cactiver $upgrade_version; then
         	if [ "$smokeup" = "y" ]; then
 			echo ""
 			check-smokeping
+		else
+			echo ""
+			echo -e "\033[32m OK, no Smokeping today, bye!"
+			echo -e -n "\033[0m"
 		fi
                 exit 0
         else
