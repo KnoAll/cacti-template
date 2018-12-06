@@ -18,7 +18,7 @@ fi
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.0-beta4
+prod_version=1.1.38
 dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
@@ -90,9 +90,10 @@ sudo echo ""
 
 function update-php () {
 if version_ge $prod_version 1.2.0; then
+echo -e "\033[32m Updating php settings for cacti v1.2.x..."
+echo -e -n "\033[0m"
 grep -q -w "memory_limit = 128M" /etc/php.ini
 if [ $? -ne 0 ];then
-	#NOT 128, check for 800
 	grep -q -w "memory_limit = 800M" /etc/php.ini
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
@@ -138,6 +139,8 @@ fi
 
 function update-mysqld () {
 if version_ge $prod_version 1.2.0; then
+echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
+echo -e -n "\033[0m"
 	grep -q -w "mysqld" /etc/my.cnf
 	if [ $? -ne 0 ];then
 		#Fugly but works for now...
