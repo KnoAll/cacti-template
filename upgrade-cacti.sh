@@ -41,37 +41,38 @@ echo -e -n "\033[0m"
 read -n 1 -p "y/n: " smokeuse
 if [ "$smokeuse" = "y" ]; then
 smokever=$( /opt/smokeping/bin/smokeping --version )
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
-	echo -e -n "\033[0m"
-	exit
-fi
-if version_ge $smokever $smokeping_version; then
-        if version_ge $smokever $smokeping_prod_version; then
-		echo ""
-                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do, exiting!"
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
 		echo -e -n "\033[0m"
-		smokeping_onoff
-        else
+		exit
+	fi
+	if version_ge $smokever $smokeping_version; then
+   	     if version_ge $smokever $smokeping_prod_version; then
+			echo ""
+           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do, exiting!"
+			echo -e -n "\033[0m"
+			smokeping_onoff
+     	   else
 		echo ""
 		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
-        	if [ "$smokeup" = "y" ]; then
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
-		else
-			echo ""
-			echo -e "\033[32m OK, no Smokeping thing, bye!"
-			echo -e -n "\033[0m"
-			smokeping_onoff
-		fi
-        fi
+        		if [ "$smokeup" = "y" ]; then
+				bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
+			else
+				echo ""
+				echo -e "\033[32m OK, no Smokeping thing, bye!"
+				echo -e -n "\033[0m"
+				smokeping_onoff
+			fi
+      	  fi
+	else
+		echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
+		echo -e -n "\033[0m"
+		smokeping_onoff
+	fi
 else
-	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
-	echo -e -n "\033[0m"
-	smokeping_onoff
-fi
-
+smokeping_onoff
 fi
 
 }
