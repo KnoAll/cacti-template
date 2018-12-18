@@ -48,7 +48,7 @@ if [ $? -ne 0 ];then
 fi
 if version_ge $smokever $smokeping_version; then
         if version_ge $smokever $smokeping_prod_version; then
-                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do, exiting!"
+                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do, exiting!"
 		echo -e -n "\033[0m"
 		smokeping_onoff
         else
