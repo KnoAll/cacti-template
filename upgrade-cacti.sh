@@ -63,6 +63,43 @@ else
 fi
 }
 
+function smokeping_onoff () {
+	systemctl -q is-enabled smokeping.service
+	if [ $? -ne 0 ];then
+		# smokeping not enabled
+		echo -e "\033[32m Smokeping service is disabled, do you wish to enable?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeon
+        		if [ "$smokeon" = "y" ]; then
+				echo ""
+				echo -e "\033[32m Enabling Smokeping service..."
+				echo -e -n "\033[0m"
+				sudo systemctl enable smokeping.service
+				sudo systemctl start smokeping.service
+			else
+				echo ""
+				echo -e "\033[32m OK, no Smokeping today, bye!"
+				echo -e -n "\033[0m"
+			fi
+	else
+		# smokeping enabled
+		echo -e "\033[32m Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeoff
+			if [ "$smokeoff" = "y" ]; then
+				echo ""
+				echo -e "\033[32m Disabling Smokeping service..."
+				echo -e -n "\033[0m"
+				sudo systemctl disable smokeping.service
+				sudo systemctl stop smokeping.service
+			else
+				echo ""
+				echo -e "\033[32m OK, leaving Smokeping enabled, you should check it out!"
+				echo -e -n "\033[0m"
+			fi
+	fi
+}
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
