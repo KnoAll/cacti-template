@@ -126,8 +126,13 @@ if version_ge $cactiver $upgrade_version; then
 			check-smokeping
 		else
 			echo ""
-			echo -e "\033[32m OK, no Smokeping today, bye!"
+			echo -e "\033[32m OK, no Smokeping today, do you wish to check the status of the smokeping service?"
 			echo -e -n "\033[0m"
+					read -n 1 -p "y/n: " smokeon
+        		if [ "$smokeon" = "y" ]; then
+				echo ""
+				check-smokeping
+			fi
 		fi
                 exit 0
         else
