@@ -35,32 +35,83 @@ function check-smokeping () {
 #get the smokeping version
 smokeping_version=2.006011
 smokeping_prod_version=2.007002
+
+echo -e "\033[32m Do you use Smokeping?"
+echo -e -n "\033[0m"
+read -n 1 -p "y/n: " smokeuse
+if [ "$smokeuse" = "y" ]; then
 smokever=$( /opt/smokeping/bin/smokeping --version )
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
-	echo -e -n "\033[0m"
-	exit
-fi
-if version_ge $smokever $smokeping_version; then
-        if version_ge $smokever $smokeping_prod_version; then
-                echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_version, nothing to do..."
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
 		echo -e -n "\033[0m"
-        else
+		exit
+	fi
+	if version_ge $smokever $smokeping_version; then
+   	     if version_ge $smokever $smokeping_prod_version; then
+			echo ""
+           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do, exiting!"
+			echo -e -n "\033[0m"
+			smokeping_onoff
+     	   else
+		echo ""
 		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
-        	if [ "$smokeup" = "y" ]; then
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
-		else
-			echo ""
-			echo -e "\033[32m OK, no Smokeping thing, bye!"
-			echo -e -n "\033[0m"
-		fi
-        fi
+        		if [ "$smokeup" = "y" ]; then
+				bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
+			else
+				echo ""
+				echo -e "\033[32m OK, no Smokeping thing, bye!"
+				echo -e -n "\033[0m"
+				smokeping_onoff
+			fi
+      	  fi
+	else
+		echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
+		echo -e -n "\033[0m"
+		smokeping_onoff
+	fi
 else
-	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
-	echo -e -n "\033[0m"
+smokeping_onoff
 fi
+
+}
+
+function smokeping_onoff () {
+	systemctl -q is-enabled smokeping.service
+	if [ $? -ne 0 ];then
+		# smokeping not enabled
+		echo -e "\033[32m Smokeping service is disabled, do you wish to enable?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeon
+        		if [ "$smokeon" = "y" ]; then
+				echo ""
+				echo -e "\033[32m Enabling Smokeping service..."
+				echo -e -n "\033[0m"
+				sudo systemctl enable smokeping.service
+				sudo systemctl start smokeping.service
+			else
+				echo ""
+				echo -e "\033[32m OK, no Smokeping today, bye!"
+				echo -e -n "\033[0m"
+			fi
+	else
+		# smokeping enabled
+		echo -e "\033[32m Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
+		echo -e -n "\033[0m"
+		read -n 1 -p "y/n: " smokeoff
+			if [ "$smokeoff" = "y" ]; then
+				echo ""
+				echo -e "\033[32m Disabling Smokeping service..."
+				echo -e -n "\033[0m"
+				sudo systemctl disable smokeping.service
+				sudo systemctl stop smokeping.service
+			else
+				echo ""
+				echo -e "\033[32m OK, leaving Smokeping enabled, you should check it out!"
+				echo -e -n "\033[0m"
+			fi
+	fi
 }
 
 if version_ge $cactiver $upgrade_version; then
@@ -221,69 +272,6 @@ tar -xzf $prod_version.tar.gz
 		echo ""
 	fi
 fi
-}
-
-function upgrade-plugins () {
-echo -e "\033[32m Upgrading plugins..."
-echo -e -n "\033[0m"
-cd /var/www/html/
-echo -e "\033[32m Upgrading Mactrack..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_mactrack.git cacti/plugins/mactrack
-echo ""
-echo -e "\033[32m Upgrading Monitor..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_monitor.git cacti/plugins/monitor
-echo ""
-echo -e "\033[32m Upgrading Webseer..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_webseer.git cacti/plugins/webseer
-echo ""
-echo -e "\033[32m Upgrading GExport..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_gexport.git cacti/plugins/gexport
-echo ""
-echo -e "\033[32m Upgrading Syslog..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_syslog.git cacti/plugins/syslog
-echo -e "\033[32m Updating syslog config..."
-echo -e -n "\033[0m"
-update-syslog-config
-echo ""
-echo -e "\033[32m Upgrading THold..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_thold.git cacti/plugins/thold
-echo ""
-echo -e "\033[32m Upgrading Routerconfigs..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_routerconfigs.git cacti/plugins/routerconfigs
-echo ""
-echo -e "\033[32m Upgrading FlowView..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_flowview.git cacti/plugins/flowview
-echo ""
-echo -e "\033[32m Upgrading Maint..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_maint.git cacti/plugins/maint
-echo ""
-echo -e "\033[32m Upgrading Audit..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_audit.git cacti/plugins/audit
-echo ""
-echo -e "\033[32m Upgrading Cycle..."
-echo -e -n "\033[0m"
-git clone https://github.com/Cacti/plugin_cycle.git cacti/plugins/cycle
-echo ""
-#echo "Upgrading Weathermap..."
-#echo -e -n "\033[0m"
-#git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
-#echo ""
-#echo "Installing Weathermap..."
-#echo -e -n "\033[0m"
-#cd cacti/plugins/weathermap/
-#bower install --allow-root
-#composer update --no-dev
-#echo ""
 }
 
 function update-config () {
