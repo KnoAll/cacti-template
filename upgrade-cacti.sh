@@ -35,11 +35,6 @@ function check-smokeping () {
 #get the smokeping version
 smokeping_version=2.006011
 smokeping_prod_version=2.007002
-
-echo -e "\033[32m Do you use Smokeping?"
-echo -e -n "\033[0m"
-read -n 1 -p "y/n: " smokeuse
-if [ "$smokeuse" = "y" ]; then
 smokever=$( /opt/smokeping/bin/smokeping --version )
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
@@ -71,9 +66,8 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 		echo -e -n "\033[0m"
 		smokeping_onoff
 	fi
-else
+
 smokeping_onoff
-fi
 
 }
 
