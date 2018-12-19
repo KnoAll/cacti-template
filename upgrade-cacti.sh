@@ -122,7 +122,7 @@ if version_ge $cactiver $upgrade_version; then
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
         	if [ "$smokeup" = "y" ]; then
-			echo "check smokeup"
+			echo ""
 			check-smokeping
 		else
 			echo ""
@@ -130,8 +130,8 @@ if version_ge $cactiver $upgrade_version; then
 			echo -e -n "\033[0m"
 			read -n 1 -p "y/n: " usesmoke
         		if [ "$usesmoke" = "y" ]; then
-				echo "check usesmoke"
-				check-smokeping
+				echo ""
+				smokeping_onoff
 			fi
 		fi
                 exit 0
