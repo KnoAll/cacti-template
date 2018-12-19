@@ -56,8 +56,8 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 		echo ""
 		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
 		echo -e -n "\033[0m"
-		read -n 1 -p "y/n: " smokeup
-        		if [ "$smokeup" = "y" ]; then
+		read -n 1 -p "y/n: " smokeup1
+        		if [ "$smokeup1" = "y" ]; then
 				bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
 			else
 				echo ""
@@ -122,15 +122,15 @@ if version_ge $cactiver $upgrade_version; then
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
         	if [ "$smokeup" = "y" ]; then
-			echo ""
+			echo "check smokeup"
 			check-smokeping
 		else
 			echo ""
 			echo -e "\033[32m OK, no Smokeping today, do you wish to check the status of the smokeping service?"
 			echo -e -n "\033[0m"
-			read -n 1 -p "y/n: " smokeon1
-        		if [ "$smokeon1" = "y" ]; then
-				echo ""
+			read -n 1 -p "y/n: " usesmoke
+        		if [ "$usesmoke" = "y" ]; then
+				echo "check usesmoke"
 				check-smokeping
 			fi
 		fi
