@@ -44,9 +44,8 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 	if version_ge $smokever $smokeping_version; then
    	     if version_ge $smokever $smokeping_prod_version; then
 			echo ""
-           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do, exiting!"
+           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
 			echo -e -n "\033[0m"
-			smokeping_onoff
      	   else
 		echo ""
 		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
@@ -58,17 +57,13 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 				echo ""
 				echo -e "\033[32m OK, no Smokeping thing, bye!"
 				echo -e -n "\033[0m"
-				smokeping_onoff
 			fi
       	  fi
 	else
 		echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
 		echo -e -n "\033[0m"
-		smokeping_onoff
 	fi
-
 smokeping_onoff
-
 }
 
 function smokeping_onoff () {
