@@ -240,7 +240,7 @@ function check-prerequisites () {
 
 function upgrade-plugins() {
 	echo ""
-	echo -e "\033[32m Would you like to upgrade your cacti plugins??"
+	echo -e "\033[32m Would you like to check your cacti plugins for updates?"
 	echo -e -n "\033[0m"
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
@@ -276,7 +276,6 @@ tar -xzf $prod_version.tar.gz
 		cp -a cacti_$cactiver/resource/* cacti/resource/
 		cp -a cacti_$cactiver/plugins/* cacti/plugins/
 		update-config
-		upgrade-plugins
 		update-permissions
 		echo ""
 	fi
@@ -394,6 +393,7 @@ update-php
 update-mysqld
 upgrade-spine
 compress-delete
+upgrade-plugins
 check-smokeping
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
