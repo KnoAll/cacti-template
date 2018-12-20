@@ -43,4 +43,4 @@ After the gui install has been done, you must go to Utilities > System Utilities
 
 ### Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues>submit an issue</a> in the Github system above.
+If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
