@@ -121,6 +121,8 @@ if version_ge $cactiver $upgrade_version; then
         		if [ "$usesmoke" = "y" ]; then
 				echo ""
 				smokeping_onoff
+			else
+				echo ""
 			fi
 		fi
                 exit 0
