@@ -238,6 +238,20 @@ function check-prerequisites () {
 	echo ""
 }
 
+function upgrade-plugins() {
+	echo ""
+	echo -e "\033[32m Would you like to upgrade your cacti plugins??"
+	echo -e -n "\033[0m"
+	read -n 1 -p "y/n: " plugup
+        	if [ "$plugup" = "y" ]; then
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
+		else
+			echo ""
+			echo -e "\033[32m OK, no plug-up today..."
+			echo -e -n "\033[0m"
+		fi
+}
+
 function upgrade-cacti () {
 echo -e "\033[32m Begining Cacti upgrade..."
 echo -e -n "\033[0m"
@@ -262,6 +276,7 @@ tar -xzf $prod_version.tar.gz
 		cp -a cacti_$cactiver/resource/* cacti/resource/
 		cp -a cacti_$cactiver/plugins/* cacti/plugins/
 		update-config
+		upgrade-plugins
 		update-permissions
 		echo ""
 	fi
@@ -378,7 +393,6 @@ upgrade-cacti
 update-php
 update-mysqld
 upgrade-spine
-#upgrade-plugins
 compress-delete
 check-smokeping
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
