@@ -2,6 +2,8 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
 
+cd /var/www/html/cacti/plugins
+
 for dir in ./*/
 do
   cd ${dir}
@@ -10,15 +12,3 @@ do
   [ $(echo $?) -eq 0 ] && echo "Updating ${dir%*/}..." && git pull
   cd ..
 done
-
-
-#echo "Upgrading Weathermap..."
-#echo -e -n "\033[0m"
-#git clone https://github.com/howardjones/network-weathermap.git --single-branch cacti/plugins/weathermap
-#echo ""
-#echo "Installing Weathermap..."
-#echo -e -n "\033[0m"
-#cd cacti/plugins/weathermap/
-#bower install --allow-root
-#composer update --no-dev
-#echo ""
