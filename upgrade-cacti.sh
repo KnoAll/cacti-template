@@ -109,6 +109,7 @@ function upgrade-plugins() {
 	echo -e -n "\033[0m"
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
+			echo ""
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
 		else
 			echo ""
