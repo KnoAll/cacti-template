@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
 
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
@@ -103,10 +103,26 @@ function smokeping_onoff () {
 	fi
 }
 
+function upgrade-plugins() {
+	echo ""
+	echo -e "\033[32m Would you like to check your cacti plugins for updates?"
+	echo -e -n "\033[0m"
+	read -n 1 -p "y/n: " plugup
+        	if [ "$plugup" = "y" ]; then
+			echo ""
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
+		else
+			echo ""
+			echo -e "\033[32m OK, no plug-up today..."
+			echo -e -n "\033[0m"
+		fi
+}
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		echo ""
+		upgrade-plugins
 		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup
@@ -121,6 +137,8 @@ if version_ge $cactiver $upgrade_version; then
         		if [ "$usesmoke" = "y" ]; then
 				echo ""
 				smokeping_onoff
+			else
+				echo ""
 			fi
 		fi
                 exit 0
@@ -378,8 +396,8 @@ upgrade-cacti
 update-php
 update-mysqld
 upgrade-spine
-#upgrade-plugins
 compress-delete
+upgrade-plugins
 check-smokeping
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"

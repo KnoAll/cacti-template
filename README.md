@@ -34,6 +34,8 @@ The script will:
 * archive your previous cacti install
 * ask if you would like to check for a compatible Smokeping upgrade
   * walks through Smokeping upgrade if desired backing up all data
+* ask if you use smokeping, and gives options to dis/enable the service
+  * can be useful if you are not using smokeping so that you are not polling/pinging targets without using the data
 
 Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
@@ -41,4 +43,4 @@ After the gui install has been done, you must go to Utilities > System Utilities
 
 ### Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please submit an issue in the Github system above.
+If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
