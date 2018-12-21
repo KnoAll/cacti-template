@@ -103,6 +103,20 @@ function smokeping_onoff () {
 	fi
 }
 
+function upgrade-plugins() {
+	echo ""
+	echo -e "\033[32m Would you like to check your cacti plugins for updates?"
+	echo -e -n "\033[0m"
+	read -n 1 -p "y/n: " plugup
+        	if [ "$plugup" = "y" ]; then
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
+		else
+			echo ""
+			echo -e "\033[32m OK, no plug-up today..."
+			echo -e -n "\033[0m"
+		fi
+}
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
@@ -239,20 +253,6 @@ fi
 
 function check-prerequisites () {
 	echo ""
-}
-
-function upgrade-plugins() {
-	echo ""
-	echo -e "\033[32m Would you like to check your cacti plugins for updates?"
-	echo -e -n "\033[0m"
-	read -n 1 -p "y/n: " plugup
-        	if [ "$plugup" = "y" ]; then
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-plugins.sh)
-		else
-			echo ""
-			echo -e "\033[32m OK, no plug-up today..."
-			echo -e -n "\033[0m"
-		fi
 }
 
 function upgrade-cacti () {
