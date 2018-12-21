@@ -48,7 +48,7 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 			echo -e -n "\033[0m"
      	   else
 		echo ""
-		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
+		echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required,  do you wish to upgrade to v$smokeping_prod_version?"
 		echo -e -n "\033[0m"
 		read -n 1 -p "y/n: " smokeup1
         		if [ "$smokeup1" = "y" ]; then
@@ -60,7 +60,7 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 			fi
       	  fi
 	else
-		echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
+		echo -e "\033[31m Smokeping v$smokever is less than minimum version v$smokeping_version cannot install, exiting..."
 		echo -e -n "\033[0m"
 	fi
 smokeping_onoff
