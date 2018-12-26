@@ -46,6 +46,7 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 				echo ""
      		      	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
 				echo -e -n "\033[0m"
+				smokeping_onoff
      		   else
 			echo ""
 			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required,  do you wish to upgrade to v$smokeping_prod_version?"
@@ -57,14 +58,15 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 					echo ""
 					echo -e "\033[32m OK, no Smokeping thing, bye!"
 					echo -e -n "\033[0m"
+					smokeping_onoff
 				fi
       	 	 fi
-	else
-		echo -e "\033[31m Smokeping v$smokever is less than minimum version v$smokeping_version cannot install, exiting..."
-		echo -e -n "\033[0m"
+		else
+			echo -e "\033[31m Smokeping v$smokever is less than minimum version v$smokeping_version cannot install, exiting..."
+			echo -e -n "\033[0m"
+			smokeping_onoff
+		fi
 	fi
-	fi
-smokeping_onoff
 }
 
 function smokeping_onoff () {
