@@ -54,6 +54,7 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 			read -n 1 -p "y/n: " smokeup1
        		 		if [ "$smokeup1" = "y" ]; then
 					bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
+					smokeping_onoff
 				else
 					echo ""
 					echo -e "\033[32m OK, no Smokeping thing, bye!"
