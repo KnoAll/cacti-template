@@ -37,9 +37,9 @@ smokeping_version=2.006011
 smokeping_prod_version=2.007002
 smokever=$( /opt/smokeping/bin/smokeping --version )
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
+		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed..."
 		echo -e -n "\033[0m"
-		exit
+
 	fi
 	if version_ge $smokever $smokeping_version; then
    	     if version_ge $smokever $smokeping_prod_version; then
