@@ -272,6 +272,7 @@ tar -xzf $prod_version.tar.gz
                 echo -e -n "\033[0m"
 		exit 1
 	else
+		sudo yum install -y php-gmp sendmail
 		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
@@ -330,7 +331,7 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
-	sudo yum install gcc glibc glibc-common gd gd-devel -y
+	sudo yum install -y gcc glibc glibc-common gd gd-devel
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
