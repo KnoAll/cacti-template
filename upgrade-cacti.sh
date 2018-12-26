@@ -40,28 +40,29 @@ smokever=$( /opt/smokeping/bin/smokeping --version )
 		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed..."
 		echo -e -n "\033[0m"
 
-	fi
-	if version_ge $smokever $smokeping_version; then
-   	     if version_ge $smokever $smokeping_prod_version; then
-			echo ""
-           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
-			echo -e -n "\033[0m"
-     	   else
-		echo ""
-		echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required,  do you wish to upgrade to v$smokeping_prod_version?"
-		echo -e -n "\033[0m"
-		read -n 1 -p "y/n: " smokeup1
-        		if [ "$smokeup1" = "y" ]; then
-				bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
-			else
+	else
+		if version_ge $smokever $smokeping_version; then
+   		     if version_ge $smokever $smokeping_prod_version; then
 				echo ""
-				echo -e "\033[32m OK, no Smokeping thing, bye!"
+     		      	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
 				echo -e -n "\033[0m"
-			fi
-      	  fi
+     		   else
+			echo ""
+			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required,  do you wish to upgrade to v$smokeping_prod_version?"
+			echo -e -n "\033[0m"
+			read -n 1 -p "y/n: " smokeup1
+       		 		if [ "$smokeup1" = "y" ]; then
+					bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
+				else
+					echo ""
+					echo -e "\033[32m OK, no Smokeping thing, bye!"
+					echo -e -n "\033[0m"
+				fi
+      	 	 fi
 	else
 		echo -e "\033[31m Smokeping v$smokever is less than minimum version v$smokeping_version cannot install, exiting..."
 		echo -e -n "\033[0m"
+	fi
 	fi
 smokeping_onoff
 }
