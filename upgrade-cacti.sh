@@ -23,7 +23,7 @@ dev_version=1.2.0-beta4
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
-	echo -e "\033[31m Cacti is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
+	echo -e "\033[31m Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	echo -e -n "\033[0m"
 	exit 1
 fi
@@ -37,33 +37,37 @@ smokeping_version=2.006011
 smokeping_prod_version=2.007002
 smokever=$( /opt/smokeping/bin/smokeping --version )
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed, exiting..."
+		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed..."
 		echo -e -n "\033[0m"
-		exit
-	fi
-	if version_ge $smokever $smokeping_version; then
-   	     if version_ge $smokever $smokeping_prod_version; then
-			echo ""
-           	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
-			echo -e -n "\033[0m"
-     	   else
-		echo ""
-		echo -e "\033[32m Installed Smokeping v$smokever is compatible with required v$smokeping_version! Do you wish to upgrade?"
-		echo -e -n "\033[0m"
-		read -n 1 -p "y/n: " smokeup1
-        		if [ "$smokeup1" = "y" ]; then
-				bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
-			else
-				echo ""
-				echo -e "\033[32m OK, no Smokeping thing, bye!"
-				echo -e -n "\033[0m"
-			fi
-      	  fi
+
 	else
-		echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$smokeping_version cannot install, exiting..."
-		echo -e -n "\033[0m"
+		if version_ge $smokever $smokeping_version; then
+   		     if version_ge $smokever $smokeping_prod_version; then
+				echo ""
+     		      	     echo -e "\033[32m Smokeping v$smokever is up to date with production v$smokeping_prod_version, nothing to do..."
+				echo -e -n "\033[0m"
+				smokeping_onoff
+     		   else
+			echo ""
+			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required,  do you wish to upgrade to v$smokeping_prod_version?"
+			echo -e -n "\033[0m"
+			read -n 1 -p "y/n: " smokeup1
+       		 		if [ "$smokeup1" = "y" ]; then
+					bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-smokeping.sh)
+					smokeping_onoff
+				else
+					echo ""
+					echo -e "\033[32m OK, no Smokeping thing, bye!"
+					echo -e -n "\033[0m"
+					smokeping_onoff
+				fi
+      	 	 fi
+		else
+			echo -e "\033[31m Smokeping v$smokever is less than minimum version v$smokeping_version cannot install, exiting..."
+			echo -e -n "\033[0m"
+			smokeping_onoff
+		fi
 	fi
-smokeping_onoff
 }
 
 function smokeping_onoff () {
@@ -272,6 +276,7 @@ tar -xzf $prod_version.tar.gz
                 echo -e -n "\033[0m"
 		exit 1
 	else
+		sudo yum install -y -q php-gmp sendmail
 		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
@@ -330,7 +335,7 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
-	sudo yum install gcc glibc glibc-common gd gd-devel -y
+	sudo yum install -y -q gcc glibc glibc-common gd gd-devel
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
