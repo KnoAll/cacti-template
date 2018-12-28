@@ -14,7 +14,7 @@ fi
 
 # get the Cacti version
 upgrade_version=2.006011
-prod_version=2.007002
+prod_version=2.007003
 web_version=2.7.2
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
