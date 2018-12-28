@@ -270,14 +270,6 @@ else
 fi
 }
 
-function update-syslog-config () {
-echo -e "\033[32m Updating syslog plugin config..."
-echo -e -n "\033[0m"
-cd /var/www/html/
-cp cacti/plugins/syslog/config.php.dist cacti/plugins/syslog/config.php
-echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > cacti/plugins/syslog/config.php
-}
-
 function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
