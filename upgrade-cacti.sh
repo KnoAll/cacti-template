@@ -263,10 +263,10 @@ echo -e -n "\033[0m"
 cd /var/www/html/
 if [ -f  cacti/include/config.php ];
 then
-	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
 else
 	mv cacti/include/config.php.dist cacti/include/config.php
-	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
 fi
 }
 
