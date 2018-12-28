@@ -138,7 +138,7 @@ echo -e "\033[32m Updating Smokeping config..."
 echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ];
 then
-	echo "$(awk '{sub(/\/cache/,"\/htdocs\/cache")}1' /opt/smokeping/etc/config)" > /opt/smokeping/etc/config
+	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 fi
 }
 
