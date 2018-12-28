@@ -78,7 +78,7 @@ else
 			sudo systemctl stop smokeping.service
 			sudo mv /opt/smokeping /opt/smokeping-$smokever
 			rm smokeping-$web_version.tar.gz
-			cd smokeping-2.7.2
+			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
 			make install
 			cd
