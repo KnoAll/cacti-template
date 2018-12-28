@@ -61,7 +61,7 @@ sudo echo ""
 function upgrade-fping () {
                 echo -e "\033[32m Checking fping version..."
                 echo -e -n "\033[0m"
-fping -4 -v
+fping -4 -v > /dev/null 2>&1
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Upgrading fping..."
                 echo -e -n "\033[0m"
