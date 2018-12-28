@@ -73,6 +73,8 @@ git checkout master
 sudo make
 sudo make install
 sudo chmod +s /usr/sbin/fping
+cd
+rm -rf fping
 else
                 echo -e "\033[32m fping version OK, moving on..."
                 echo -e -n "\033[0m"
