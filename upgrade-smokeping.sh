@@ -59,6 +59,12 @@ echo -e -n "\033[0m"
 sudo echo ""
 
 function upgrade-fping () {
+                echo -e "\033[32m Checking fping version..."
+                echo -e -n "\033[0m"
+fping -4 -v
+if [ $? -ne 0 ];then
+                echo -e "\033[31m Upgrading fping..."
+                echo -e -n "\033[0m"
 git clone https://github.com/schweikert/fping.git
 cd fping/
 git checkout master
@@ -66,7 +72,11 @@ git checkout master
 ./configure --prefix=/usr --enable-ipv4 --enable-ipv6
 sudo make
 sudo make install
-fping -v
+sudo chmod +s /usr/sbin/fping
+else
+                echo -e "\033[32m fping version OK, moving on..."
+                echo -e -n "\033[0m"
+fi
 }
 
 function upgrade-smokeping () {
@@ -171,6 +181,7 @@ function compress-delete () {
 }
 
 update-permissions
+upgrade-fping
 upgrade-smokeping
 update-permissions
 compress-delete
