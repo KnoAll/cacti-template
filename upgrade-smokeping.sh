@@ -36,7 +36,7 @@ if version_ge $smokever $upgrade_version; then
                 exit 0
         else
 			echo ""
-			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$smokeping_prod_version?"
+			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
 			echo -e -n "\033[0m"
 			read -n 1 -p "y/n: " smokeup1
        		 		if [ "$smokeup1" = "y" ]; then
