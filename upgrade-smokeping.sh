@@ -83,7 +83,7 @@ fi
 }
 
 function upgrade-smokeping () {
-echo -e "\033[32m Begining Smokeping upgrade..."
+echo -e "\033[32m Beginning Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
