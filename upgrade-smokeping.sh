@@ -58,6 +58,29 @@ echo -e "\033[32m Welcome to Kevin's Smokeping upgrade script!"
 echo -e -n "\033[0m"
 sudo echo ""
 
+function upgrade-fping () {
+                echo -e "\033[32m Checking fping version..."
+                echo -e -n "\033[0m"
+fping -4 -v
+if [ $? -ne 0 ];then
+                echo -e "\033[31m Upgrading fping..."
+                echo -e -n "\033[0m"
+git clone https://github.com/schweikert/fping.git
+cd fping/
+git checkout master
+./autogen.sh
+./configure --prefix=/usr --enable-ipv4 --enable-ipv6
+sudo make
+sudo make install
+sudo chmod +s /usr/sbin/fping
+cd
+rm -rf fping
+else
+                echo -e "\033[32m fping version OK, moving on..."
+                echo -e -n "\033[0m"
+fi
+}
+
 function upgrade-smokeping () {
 echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
@@ -160,6 +183,7 @@ function compress-delete () {
 }
 
 update-permissions
+upgrade-fping
 upgrade-smokeping
 update-permissions
 compress-delete
