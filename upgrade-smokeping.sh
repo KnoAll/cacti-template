@@ -85,10 +85,10 @@ else
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
-			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
+			cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
 			update-config
-			cp -R /opt/smokeping-$smokever/data /opt/smokeping/data
-			cp -a /opt/smokeping-$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
+			cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
+			cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
@@ -130,7 +130,7 @@ function compress-delete () {
 		echo ""
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping-$smokever
+		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Archive creation failed."
 			echo -e -n "\033[0m"
