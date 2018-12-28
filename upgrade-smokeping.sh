@@ -63,7 +63,7 @@ echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y -q perl-core perl-IO-Socket-SSL nano perl-Module-Build yum-cron
+sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build
 if [ $? -ne 0 ];then
                 echo -e "\033[31m CentOS update error cannot install, exiting..."
                 echo -e -n "\033[0m"
@@ -90,7 +90,7 @@ else
 			rm smokeping-$web_version.tar.gz
 			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
-			make install
+			make install -s
 			cd
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var

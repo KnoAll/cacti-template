@@ -306,8 +306,8 @@ else
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
 	./configure
-	make
-	sudo make install
+	make -s 
+	sudo make install -s
 	cd
 	rm -rf cacti-spine-*
 	cd /usr/local/spine/bin
