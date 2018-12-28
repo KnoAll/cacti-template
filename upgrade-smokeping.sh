@@ -95,6 +95,7 @@ if [ $? -ne 0 ];then
 else
 	echo -e "\033[32m Getting Smokeping..."
 	echo -e -n "\033[0m"
+	cd
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping download error cannot install, exiting..."
