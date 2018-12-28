@@ -14,7 +14,7 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 fi
 
-# get the Cacti version
+# get the Smokeping version
 upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
@@ -35,8 +35,18 @@ if version_ge $smokever $upgrade_version; then
 		echo -e -n "\033[0m"
                 exit 0
         else
-		echo -e "\033[32m Installed smokeping v$smokever is greater than required v$upgrade_version! Upgrading to v$prod_version..."
-		echo -e -n "\033[0m"
+			echo ""
+			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
+			echo -e -n "\033[0m"
+			read -n 1 -p "y/n: " smokeup1
+       		 		if [ "$smokeup1" = "y" ]; then
+					echo ""
+				else
+					echo ""
+					echo -e "\033[32m OK, no Smokeping thing, bye!"
+					echo -e -n "\033[0m"
+					exit
+				fi
         fi
 else
 	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$upgrade_version cannot install, exiting..."
