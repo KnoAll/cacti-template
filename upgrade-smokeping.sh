@@ -58,6 +58,17 @@ echo -e "\033[32m Welcome to Kevin's Smokeping upgrade script!"
 echo -e -n "\033[0m"
 sudo echo ""
 
+function upgrade-fping () {
+git clone https://github.com/schweikert/fping.git
+cd fping/
+git checkout master
+./autogen.sh
+./configure --prefix=/usr --enable-ipv4 --enable-ipv6
+sudo make
+sudo make install
+fping -v
+}
+
 function upgrade-smokeping () {
 echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
