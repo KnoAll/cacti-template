@@ -53,7 +53,7 @@ echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y perl-core perl-IO-Socket-SSL nano
+sudo yum install -y -q perl-core perl-IO-Socket-SSL nano
 if [ $? -ne 0 ];then
                 echo -e "\033[31m CentOS update error cannot install, exiting..."
                 echo -e -n "\033[0m"
