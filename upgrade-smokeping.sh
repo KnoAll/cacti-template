@@ -14,7 +14,7 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 fi
 
-# get the Cacti version
+# get the Smokeping version
 upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
