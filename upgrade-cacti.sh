@@ -34,7 +34,7 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function check-smokeping () {
 #get the smokeping version
 smokeping_version=2.006011
-smokeping_prod_version=2.007002
+smokeping_prod_version=2.007003
 smokever=$( /opt/smokeping/bin/smokeping --version )
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$smokeping_version cannot proceed..."
