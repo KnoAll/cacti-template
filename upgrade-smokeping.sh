@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-smokeping.sh)
+
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
@@ -14,8 +16,8 @@ fi
 
 # get the Cacti version
 upgrade_version=2.006011
-prod_version=2.007002
-web_version=2.7.2
+prod_version=2.007003
+web_version=2.7.3
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
@@ -51,7 +53,7 @@ echo -e "\033[32m Begining Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y perl-core perl-IO-Socket-SSL nano
+sudo yum install -y -q perl-core perl-IO-Socket-SSL nano perl-Module-Build yum-cron
 if [ $? -ne 0 ];then
                 echo -e "\033[31m CentOS update error cannot install, exiting..."
                 echo -e -n "\033[0m"
@@ -74,19 +76,19 @@ else
 			echo -e "\033[32m Setting up Smokeping..."
 			echo -e -n "\033[0m"
 			sudo systemctl stop smokeping.service
-			sudo mv /opt/smokeping /opt/smokeping-$smokever
+			sudo mv /opt/smokeping /opt/smokeping_$smokever
 			rm smokeping-$web_version.tar.gz
-			cd smokeping-2.7.2
+			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
 			make install
 			cd
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
-			cp /opt/smokeping-$smokever/etc/config /opt/smokeping/etc/
+			cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
 			update-config
-			cp -R /opt/smokeping-$smokever/data /opt/smokeping/data
-			cp -a /opt/smokeping-$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
+			cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
+			cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
@@ -128,7 +130,7 @@ function compress-delete () {
 		echo ""
 		echo -e "\033[32m Creating compressed archive..."
 		echo -e -n "\033[0m"
-		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping-$smokever
+		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Archive creation failed."
 			echo -e -n "\033[0m"
