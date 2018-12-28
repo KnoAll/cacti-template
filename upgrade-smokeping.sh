@@ -76,7 +76,7 @@ else
 			echo -e "\033[32m Setting up Smokeping..."
 			echo -e -n "\033[0m"
 			sudo systemctl stop smokeping.service
-			sudo mv /opt/smokeping /opt/smokeping-$smokever
+			sudo mv /opt/smokeping /opt/smokeping_$smokever
 			rm smokeping-$web_version.tar.gz
 			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
