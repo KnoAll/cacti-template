@@ -242,7 +242,7 @@ tar -xzf $prod_version.tar.gz
                 echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo yum install -y -q php-gmp sendmail
+		sudo yum install -y -q php-gmp sendmail yum-cron
 		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
