@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-smokeping.sh)
+
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
