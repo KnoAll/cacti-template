@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh)
 
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
@@ -227,7 +227,7 @@ function check-prerequisites () {
 }
 
 function upgrade-cacti () {
-echo -e "\033[32m Begining Cacti upgrade..."
+echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
 wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
@@ -263,19 +263,11 @@ echo -e -n "\033[0m"
 cd /var/www/html/
 if [ -f  cacti/include/config.php ];
 then
-	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
 else
 	mv cacti/include/config.php.dist cacti/include/config.php
-	echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/include/config.php)" > cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
 fi
-}
-
-function update-syslog-config () {
-echo -e "\033[32m Updating syslog plugin config..."
-echo -e -n "\033[0m"
-cd /var/www/html/
-cp cacti/plugins/syslog/config.php.dist cacti/plugins/syslog/config.php
-echo "$(awk '{sub(/cactiuser/,"cacti")}1' cacti/plugins/syslog/config.php)" > cacti/plugins/syslog/config.php
 }
 
 function update-permissions () {

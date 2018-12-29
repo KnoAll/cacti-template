@@ -65,16 +65,17 @@ fping -4 -v > /dev/null 2>&1
 if [ $? -ne 0 ];then
                 echo -e "\033[31m Upgrading fping..."
                 echo -e -n "\033[0m"
-git clone https://github.com/schweikert/fping.git
-cd fping/
-git checkout master
-./autogen.sh
-./configure --prefix=/usr --enable-ipv4 --enable-ipv6
-sudo make
-sudo make install
-sudo chmod +s /usr/sbin/fping
-cd
-rm -rf fping
+	cd
+	git clone https://github.com/schweikert/fping.git
+	cd fping/
+	git checkout master
+	./autogen.sh
+	./configure --prefix=/usr --enable-ipv4 --enable-ipv6
+	sudo make
+	sudo make install
+	sudo chmod +s /usr/sbin/fping
+	cd
+	rm -rf fping
 else
                 echo -e "\033[32m fping version OK, moving on..."
                 echo -e -n "\033[0m"
@@ -82,7 +83,7 @@ fi
 }
 
 function upgrade-smokeping () {
-echo -e "\033[32m Begining Smokeping upgrade..."
+echo -e "\033[32m Beginning Smokeping upgrade..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
@@ -94,6 +95,7 @@ if [ $? -ne 0 ];then
 else
 	echo -e "\033[32m Getting Smokeping..."
 	echo -e -n "\033[0m"
+	cd
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
                 echo -e "\033[31m Smokeping download error cannot install, exiting..."
