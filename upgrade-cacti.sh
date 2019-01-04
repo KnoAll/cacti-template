@@ -281,7 +281,7 @@ sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
 sudo find /var/www/html -type d -exec chmod g+s {} +
 touch /var/www/html/cacti/log/cacti.log
-chmod g+w cacti/log/cacti.log
+chmod g+w /var/www/html/cacti/log/cacti.log
 }
 
 function upgrade-spine () {
