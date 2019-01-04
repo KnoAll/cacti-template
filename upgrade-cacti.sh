@@ -273,6 +273,10 @@ fi
 function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
+groups | grep -q '\apache\b'
+if [ $? -ne 0 ];then
+sudo usermod -a -G apache cacti
+fi
 sudo chgrp -R apache /var/www/html
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
