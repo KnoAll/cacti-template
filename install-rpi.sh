@@ -14,6 +14,18 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 fi
 
+# get the Cacti version
+# get ready for dynamic update
+#prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
+prod_version=1.2.0
+dev_version=1.2.0-beta4
+cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+if [ $? -ne 1 ];then
+	echo -e "\033[31m Cacti is already installed, cannot proceed..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
+
 echo -e "\033[32m Updating Raspian"
 echo -e -n "\033[0m"
 sudo apt update; sudo apt -y upgrade
