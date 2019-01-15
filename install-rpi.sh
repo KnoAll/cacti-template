@@ -39,7 +39,7 @@ sudo systemctl restart mysql
 
 echo -e "\033[32m Setting up Cacti"
 echo -e -n "\033[0m"
-wget https://github.com/Cacti/cacti/archive/release/1.2.0.tar.gz
+wget -q https://github.com/Cacti/cacti/archive/release/1.2.0.tar.gz
 tar xzf 1.2.0.tar.gz
 rm  1.2.0.tar.gz
 sudo mv cacti-release-1.2.0/ /var/www/html/cacti
@@ -71,7 +71,7 @@ sudo systemctl restart apache2
 echo -e "\033[32m Setting up Spine"
 echo -e -n "\033[0m"
 # spine
-wget https://www.cacti.net/downloads/spine/cacti-spine-1.2.0.tar.gz
+wget -q https://www.cacti.net/downloads/spine/cacti-spine-1.2.0.tar.gz
 tar xzf cacti-spine-1.2.0.tar.gz
 rm cacti-spine-1.2.0.tar.gz
 cd cacti-spine-1.2.0
