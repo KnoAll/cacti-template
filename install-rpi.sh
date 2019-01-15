@@ -26,6 +26,11 @@ if [ $? -ne 1 ];then
 	exit 1
 fi
 
+echo -e "\033[32m Welcome to Kevin's RaspberryPi Cacti install script!"
+echo -e -n "\033[0m"
+sudo echo ""
+
+
 echo -e "\033[32m Updating Raspian"
 echo -e -n "\033[0m"
 sudo apt update; sudo apt -y upgrade
@@ -82,15 +87,86 @@ sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
 sudo find /var/www/html -type d -exec chmod g+s {} +
 
-echo -e "\033[32m Updating PHP Timezone"
+
+function update-php () {
+if version_ge $prod_version 1.2.0; then
+echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
-sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini
-#users will have to go manually change this
+grep -q -w "memory_limit = 128M" /etc/php/7.0/apache2/php.ini
+if [ $? -ne 0 ];then
+	grep -q -w "memory_limit = 400M" /etc/php/7.0/apache2/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php memory_limit already = 400."
+		echo -e -n "\033[0m"
+	fi
+else
+        sudo sed -i 's/memory_limit = 128M/memory_limit = 400M/g' /etc/php/7.0/apache2/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m ERROR, php memory_limit NOT updated."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php memory_limit updated to 400."
+		echo -e -n "\033[0m"
+	fi
+fi
+grep -q -w "max_execution_time = 30" /etc/php/7.0/apache2/php.ini
+if [ $? -ne 0 ];then
+	#NOT 128, check for 800
+	grep -q -w "max_execution_time = 60" /etc/php/7.0/apache2/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php max_execution_time already = 60."
+		echo -e -n "\033[0m"
+	fi
+else
+        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php/7.0/apache2/php.ini
+			if [ $? -ne 0 ];then
+				echo -e "\033[31m ERROR, php max_execution_time NOT updated."
+				echo -e -n "\033[0m"
+			else
+				echo -e "\033[32m php max_execution_time updated to 60."
+				echo -e -n "\033[0m"
+			fi
+fi
+fi
+
+grep -q -w ";date.timezone =" /etc/php/7.0/apache2/php.ini
+if [ $? -ne 0 ];then
+	grep -q -w "max_execution_time = 60" /etc/php/7.0/apache2/php.ini
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
+		echo -e -n "\033[0m"
+	else
+		echo -e "\033[32m php max_execution_time already = 60."
+		echo -e -n "\033[0m"
+	fi
+else
+	echo -e "\033[32m Updating Timezone settings to America/Los_Angeles."
+	echo -e -n "\033[0m"
+	sudo timedatectl set-timezone America/Los_Angeles
+	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini
+	#users will have to go manually change this
+	#sudo dpkg-reconfigure tzdata
+	echo -e "\033[32m If you are not in America/Los_Angeles you will need to manually change the timezone using
+'sudo timedatectl set-timezone America/Los_Angeles'
+and
+'sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini'
+"
+	echo -e -n "\033[0m"
+fi
+
 echo -e "\033[32m Updating Apache Settings for Cacti 1.2.x"
 echo -e -n "\033[0m"
-sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php/7.0/apache2/php.ini
-sudo sed -i 's/memory_limit = 128/memory_limit = 400/g' /etc/php/7.0/apache2/php.ini
+#sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php/7.0/apache2/php.ini
+#sudo sed -i 's/memory_limit = 128/memory_limit = 400/g' /etc/php/7.0/apache2/php.ini
 sudo systemctl restart apache2
+}
+update-php
 
 echo -e "\033[32m Setting up Spine"
 echo -e -n "\033[0m"
