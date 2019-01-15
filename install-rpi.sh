@@ -85,8 +85,9 @@ sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
 
 echo -e "\033[31m Installing Cacti Crontab"
 echo -e -n "\033[0m"
-
-*/1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force
+echo "*/1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force" > mycron
+crontab mycron
+rm mycron
 
 
 echo -e "\033[31m All Done!"
