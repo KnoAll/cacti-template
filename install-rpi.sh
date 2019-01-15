@@ -39,6 +39,8 @@ sudo systemctl restart mysql
 
 echo -e "\033[31m Setting up Cacti"
 echo -e -n "\033[0m"
+sudo -u cacti -s
+cd
 wget https://github.com/Cacti/cacti/archive/release/1.2.0.tar.gz
 tar xzf 1.2.0.tar.gz
 sudo mv cacti-release-1.2.0/ /var/www/html/cacti
@@ -83,8 +85,7 @@ sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
 
 echo -e "\033[31m Installing Cacti Crontab"
 echo -e -n "\033[0m"
-sudo -u cacti -s
-cd
+
 */1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force
 
 
