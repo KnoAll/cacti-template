@@ -150,12 +150,10 @@ else
 	echo -e -n "\033[0m"
 	sudo timedatectl set-timezone America/Los_Angeles
 	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini
-	#users will have to go manually change this
-	#sudo dpkg-reconfigure tzdata
-	echo -e "\033[32m If you are not in America/Los_Angeles you will need to manually change the timezone using
-'sudo timedatectl set-timezone America/Los_Angeles'
+	echo -e "\033[31m If you are not in America/Los_Angeles you will need to manually change the timezone using
+'sudo timedatectl set-timezone Your/Zone'
 and
-'sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini'
+'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' /etc/php/7.0/apache2/php.ini'
 "
 	echo -e -n "\033[0m"
 fi
