@@ -41,6 +41,7 @@ echo -e "\033[31m Setting up Cacti"
 echo -e -n "\033[0m"
 wget https://github.com/Cacti/cacti/archive/release/1.2.0.tar.gz
 tar xzf 1.2.0.tar.gz
+rm  1.2.0.tar.gz
 sudo mv cacti-release-1.2.0/ /var/www/html/cacti
 touch /var/www/html/cacti/log/cacti.log
 mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
@@ -72,6 +73,7 @@ echo -e -n "\033[0m"
 # spine
 wget https://www.cacti.net/downloads/spine/cacti-spine-1.2.0.tar.gz
 tar xzf cacti-spine-1.2.0.tar.gz
+rm cacti-spine-1.2.0.tar.gz
 cd cacti-spine-1.2.0
 ./configure
 make
@@ -79,6 +81,8 @@ sudo make install
 sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
 sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
+cd
+rm -rf cacti-spine-1.2.0
 
 
 echo -e "\033[31m Installing Cacti Crontab"
