@@ -44,6 +44,7 @@ installask () {
 	fi
 
 }
+installask
 
 echo -e "\033[32m Welcome to Kevin's RaspberryPi Cacti install script!"
 
