@@ -22,7 +22,7 @@ fi
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.2.0
-dev_version=1.2.0-beta4
+dev_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -88,10 +88,10 @@ sudo systemctl restart mysql
 
 echo -e "\033[32m Setting up Cacti"
 echo -e -n "\033[0m"
-wget -q https://github.com/Cacti/cacti/archive/release/1.2.0.tar.gz
-tar xzf 1.2.0.tar.gz
-rm  1.2.0.tar.gz
-sudo mv cacti-release-1.2.0/ /var/www/html/cacti
+wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
+tar xzf $prod_version.tar.gz
+rm  $prod_version.tar.gz
+sudo mv cacti-release-$prod_version/ /var/www/html/cacti
 touch /var/www/html/cacti/log/cacti.log
 mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
 sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
@@ -190,10 +190,10 @@ update-php
 echo -e "\033[32m Setting up Spine"
 echo -e -n "\033[0m"
 # spine
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-1.2.0.tar.gz
-tar xzf cacti-spine-1.2.0.tar.gz
-rm cacti-spine-1.2.0.tar.gz
-cd cacti-spine-1.2.0
+wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+tar xzf cacti-spine-$prod_version.tar.gz
+rm cacti-spine-$prod_version.tar.gz
+cd cacti-spine-$prod_version
 ./configure
 make
 sudo make install
@@ -201,7 +201,7 @@ sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spin
 sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
 cd
-rm -rf cacti-spine-1.2.0
+rm -rf cacti-spine-$prod_version
 
 
 echo -e "\033[32m Installing Cacti Crontab"
