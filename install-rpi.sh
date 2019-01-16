@@ -19,7 +19,7 @@ if grep -q ID=raspbian /etc/os-release; then
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on Raspian OS. Exiting..."
     echo -e -n "\033[0m"
-    exit
+    exit 1
 fi
 
 # get the Cacti version
