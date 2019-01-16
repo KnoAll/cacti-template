@@ -33,7 +33,7 @@ fi
 echo -e "\033[32m This script installs all prerequisites and sets up Cacti. This ONLY works on a brand new clean install of Raspian without any changes or updates. Use only at your own risk!"
 installask () {
           echo -e "\033[32m"
-	  read -n 1 -p "\033[32m Are you REALLY sure you want to install? y/n: " install
+	  read -n 1 -p "Are you REALLY sure you want to install? y/n: " install
         if [ "$install" = "y" ]; then
 	echo ""
 	elif [ "$install" = "n" ]; then
