@@ -84,35 +84,66 @@ fi
 echo -e "\033[32m Setting up Cacti database"
 echo -e -n "\033[0m"
 sudo mysql -u root -e "create database cacti";
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong setting up Cacti database, exiting..."
+	exit 1
+fi
 curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
+	exit 1
+else
 sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
 sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 sudo mysql -e "flush privileges";
-
+fi
 mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong importing timezone data, exiting..."
+	exit 1
+fi
 
 echo -e "\033[32m Enabling local SNMP"
 echo -e -n "\033[0m"
 sudo sed -i 's/#mibs/mibs/g' /etc/snmp/snmp.conf
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
+	exit 1
+fi
 
 echo -e "\033[32m Updating mysql for Cacti v1.2.x"
 echo -e -n "\033[0m"
-sudo sed -i '$ a [mysqld]' /etc/mysql/my.cnf
-sudo sed  -i '$ a join_buffer_size=14M' /etc/mysql/my.cnf
-sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/mysql/my.cnf
-sudo sed  -i '$ a innodb_read_io_threads=32' /etc/mysql/my.cnf
-sudo sed  -i '$ a innodb_write_io_threads=16' /etc/mysql/my.cnf
-sudo systemctl restart mysql
+test -e /etc/mysql/my.cnf
+if [ $? -ne 0 ];then
+	echo -e "\033[31m MySQL does not appear to be setup, exiting..."
+	exit 1
+else
+	sudo sed -i '$ a [mysqld]' /etc/mysql/my.cnf
+	sudo sed  -i '$ a join_buffer_size=14M' /etc/mysql/my.cnf
+	sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/mysql/my.cnf
+	sudo sed  -i '$ a innodb_read_io_threads=32' /etc/mysql/my.cnf
+	sudo sed  -i '$ a innodb_write_io_threads=16' /etc/mysql/my.cnf
+	sudo systemctl restart mysql
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m MySQL service did not restart as expected attempting again..."
+		sudo systemctl restart mysql
+	fi	
+fi
 
 echo -e "\033[32m Setting up Cacti"
 echo -e -n "\033[0m"
 wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
-tar xzf $prod_version.tar.gz
-rm  $prod_version.tar.gz
-sudo mv cacti-release-$prod_version/ /var/www/html/cacti
-touch /var/www/html/cacti/log/cacti.log
-mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
-sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong downloading Cacti, exiting..."
+	exit 1
+else
+	tar xzf $prod_version.tar.gz
+	rm  $prod_version.tar.gz
+	sudo mv cacti-release-$prod_version/ /var/www/html/cacti
+	touch /var/www/html/cacti/log/cacti.log
+	mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
+	sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
+fi
 
 echo -e "\033[32m Updating Apache permissions"
 echo -e -n "\033[0m"
