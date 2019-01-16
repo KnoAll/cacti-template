@@ -248,25 +248,35 @@ echo -e "\033[32m Setting up Spine"
 echo -e -n "\033[0m"
 # spine
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-tar xzf cacti-spine-$prod_version.tar.gz
-rm cacti-spine-$prod_version.tar.gz
-cd cacti-spine-$prod_version
-./configure
-make
-sudo make install
-sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
-sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
-sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-cd
-rm -rf cacti-spine-$prod_version
+			if [ $? -ne 0 ];then
+				echo -e "\033[31m ERROR downloading Spine, exiting..."
+				exit 1
+			else
+				tar xzf cacti-spine-$prod_version.tar.gz
+				rm cacti-spine-$prod_version.tar.gz
+				cd cacti-spine-$prod_version
+				./configure
+				make
+				sudo make install
+				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
+				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
+				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
+				cd
+				rm -rf cacti-spine-$prod_version
+
+			fi
 
 
 echo -e "\033[32m Installing Cacti Crontab"
 echo -e -n "\033[0m"
 echo "*/1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force" > mycron
 sudo crontab -u cacti mycron
-rm mycron
-
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m ERROR setting up Cacti crontab entry, Cacti poller will not run."
+		echo -e -n "\033[0m"
+	else
+		rm mycron
+	fi
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
