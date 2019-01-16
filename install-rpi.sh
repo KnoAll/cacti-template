@@ -36,10 +36,14 @@ installask () {
         if [ "$install" = "y" ]; then
 	echo ""
 	elif [ "$install" = "n" ]; then
+		echo ""
 		echo -e "\033[32m Thanks for considering, exiting now..."
+		echo -e -n "\033[0m"
 		exit 1
 	else
+		echo ""
 		echo -e "\033[31m Not a valid selection, please try again..."
+		echo -e -n "\033[0m"
 		installask
 	fi
 
