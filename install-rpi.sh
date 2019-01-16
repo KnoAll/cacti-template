@@ -6,16 +6,11 @@ if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
     exit 1
-    elif [[ `whoami` == "pi" ]]; then
-    	echo ""
-    else
+elif [[ `whoami` != "pi" ]]; then
     echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
     echo -e -n "\033[0m"
-    exit 1
-fi
-
-if grep -q ID=raspbian /etc/os-release; then
-  echo ""
+elif grep -q ID=raspbian /etc/os-release; then
+  	echo ""
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on Raspian OS. Exiting..."
     echo -e -n "\033[0m"
