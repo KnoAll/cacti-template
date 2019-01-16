@@ -55,13 +55,31 @@ echo -e "\033[32m Welcome to Kevin's RaspberryPi Cacti install script!"
 
 echo -e "\033[32m Updating Raspian"
 sudo apt update; sudo apt -y upgrade
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong updating Raspian, exiting..."
+	exit 1
+fi
 
 echo -e "\033[32m Installing prerequisites"
 sudo apt -y install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong Installing prerequisites, exiting..."
+	exit 1
+fi
 
 echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
-sudo adduser cacti
-sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+sudo adduser cacti 
+if [ $? -ne 0 ];then
+	echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
+	exit 1
+else
+	sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+		exit 1
+	fi
+fi
+
 
 echo -e "\033[32m Setting up Cacti database"
 echo -e -n "\033[0m"
