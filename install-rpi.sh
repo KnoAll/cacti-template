@@ -15,10 +15,11 @@ if [[ `whoami` == "root" ]]; then
 fi
 
 if grep -q ID=raspbian /etc/os-release; then
-  echo exists
+  echo ""
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on Raspian OS. Exiting..."
     echo -e -n "\033[0m"
+    exit
 fi
 
 # get the Cacti version
