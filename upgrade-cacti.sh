@@ -27,6 +27,9 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
+if [[ $1 == "develop" ]]; then
+	prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
+fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
