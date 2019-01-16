@@ -9,6 +9,7 @@ if [[ `whoami` == "root" ]]; then
 elif [[ `whoami` != "pi" ]]; then
     echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
     echo -e -n "\033[0m"
+    exit 1
 elif grep -q ID=raspbian /etc/os-release; then
   	echo ""
 else
