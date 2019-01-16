@@ -66,7 +66,7 @@ sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
 echo -e "\033[32m Setting up Cacti database"
 echo -e -n "\033[0m"
 sudo mysql -u root -e "create database cacti";
-curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_v1.2.0-clean.sql | sudo mysql cacti
+curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
 sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
 sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 sudo mysql -e "flush privileges";
