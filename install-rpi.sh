@@ -105,6 +105,7 @@ sudo find /var/www/html -type f -exec chmod g+rw {} +
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
 sudo find /var/www/html -type d -exec chmod g+s {} +
+sudo find /var/www/html -type f -exec chmod g+s {} +
 
 
 function update-php () {
