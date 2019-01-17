@@ -186,7 +186,7 @@ else
 			#sudo find /var/www/html -type f -exec chmod g+s {} +
 		fi	
 fi
-
+function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function update-php () {
 if version_ge $prod_version 1.2.0; then
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
