@@ -22,12 +22,14 @@ fi
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.2.0
-dev_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
 	echo -e -n "\033[0m"
 	exit 1
+fi
+if [[ $1 == "develop" ]]; then
+	prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 fi
 
 echo -e "\033[32m This script installs all prerequisites and sets up Cacti. This ONLY works on a brand new clean install of Raspian without any changes or updates. Use only at your own risk!"
@@ -164,7 +166,7 @@ else
 			sudo find /var/www/html -type d -exec chmod u+rwx {} +
 			sudo find /var/www/html -type f -exec chmod u+rw {} +
 			sudo find /var/www/html -type d -exec chmod g+s {} +
-			sudo find /var/www/html -type f -exec chmod g+s {} +
+			#sudo find /var/www/html -type f -exec chmod g+s {} +
 		fi	
 fi
 
