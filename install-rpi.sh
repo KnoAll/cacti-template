@@ -307,6 +307,7 @@ echo -e -n "\033[0m"
 func_reboot () {
 	read -n 1 -p "\033[32m You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
+	echo -e "\033[32m Rebooting, see you soon!"
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
 		echo ""
