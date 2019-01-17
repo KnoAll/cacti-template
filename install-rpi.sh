@@ -302,6 +302,8 @@ sudo crontab -u cacti mycron
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
+
+func_reboot () {
 	read -n 1 -p "You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
 	sudo reboot
@@ -314,6 +316,7 @@ echo -e -n "\033[0m"
 		echo ""
 		echo -e "\033[31m Not a valid selection, please try again..."
 		echo -e -n "\033[0m"
-		rebootnow
+		func_reboot
 	fi
-
+}
+func_reboot
