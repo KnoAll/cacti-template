@@ -39,7 +39,7 @@ echo -e -n "\033[0m"
 
 installask () {
           echo -e "\033[32m"
-	  read -n 1 -p "Are you REALLY sure you want to install? y/n: " install
+	  read -n 1 -p "Are you\033[31m REALLY\033[32m sure you want to install?\033[0m y/n: " install
         if [ "$install" = "y" ]; then
 	echo ""
 	elif [ "$install" = "n" ]; then
@@ -71,7 +71,7 @@ fi
 
 echo -e "\033[32m Installing prerequisites, this will take a while too..."
 echo -e -n "\033[0m"
-sudo apt -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev
+sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 	echo -e -n "\033[0m"
