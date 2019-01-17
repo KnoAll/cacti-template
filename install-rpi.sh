@@ -94,6 +94,28 @@ else
 	fi
 fi
 
+func_dbask () {
+          echo -e "\033[32m"
+	  read -n 1 -p "Enter \033[31m 1\033[32m to use an untouched Cacti DB or \033[31m 2\033[32m to use Kevin's tweaked DB\033[0m y/n: " db
+        if [ "$db" = "1" ]; then
+		sudo mysql cacti < /var/www/html/cacti/cacti.sql
+	elif [ "$db" = "2" ]; then
+		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
+			echo -e -n "\033[0m"
+		exit 1
+else
+	else
+		echo ""
+		echo -e "\033[31m Not a valid selection, please try again..."
+		echo -e -n "\033[0m"
+		func_dbask
+	fi
+
+}
+func_dbask
+
 
 echo -e "\033[32m Setting up Cacti database"
 echo -e -n "\033[0m"
@@ -103,12 +125,7 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
-else
+func_dbask
 	sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
 	sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 	sudo mysql -e "flush privileges";
