@@ -32,7 +32,11 @@ if [[ $1 == "develop" ]]; then
 	prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 fi
 
-echo -e "\033[32m This script installs all prerequisites and sets up Cacti. This ONLY works on a brand new clean install of Raspian without any changes or updates. Use only at your own risk!"
+echo -e "\033[32m This script installs all prerequisites and sets up Cacti."
+echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of Raspian without any changes or updates."
+echo -e "\033[32m Use only at your own risk!"
+echo -e -n "\033[0m"
+
 installask () {
           echo -e "\033[32m"
 	  read -n 1 -p "Are you REALLY sure you want to install? y/n: " install
@@ -54,11 +58,14 @@ installask () {
 installask
 
 echo -e "\033[32m Welcome to Kevin's RaspberryPi Cacti install script!"
+echo -e -n "\033[0m"
 
 echo -e "\033[32m Updating Raspian, this will take a while..."
-sudo apt -qq update; sudo apt -qq upgrade
+echo -e -n "\033[0m"
+sudo apt -y -qq update; sudo apt -y -qq upgrade
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong updating Raspian, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 fi
 
@@ -75,11 +82,13 @@ echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
 sudo adduser cacti 
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 else
 	sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+		echo -e -n "\033[0m"
 		exit 1
 	fi
 fi
@@ -90,16 +99,18 @@ echo -e -n "\033[0m"
 sudo mysql -u root -e "create database cacti";
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong setting up Cacti database, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 fi
 curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 else
-sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
-sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
-sudo mysql -e "flush privileges";
+	sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
+	sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
+	sudo mysql -e "flush privileges";
 fi
 mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
 if [ $? -ne 0 ];then
@@ -112,6 +123,7 @@ echo -e -n "\033[0m"
 sudo sed -i 's/#mibs/mibs/g' /etc/snmp/snmp.conf
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 fi
 
@@ -120,6 +132,7 @@ echo -e -n "\033[0m"
 test -e /etc/mysql/my.cnf
 if [ $? -ne 0 ];then
 	echo -e "\033[31m MySQL does not appear to be setup, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 else
 	sudo sed -i '$ a [mysqld]' /etc/mysql/my.cnf
@@ -130,6 +143,7 @@ else
 	sudo systemctl restart mysql
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m MySQL service did not restart as expected attempting again..."
+		echo -e -n "\033[0m"
 		sudo systemctl restart mysql
 	fi	
 fi
@@ -139,6 +153,7 @@ echo -e -n "\033[0m"
 wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong downloading Cacti, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 else
 	tar xzf $prod_version.tar.gz
@@ -154,11 +169,13 @@ echo -e -n "\033[0m"
 sudo chown -R www-data:www-data /var/www/html/
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went updating permissions, exiting..."
+	echo -e -n "\033[0m"
 	exit 1
 else
 	sudo chmod -R g+w /var/www/html/
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went updating permissions, exiting..."
+			echo -e -n "\033[0m"
 			exit 1
 		else
 			sudo find /var/www/html -type d -exec chmod g+rwx {} +
@@ -254,6 +271,7 @@ echo -e -n "\033[0m"
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 			if [ $? -ne 0 ];then
 				echo -e "\033[31m ERROR downloading Spine, exiting..."
+				echo -e -n "\033[0m"
 				exit 1
 			else
 				tar xzf cacti-spine-$prod_version.tar.gz
