@@ -79,6 +79,7 @@ if [ $? -ne 0 ];then
 fi
 
 echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
+echo -e -n "\033[0m"
 sudo adduser cacti 
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
@@ -304,7 +305,7 @@ echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
 
 func_reboot () {
-	read -n 1 -p "You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
+	read -n 1 -p "\033[32m You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
