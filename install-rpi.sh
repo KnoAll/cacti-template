@@ -105,7 +105,6 @@ func_dbask () {
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
 		exit 1
-else
 	else
 		echo ""
 		echo -e "\033[31m Not a valid selection, please try again..."
