@@ -39,7 +39,7 @@ echo -e -n "\033[0m"
 
 installask () {
           echo -e "\033[32m"
-	  read -n 1 -p "Are you\033[31m REALLY\033[32m sure you want to install?\033[0m y/n: " install
+	  read -n 1 -p "Are you REALLY sure you want to install?\033[0m y/n: " install
         if [ "$install" = "y" ]; then
 	echo ""
 	elif [ "$install" = "n" ]; then
@@ -96,7 +96,7 @@ fi
 
 func_dbask () {
           echo -e "\033[32m"
-	  read -n 1 -p "Enter \033[31m 1\033[32m to use an untouched Cacti DB or \033[31m 2\033[32m to use Kevin's tweaked DB\033[0m y/n: " db
+	  read -n 1 -p "Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: " db
         if [ "$db" = "1" ]; then
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
 
