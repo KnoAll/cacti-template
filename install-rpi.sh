@@ -131,6 +131,9 @@ func_dbask
 	sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
 	sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 	sudo mysql -e "flush privileges";
+
+echo -e "\033[31m Setting up MYSQL timezone entires..."
+echo -e -n "\033[0m"
 mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong importing timezone data, exiting..."
@@ -324,8 +327,10 @@ echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
 
 func_reboot () {
-	read -n 1 -p "\033[32m You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
+	echo -e "\033[32m"
+	read -n 1 -p "You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
+	echo ""
 	echo -e "\033[32m Rebooting, see you soon!"
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
