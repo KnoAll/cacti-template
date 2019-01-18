@@ -131,7 +131,6 @@ func_dbask
 	sudo mysql -e "GRANT ALL PRIVILEGES ON cacti.* TO cacti@localhost IDENTIFIED BY 'cacti'";
 	sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 	sudo mysql -e "flush privileges";
-fi
 mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong importing timezone data, exiting..."
