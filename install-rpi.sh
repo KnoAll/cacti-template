@@ -162,7 +162,7 @@ else
 	sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/mysql/my.cnf
 	sudo sed  -i '$ a innodb_read_io_threads=32' /etc/mysql/my.cnf
 	sudo sed  -i '$ a innodb_write_io_threads=16' /etc/mysql/my.cnf
-	sudo sed  -i '$ a innodb_buffer_pool_size=226' /etc/mysql/my.cnf
+	sudo sed  -i '$ a innodb_buffer_pool_size=226M' /etc/mysql/my.cnf
 	sudo systemctl restart mysql
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m MySQL service did not restart as expected attempting again..."
