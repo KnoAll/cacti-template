@@ -39,7 +39,7 @@ echo -e -n "\033[0m"
 
 installask () {
           echo -e "\033[32m"
-	  read -n 1 -p "Are you REALLY sure you want to install?\033[0m y/n: " install
+	  read -n 1 -p "Are you REALLY sure you want to install? y/n: " install
         if [ "$install" = "y" ]; then
 	echo ""
 	elif [ "$install" = "n" ]; then
