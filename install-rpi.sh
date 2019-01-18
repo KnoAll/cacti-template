@@ -99,8 +99,11 @@ func_dbask () {
 	  read -n 1 -p "Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: " db
         if [ "$db" = "1" ]; then
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
-
-		sudo mysql cacti < /var/www/html/cacti/cacti.sql
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
+			echo -e -n "\033[0m"
+		exit 1
+		fi
 	elif [ "$db" = "2" ]; then
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
