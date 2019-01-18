@@ -118,8 +118,6 @@ func_dbask () {
 		func_dbask
 	fi
 }
-func_dbask
-
 
 echo -e "\033[32m Setting up Cacti database"
 echo -e -n "\033[0m"
