@@ -17,15 +17,25 @@ fi
 # get the Cacti version
 upgrade_version=1.1.6
 # get ready for dynamic update
-#prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.0
-dev_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
+#prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
+prod_version=1.2.1
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	echo -e -n "\033[0m"
 	exit 1
+fi
+if [[ $1 == "develop" ]]; then
+	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Switching to DEV version v$prod_version failed, cannot proceed..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+	    	echo -e "\033[31m Switching to DEV version v$prod_version..."
+    		echo -e -n "\033[0m"
+	fi
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
