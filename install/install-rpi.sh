@@ -71,7 +71,7 @@ fi
 
 echo -e "\033[32m Installing prerequisites, this will take a while too..."
 echo -e -n "\033[0m"
-sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev
+sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 	echo -e -n "\033[0m"
@@ -289,7 +289,7 @@ sudo systemctl restart apache2
 }
 update-php
 
-echo -e "\033[32m Setting up Spine"
+echo -e "\033[32m Setting up Spine..."
 echo -e -n "\033[0m"
 # spine
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
@@ -312,8 +312,15 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 
 			fi
 
+echo -e "\033[32m Setting up Plugins..."
+echo -e -n "\033[0m"
+# plugins
+cd /var/www/html/cacti/plugins
+git clone https://github.com/Cacti/plugin_thold.git thold
+git clone https://github.com/Cacti/plugin_monitor.git monitor
+git clone https://github.com/Cacti/plugin_webseer.git webseer
 
-echo -e "\033[32m Installing Cacti Crontab"
+echo -e "\033[32m Installing Cacti Crontab..."
 echo -e -n "\033[0m"
 echo "*/1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force" > mycron
 sudo crontab -u cacti mycron
