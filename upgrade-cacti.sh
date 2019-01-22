@@ -13,6 +13,10 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
 fi
+if [[ $1 == "dev" ]]; then
+	echo -e "\033[31m Now on DEV script."
+echo -e -n "\033[0m"
+fi
 
 # get the Cacti version
 upgrade_version=1.1.6
