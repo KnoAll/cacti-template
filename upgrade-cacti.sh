@@ -131,24 +131,7 @@ if version_ge $cactiver $upgrade_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		echo ""
 		upgrade-plugins
-		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
-		echo -e -n "\033[0m"
-		read -n 1 -p "y/n: " smokeup
-        	if [ "$smokeup" = "y" ]; then
-			echo ""
-			check-smokeping
-		else
-			echo ""
-			echo -e "\033[32m OK, no Smokeping today, do you wish to check the status of the smokeping service?"
-			echo -e -n "\033[0m"
-			read -n 1 -p "y/n: " usesmoke
-        		if [ "$usesmoke" = "y" ]; then
-				echo ""
-				smokeping_onoff
-			else
-				echo ""
-			fi
-		fi
+		check-smokeping
                 exit 0
         else
 		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
