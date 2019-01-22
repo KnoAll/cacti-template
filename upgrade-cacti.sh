@@ -284,7 +284,7 @@ tar -xzf $prod_version.tar.gz
                 echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo yum install -y -q php-gmp sendmail yum-cron
+		sudo $pkg_mgr install -y -q php-gmp sendmail
 		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
@@ -315,11 +315,16 @@ fi
 function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
-groups | grep -q '\apache\b'
-if [ $? -ne 0 ];then
-sudo usermod -a -G apache cacti
+if [[ $pkg_mgr == "yum" ]]; then
+	perm_grp=apache
+else
+	perm_grp=www-data
 fi
-sudo chgrp -R apache /var/www/html
+groups | grep -q '\$permgrp\b'
+if [ $? -ne 0 ];then
+sudo usermod -a -G $perm_grp cacti
+fi
+sudo chgrp -R $perm_grp /var/www/html
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
@@ -339,7 +344,11 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
-	sudo yum install -y -q gcc glibc glibc-common gd gd-devel
+	if [[ $pkg_mgr == "yum" ]]; then
+		sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	else
+		sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+	fi
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
