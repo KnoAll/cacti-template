@@ -67,7 +67,7 @@ function check-smokeping () {
 	else
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
 		smokeping_onoff
-	exit
+	fi
 }
 
 function smokeping_onoff () {
