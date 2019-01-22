@@ -60,11 +60,20 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
-	smokeping_onoff
+	test -e /opt/smokeping/bin/smokeping
+	if [ $? -ne 0 ];then
+		smokever=nosmoke
+		echo ""
+	else
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
+		smokeping_onoff
+	exit
 }
 
 function smokeping_onoff () {
+if [[ $smokever == "nosmoke" ]]; then
+	echo ""
+else
 	systemctl -q is-enabled smokeping.service
 	if [ $? -ne 0 ];then
 		# smokeping not enabled
@@ -99,6 +108,7 @@ function smokeping_onoff () {
 				echo -e -n "\033[0m"
 			fi
 	fi
+fi	
 }
 
 function upgrade-plugins() {
