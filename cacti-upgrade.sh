@@ -11,5 +11,10 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit
 fi
-
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+if [[ $1 == "dev" ]]; then
+	echo -e "\033[31m Switching to DEV script..."
+	echo -e -n "\033[0m"
+    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1
+else
+    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+fi
