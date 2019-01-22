@@ -2,6 +2,14 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-plugins.sh)
 
+if [[ $1 == "dev" ]]; then
+	branch=dev
+elif [[ $1 == "develop" ]]; then
+	branch=develop
+else
+	branch=master
+fi
+
 cd /var/www/html/cacti/plugins
 
 for dir in ./*/
