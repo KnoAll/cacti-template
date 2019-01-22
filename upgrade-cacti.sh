@@ -17,7 +17,7 @@ if [[ $1 == "dev" ]]; then
 	repo=dev
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
-elif [[ $1 == "dev" ]]; then
+elif [[ $1 == "develop" ]]; then
 	repo=develop
 else
 	repo=master
@@ -35,7 +35,7 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $1 == "develop" ]]; then
+if [[ $repo == "develop" ]]; then
 	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Switching to DEV version v$prod_version failed, cannot proceed..."
