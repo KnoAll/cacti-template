@@ -272,6 +272,7 @@ else
 	echo -e -n "\033[0m"
 	sudo timedatectl set-timezone America/Los_Angeles
 	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini
+	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/cli/php.ini
 	echo -e "\033[31m If you are not in America/Los_Angeles you will need to manually change the timezone using
 'sudo timedatectl set-timezone Your/Zone'
 and
