@@ -51,7 +51,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
 	smokeping_onoff
 }
 
@@ -99,7 +99,7 @@ function upgrade-plugins() {
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
 			echo ""
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh)
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
 		else
 			echo ""
 			echo -e "\033[32m OK, no plug-up today..."
