@@ -158,9 +158,18 @@ function update-php () {
 if version_ge $prod_version 1.2.0; then
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
-grep -q -w "memory_limit = 128M" /etc/php.ini
+if [[ $pkg_mgr == "yum" ]]; then
+	phpini_path=/etc/php.ini
+	webserver=httpd
+else
+	phpini_path=/etc/php/7.0/apache2/php.ini
+	phpclini_path=/etc/php/7.0/cli/php.ini
+	webserver=apache2
+		
+fi
+grep -q -w "memory_limit = 128M" $phpini_path
 if [ $? -ne 0 ];then
-	grep -q -w "memory_limit = 800M" /etc/php.ini
+	grep -q -w "memory_limit = 800M" $phpini_path
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
 		echo -e -n "\033[0m"
@@ -169,7 +178,7 @@ if [ $? -ne 0 ];then
 		echo -e -n "\033[0m"
 	fi
 else
-        sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' /etc/php.ini
+        sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' $phpini_path
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m ERROR, php memory_limit NOT updated."
 		echo -e -n "\033[0m"
@@ -178,10 +187,10 @@ else
 		echo -e -n "\033[0m"
 	fi
 fi
-grep -q -w "max_execution_time = 30" /etc/php.ini
+grep -q -w "max_execution_time = 30" $phpini_path
 if [ $? -ne 0 ];then
 	#NOT 128, check for 800
-	grep -q -w "max_execution_time = 60" /etc/php.ini
+	grep -q -w "max_execution_time = 60" $phpini_path
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
 		echo -e -n "\033[0m"
@@ -190,7 +199,7 @@ if [ $? -ne 0 ];then
 		echo -e -n "\033[0m"
 	fi
 else
-        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php.ini
+        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' $phpini_path
 			if [ $? -ne 0 ];then
 				echo -e "\033[31m ERROR, php max_execution_time NOT updated."
 				echo -e -n "\033[0m"
@@ -199,7 +208,7 @@ else
 				echo -e -n "\033[0m"
 			fi
 fi
-sudo systemctl restart httpd.service
+sudo systemctl restart $webserver.service
 fi
 }
 
