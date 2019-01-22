@@ -14,13 +14,13 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 fi
 if [[ $1 == "dev" ]]; then
-	repo=dev
+	branch=dev
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
 elif [[ $1 == "develop" ]]; then
-	repo=develop
+	branch=develop
 else
-	repo=master
+	branch=master
 fi
 
 # get the Cacti version
@@ -35,7 +35,7 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $repo == "develop" ]]; then
+if [[ $branch == "develop" ]]; then
 	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Switching to DEV version v$prod_version failed, cannot proceed..."
@@ -51,7 +51,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$repo/upgrade-smokeping.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh)
 	smokeping_onoff
 }
 
@@ -99,7 +99,7 @@ function upgrade-plugins() {
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
 			echo ""
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$repo/upgrade-plugins.sh)
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh)
 		else
 			echo ""
 			echo -e "\033[32m OK, no plug-up today..."
