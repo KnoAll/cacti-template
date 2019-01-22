@@ -46,6 +46,15 @@ if [[ $branch == "develop" ]]; then
     		echo -e -n "\033[0m"
 	fi
 fi
+if which yum >/dev/null; then
+	pkg_mgr=yum
+elif which apt >/dev/null; then
+	pkg_mgr=apt
+else
+		echo -e "\033[31m You seem to be on something other than CentOS or Raspian, cannot proceed..."
+		echo -e -n "\033[0m"
+		exit 1
+fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
