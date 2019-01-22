@@ -132,6 +132,8 @@ if version_ge $cactiver $upgrade_version; then
 		echo ""
 		upgrade-plugins
 		check-smokeping
+		echo -e "\033[32m All done!"
+		echo ""
                 exit 0
         else
 		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
