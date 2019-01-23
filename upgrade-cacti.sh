@@ -412,6 +412,7 @@ upgrade-spine
 compress-delete
 upgrade-plugins
 check-smokeping
+update-permissions
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
