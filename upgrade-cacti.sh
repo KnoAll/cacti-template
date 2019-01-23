@@ -321,7 +321,7 @@ sudo usermod -a -G $perm_grp cacti
 fi
 sudo chgrp -R $perm_grp /var/www/html
 sudo chown -R cacti /var/www/html
-sudo find /var/www/html -type d -exec chmod g+rx {} +
+sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
