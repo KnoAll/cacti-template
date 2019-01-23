@@ -277,6 +277,7 @@ else
 'sudo timedatectl set-timezone Your/Zone'
 and
 'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' /etc/php/7.0/apache2/php.ini'
+'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' /etc/php/7.0/cli/php.ini'
 "
 	echo -e -n "\033[0m"
 fi
