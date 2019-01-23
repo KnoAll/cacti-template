@@ -323,6 +323,7 @@ sudo -u cacti git clone https://github.com/Cacti/plugin_webseer.git webseer
 
 echo -e "\033[32m Installing Cacti Crontab..."
 echo -e -n "\033[0m"
+cd
 echo "*/1 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php --force" > mycron
 sudo crontab -u cacti mycron
 	if [ $? -ne 0 ];then
