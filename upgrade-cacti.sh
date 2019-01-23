@@ -206,8 +206,8 @@ if version_ge $prod_version 1.2.0; then
 						echo -e -n "\033[0m"
 					fi	
 		fi
+		sudo systemctl restart $webserver.service
 	fi
-sudo systemctl restart $webserver.service
 fi
 }
 
