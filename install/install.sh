@@ -41,7 +41,7 @@ if [[ $1 == "develop" ]]; then
 fi
 
 echo -e "\033[32m This script installs all prerequisites and sets up Cacti."
-echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of Raspian without any changes or updates."
+echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of $os_dist without any changes or updates."
 echo -e "\033[32m Use only at your own risk!"
 echo -e -n "\033[0m"
 
