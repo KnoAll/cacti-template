@@ -317,9 +317,9 @@ echo -e "\033[32m Setting up Plugins..."
 echo -e -n "\033[0m"
 # plugins
 cd /var/www/html/cacti/plugins
-git clone https://github.com/Cacti/plugin_thold.git thold
-git clone https://github.com/Cacti/plugin_monitor.git monitor
-git clone https://github.com/Cacti/plugin_webseer.git webseer
+sudo -u cacti git clone https://github.com/Cacti/plugin_thold.git thold
+sudo -u cacti git clone https://github.com/Cacti/plugin_monitor.git monitor
+sudo -u cacti git clone https://github.com/Cacti/plugin_webseer.git webseer
 
 echo -e "\033[32m Installing Cacti Crontab..."
 echo -e -n "\033[0m"
