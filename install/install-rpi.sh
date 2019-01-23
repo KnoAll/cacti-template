@@ -333,6 +333,10 @@ sudo crontab -u cacti mycron
 		rm mycron
 	fi
 
+
+sudo -u cacti wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
+chmod +x cacti-upgrade.sh
+
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
 
