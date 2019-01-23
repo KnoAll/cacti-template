@@ -207,7 +207,6 @@ if version_ge $prod_version 1.2.0; then
 					fi	
 		fi
 	fi
-fi
 sudo systemctl restart $webserver.service
 fi
 }
