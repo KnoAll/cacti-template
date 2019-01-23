@@ -1,19 +1,27 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/install/install-rpi.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/install/install/install.sh)
 
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
     exit 1
-elif [[ `whoami` != "pi" ]]; then
-    echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
-    echo -e -n "\033[0m"
-    exit 1
-elif grep -q ID=raspbian /etc/os-release; then
-  	echo ""
+elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+	if [[ `whoami` != "pi" ]]; then
+		os_dist=raspian
+		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
+elif grep -q "CentOS Linux 7" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		os_dist=centos
+		echo -e "\033[31m Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
 else
-    echo -e "\033[31m Uh-oh. We don't appear to be on Raspian OS. Exiting..."
+    echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
     echo -e -n "\033[0m"
     exit 1
 fi
