@@ -132,7 +132,7 @@ func_dbask
 	sudo mysql -e "GRANT SELECT ON mysql.time_zone_name TO 'cacti'@'localhost'";
 	sudo mysql -e "flush privileges";
 
-echo -e "\033[31m Setting up MYSQL timezone entires..."
+echo -e "\033[32m Setting up MYSQL timezone entires..."
 echo -e -n "\033[0m"
 mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
 if [ $? -ne 0 ];then
