@@ -151,7 +151,7 @@ sudo echo ""
 
 function update-php () {
 if version_ge $prod_version 1.2.0; then
-	if version_ge $cactiver
+	if version_ge $cactiver 1.2.0; then
 		echo ""
 	else
 		echo -e "\033[32m Updating php settings for cacti v1.2.x..."
