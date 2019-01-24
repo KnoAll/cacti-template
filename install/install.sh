@@ -8,17 +8,21 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
-		os_dist=raspian
+
 		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
 		echo -e -n "\033[0m"
 		exit 1
+	else
+		os_dist=raspian
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
-		os_dist=centos
+
 		echo -e "\033[31m Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		echo -e -n "\033[0m"
 		exit 1
+	else
+		os_dist=centos	
 	fi
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
