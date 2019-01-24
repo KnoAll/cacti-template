@@ -69,41 +69,66 @@ installask () {
 }
 installask
 
-echo -e "\033[32m Welcome to Kevin's RaspberryPi Cacti install script!"
+echo -e "\033[32m Welcome to Kevin's CentOS7/RaspberryPi Cacti install script!"
 echo -e -n "\033[0m"
 
-echo -e "\033[32m Updating Raspian, this will take a while..."
+echo -e "\033[32m Updating $os_dist, this will take a while..."
 echo -e -n "\033[0m"
-sudo apt -y -qq update; sudo apt -y -qq upgrade
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Something went wrong updating Raspian, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
+if [[ $os_dist == "raspian" ]]; then
+	sudo apt -y -qq update; sudo apt -y -qq upgrade
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong updating Raspian, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
+elif [[ $os_dist == "centos" ]]; then
+	sudo yum -y -q update; sudo yum -y -q upgrade
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong updating CentOS, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
+else
+    echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
+    echo -e -n "\033[0m"
+    exit 1
 fi
-
 echo -e "\033[32m Installing prerequisites, this will take a while too..."
 echo -e -n "\033[0m"
-sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
+if [[ $os_dist == "raspian" ]]; then
+	sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
+elif [[ $os_dist == "centos" ]]; then
+###	sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
 fi
 
 echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
 echo -e -n "\033[0m"
-sudo adduser cacti 
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
-else
-	sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+if [[ $os_dist == "raspian" ]]; then
+	sudo adduser cacti 
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+		echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
 		echo -e -n "\033[0m"
 		exit 1
+	else
+		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+		fi
 	fi
+elif [[ $os_dist == "centos" ]]; then
+#sudo adduser cacti
 fi
 
 func_dbask () {
