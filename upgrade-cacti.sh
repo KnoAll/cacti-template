@@ -60,11 +60,20 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
-	smokeping_onoff
+	test -e /opt/smokeping/bin/smokeping
+	if [ $? -ne 0 ];then
+		smokever=nosmoke
+		echo ""
+	else
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
+		smokeping_onoff
+	fi
 }
 
 function smokeping_onoff () {
+if [[ $smokever == "nosmoke" ]]; then
+	echo ""
+else
 	systemctl -q is-enabled smokeping.service
 	if [ $? -ne 0 ];then
 		# smokeping not enabled
@@ -99,6 +108,7 @@ function smokeping_onoff () {
 				echo -e -n "\033[0m"
 			fi
 	fi
+fi	
 }
 
 function upgrade-plugins() {
@@ -121,24 +131,9 @@ if version_ge $cactiver $upgrade_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		echo ""
 		upgrade-plugins
-		echo -e "\033[32m Do you wish to check for a compatible Smokeping upgrade?"
+		check-smokeping
+		echo -e "\033[32m All done!"
 		echo -e -n "\033[0m"
-		read -n 1 -p "y/n: " smokeup
-        	if [ "$smokeup" = "y" ]; then
-			echo ""
-			check-smokeping
-		else
-			echo ""
-			echo -e "\033[32m OK, no Smokeping today, do you wish to check the status of the smokeping service?"
-			echo -e -n "\033[0m"
-			read -n 1 -p "y/n: " usesmoke
-        		if [ "$usesmoke" = "y" ]; then
-				echo ""
-				smokeping_onoff
-			else
-				echo ""
-			fi
-		fi
                 exit 0
         else
 		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
@@ -156,79 +151,100 @@ sudo echo ""
 
 function update-php () {
 if version_ge $prod_version 1.2.0; then
-echo -e "\033[32m Updating php settings for cacti v1.2.x..."
-echo -e -n "\033[0m"
-grep -q -w "memory_limit = 128M" /etc/php.ini
-if [ $? -ne 0 ];then
-	grep -q -w "memory_limit = 800M" /etc/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
-		echo -e -n "\033[0m"
+	if version_ge $cactiver 1.2.0; then
+		echo ""
 	else
-		echo -e "\033[32m php memory_limit already = 800."
+		echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 		echo -e -n "\033[0m"
-	fi
-else
-        sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' /etc/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m ERROR, php memory_limit NOT updated."
-		echo -e -n "\033[0m"
-	else
-		echo -e "\033[32m php memory_limit updated to 800."
-		echo -e -n "\033[0m"
-	fi
-fi
-grep -q -w "max_execution_time = 30" /etc/php.ini
-if [ $? -ne 0 ];then
-	#NOT 128, check for 800
-	grep -q -w "max_execution_time = 60" /etc/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
-		echo -e -n "\033[0m"
-	else
-		echo -e "\033[32m php max_execution_time already = 60."
-		echo -e -n "\033[0m"
-	fi
-else
-        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php.ini
+		if [[ $pkg_mgr == "yum" ]]; then
+			phpini_path=/etc/php.ini
+			webserver=httpd
+		else
+			phpini_path=/etc/php/7.0/apache2/php.ini
+			phpclini_path=/etc/php/7.0/cli/php.ini
+			webserver=apache2
+
+		fi
+		grep -q -w "memory_limit = 128M" $phpini_path
+		if [ $? -ne 0 ];then
+			grep -q -w "memory_limit = 800M" $phpini_path
 			if [ $? -ne 0 ];then
-				echo -e "\033[31m ERROR, php max_execution_time NOT updated."
+				echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
 				echo -e -n "\033[0m"
 			else
-				echo -e "\033[32m php max_execution_time updated to 60."
+				echo -e "\033[32m php memory_limit already = 800."
 				echo -e -n "\033[0m"
 			fi
-fi
-sudo systemctl restart httpd.service
+		else
+			sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' $phpini_path
+			if [ $? -ne 0 ];then
+				echo -e "\033[31m ERROR, php memory_limit NOT updated."
+				echo -e -n "\033[0m"
+			else
+				echo -e "\033[32m php memory_limit updated to 800."
+				echo -e -n "\033[0m"
+			fi
+		fi
+		grep -q -w "max_execution_time = 30" $phpini_path
+		if [ $? -ne 0 ];then
+			#NOT 128, check for 800
+			grep -q -w "max_execution_time = 60" $phpini_path
+			if [ $? -ne 0 ];then
+				echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
+				echo -e -n "\033[0m"
+			else
+				echo -e "\033[32m php max_execution_time already = 60."
+				echo -e -n "\033[0m"
+			fi
+		else
+			sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' $phpini_path
+					if [ $? -ne 0 ];then
+						echo -e "\033[31m ERROR, php max_execution_time NOT updated."
+						echo -e -n "\033[0m"
+					else
+						echo -e "\033[32m php max_execution_time updated to 60."
+						echo -e -n "\033[0m"
+					fi	
+		fi
+		sudo systemctl restart $webserver.service
+	fi
 fi
 }
 
 function update-mysqld () {
 if version_ge $prod_version 1.2.0; then
-echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
-echo -e -n "\033[0m"
-	grep -q -w "mysqld" /etc/my.cnf
-	if [ $? -ne 0 ];then
-		#Fugly but works for now...
-		sudo sed  -i '$ a [mysqld]' /etc/my.cnf
-		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf
-		sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' /etc/my.cnf 
-		sudo sed  -i '$ a innodb_flush_log_at_timeout=3' /etc/my.cnf 
-		sudo sed  -i '$ a innodb_read_io_threads=32' /etc/my.cnf 
-		sudo sed  -i '$ a innodb_write_io_threads=16' /etc/my.cnf 
-		sudo sed  -i '$ a max_heap_table_size=30M' /etc/my.cnf 
-		sudo sed  -i '$ a tmp_table_size=30M' /etc/my.cnf 
-		sudo sed  -i '$ a join_buffer_size=58M' /etc/my.cnf 
-		sudo sed  -i '$ a innodb_buffer_pool_size=450M' /etc/my.cnf 
-		sudo sed  -i '$ a character-set-server=utf8mb4' /etc/my.cnf 
-		sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' /etc/my.cnf 
-		sudo sed  -i '$ a max_allowed_packet=16M' /etc/my.cnf 
+	if version_ge $cactiver 1.2.0; then
+		echo ""
 	else
-		echo "put in other mysqld stuff here"
+		echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
+	echo -e -n "\033[0m"
+	if [[ $pkg_mgr == "yum" ]]; then
+		mycnf_path=/etc/my.cnf
+	else
+		mycnf_path=/etc/mysql/my.cnf
 	fi
-sudo systemctl restart mysqld.service
+		grep -q -w "mysqld" $mycnf_path
+		if [ $? -ne 0 ];then
+			#Fugly but works for now...
+			sudo sed  -i '$ a [mysqld]' $mycnf_path
+			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
+			sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
+			sudo sed  -i '$ a innodb_flush_log_at_timeout=3' $mycnf_path 
+			sudo sed  -i '$ a innodb_read_io_threads=32' $mycnf_path
+			sudo sed  -i '$ a innodb_write_io_threads=16' $mycnf_path 
+			sudo sed  -i '$ a max_heap_table_size=30M' $mycnf_path 
+			sudo sed  -i '$ a tmp_table_size=30M' $mycnf_path 
+			sudo sed  -i '$ a join_buffer_size=58M' $mycnf_path 
+			sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
+			sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
+			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
+			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
+		else
+			echo "put in other mysqld stuff here"
+		fi
+	sudo systemctl restart mysqld.service
+	fi
 fi
-
 }
 
 function backup-db () {
@@ -270,7 +286,7 @@ tar -xzf $prod_version.tar.gz
                 echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo yum install -y -q php-gmp sendmail yum-cron
+		sudo $pkg_mgr install -y -q php-gmp sendmail
 		mv cacti/ cacti_$cactiver/
 		rm $prod_version.tar.gz
 		mv cacti-release-$prod_version cacti
@@ -301,13 +317,18 @@ fi
 function update-permissions () {
 echo -e "\033[32m Fixing file permissions..."
 echo -e -n "\033[0m"
-groups | grep -q '\apache\b'
-if [ $? -ne 0 ];then
-sudo usermod -a -G apache cacti
+if [[ $pkg_mgr == "yum" ]]; then
+	perm_grp=apache
+else
+	perm_grp=www-data
 fi
-sudo chgrp -R apache /var/www/html
+groups | grep -q '\$permgrp\b'
+if [ $? -ne 0 ];then
+sudo usermod -a -G $perm_grp cacti
+fi
+sudo chgrp -R $perm_grp /var/www/html
 sudo chown -R cacti /var/www/html
-sudo find /var/www/html -type d -exec chmod g+rx {} +
+sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
 sudo find /var/www/html -type d -exec chmod u+rwx {} +
 sudo find /var/www/html -type f -exec chmod u+rw {} +
@@ -325,7 +346,11 @@ if [ $? -ne 0 ];then
                 echo -e "\033[31m Spine download error cannot install..."
                 echo -e -n "\033[0m"
 else
-	sudo yum install -y -q gcc glibc glibc-common gd gd-devel
+	if [[ $pkg_mgr == "yum" ]]; then
+		sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	else
+		sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+	fi
 	tar -xzf cacti-spine-*.tar.gz
 	rm cacti-spine-*.tar.gz
 	cd cacti-spine-*
@@ -394,6 +419,7 @@ upgrade-spine
 compress-delete
 upgrade-plugins
 check-smokeping
+update-permissions
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
