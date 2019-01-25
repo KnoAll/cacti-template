@@ -200,11 +200,27 @@ fi
 
 echo -e "\033[32m Enabling local SNMP"
 echo -e -n "\033[0m"
-sudo sed -i 's/#mibs/mibs/g' /etc/snmp/snmp.conf
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
+if [[ $os_dist == "raspian" ]]; then
+	sudo sed -i 's/#mibs/mibs/g' /etc/snmp/snmp.conf
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+	sudo systemctl start snmpd && systemctl enable snmpd
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+		fi
+	fi
+elif [[ $os_dist == "centos" ]]; then
+	sudo sed -i 's/OPTIONS="-LS0-6d"/OPTIONS="-Ls3d"/g' /etc/sysconfig/snmpd
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	fi
 fi
 
 echo -e "\033[32m Updating mysql for Cacti v1.2.x"
