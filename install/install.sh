@@ -8,7 +8,6 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
-
 		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
 		echo -e -n "\033[0m"
 		exit 1
@@ -17,12 +16,11 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
-
 		echo -e "\033[31m Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
-		os_dist=centos	
+		os_dist=centos
 	fi
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
@@ -129,18 +127,17 @@ if [[ $os_dist == "raspian" ]]; then
 		fi
 	fi
 elif [[ $os_dist == "centos" ]]; then
-	echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
+	echo -e "\033[32m Checking Cacti user groups..."
 	echo -e -n "\033[0m"
-	sudo adduser cacti
+	groups | grep -q wheel
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
+		echo -e "\033[31m Cacti is not in the suoders group, cannot proceed..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo passwd cacti
-		sudo gpasswd -a cacti wheel && sudo usermod -a -G apache cacti
+		sudo usermod -a -G apache cacti
 		if [ $? -ne 0 ];then
-			echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+			echo -e "\033[31m Something went wrong adding Cacti user to apache group, exiting..."
 			echo -e -n "\033[0m"
 			exit 1
 		fi
