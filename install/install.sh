@@ -100,6 +100,11 @@ if [[ $os_dist == "raspian" ]]; then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
 		exit 1
+	else
+		systemctl start apache2
+		systemctl enable apache2
+		systemctl start mariadb
+		systemctl enable mariadb	
 	fi
 elif [[ $os_dist == "centos" ]]; then
 	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano
@@ -107,6 +112,11 @@ elif [[ $os_dist == "centos" ]]; then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
 		exit 1
+	else
+		systemctl start httpd
+		systemctl enable httpd
+		systemctl start mariadb
+		systemctl enable mariadb
 	fi
 fi
 
