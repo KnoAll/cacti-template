@@ -6,9 +6,9 @@ As of the writing of this script, the current cacti release is v1.2.1. I will ke
 
 ## Initial install Setup Instructions
 
-Based on a clean Raspian Stretch Lite default install.
-Run this from the command line...
+Based on a clean Raspian Stretch Lite default install. This has been developed on a RasperryPi 3 B+. As Cacti is a monitoring tool I highly recomend only using ethernet for the best reliability. I reccomend against running on a Pi Zero W as the cpu power is half that of the 3 B+.
 
+Run this from the command line...
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/install-rpi.sh)
 ```
