@@ -232,32 +232,30 @@ elif [[ $os_dist == "centos" ]]; then
 	mycnf_path=/etc/my.cnf
 	dbserver=mariadb
 fi
-	grep -q -w "mysqld" $mycnf_path
-	if [ $? -ne 0 ];then
-		#Fugly but works for now...
-		sudo sed  -i '$ a [mysqld]' $mycnf_path
-		sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
-		sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
-		sudo sed  -i '$ a innodb_flush_log_at_timeout=3' $mycnf_path 
-		sudo sed  -i '$ a innodb_read_io_threads=32' $mycnf_path
-		sudo sed  -i '$ a innodb_write_io_threads=16' $mycnf_path 
-		sudo sed  -i '$ a max_heap_table_size=30M' $mycnf_path 
-		sudo sed  -i '$ a tmp_table_size=30M' $mycnf_path 
-		sudo sed  -i '$ a join_buffer_size=58M' $mycnf_path 
-		sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
-		sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
-		sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
-		sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
-		sudo systemctl restart $dbserver.service
-			if [ $? -ne 0 ];then
-			echo -e "\033[31m Something went wrong restarting mysql, exiting..."
-			echo -e -n "\033[0m"
-			exit 1
-			fi
-	else
-		echo ""
-	fi
-
+grep -q -w "mysqld" $mycnf_path
+if [ $? -ne 0 ];then
+	#Fugly but works for now...
+	sudo sed  -i '$ a [mysqld]' $mycnf_path
+	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
+	sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
+	sudo sed  -i '$ a innodb_flush_log_at_timeout=3' $mycnf_path 
+	sudo sed  -i '$ a innodb_read_io_threads=32' $mycnf_path
+	sudo sed  -i '$ a innodb_write_io_threads=16' $mycnf_path 
+	sudo sed  -i '$ a max_heap_table_size=30M' $mycnf_path 
+	sudo sed  -i '$ a tmp_table_size=30M' $mycnf_path 
+	sudo sed  -i '$ a join_buffer_size=58M' $mycnf_path 
+	sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
+	sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
+	sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
+	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
+	sudo systemctl restart $dbserver.service
+		if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong restarting mysql, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+		fi
+else
+	echo ""
 fi
 
 echo -e "\033[32m Setting up Cacti"
