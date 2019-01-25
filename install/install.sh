@@ -132,8 +132,19 @@ elif [[ $os_dist == "centos" ]]; then
 	echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
 	echo -e -n "\033[0m"
 	sudo adduser cacti
-	sudo passwd cacti
-	sudo gpasswd -a cacti wheel
+	if [ $? -ne 0 ];then
+		echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+		sudo passwd cacti
+		sudo gpasswd -a cacti wheel && sudo usermod -a -G apache cacti
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Something went wrong adding Cacti user groups, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+		fi
+	fi
 fi
 
 func_dbask () {
