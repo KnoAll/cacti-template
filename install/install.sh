@@ -112,9 +112,9 @@ elif [[ $os_dist == "centos" ]]; then
 	fi
 fi
 
-echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
-echo -e -n "\033[0m"
 if [[ $os_dist == "raspian" ]]; then
+	echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
+	echo -e -n "\033[0m"
 	sudo adduser cacti 
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong setting up Cacti user, exiting..."
@@ -129,7 +129,11 @@ if [[ $os_dist == "raspian" ]]; then
 		fi
 	fi
 elif [[ $os_dist == "centos" ]]; then
-#sudo adduser cacti
+	echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
+	echo -e -n "\033[0m"
+	sudo adduser cacti
+	sudo passwd cacti
+	sudo gpasswd -a cacti wheel
 fi
 
 func_dbask () {
