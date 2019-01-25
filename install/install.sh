@@ -101,10 +101,9 @@ if [[ $os_dist == "raspian" ]]; then
 		echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo systemctl start apache2
-		sudo systemctl enable apache2
-		sudo systemctl start mariadb
-		sudo systemctl enable mariadb	
+		echo -e "\033[32m Enabling webserver and mysql server..."
+		echo -e -n "\033[0m"
+		sudo systemctl start apache2 && sudo systemctl enable apache2 && sudo systemctl start mariadb && sudo systemctl enable mariadb	
 	fi
 elif [[ $os_dist == "centos" ]]; then
 	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano
@@ -113,10 +112,9 @@ elif [[ $os_dist == "centos" ]]; then
 		echo -e -n "\033[0m"
 		exit 1
 	else
-		sudo systemctl start httpd
-		sudo systemctl enable httpd
-		sudo systemctl start mariadb
-		sudo systemctl enable mariadb
+		echo -e "\033[32m Enabling webserver and mysql server..."
+		echo -e -n "\033[0m"
+		sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
 	fi
 fi
 
