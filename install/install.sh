@@ -104,7 +104,7 @@ if [[ $os_dist == "raspian" ]]; then
 		exit 1
 	fi
 elif [[ $os_dist == "centos" ]]; then
-	sudo yum install -y -q httpd MariaDB-server MariaDB-client rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano
+	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
