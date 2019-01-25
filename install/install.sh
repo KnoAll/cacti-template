@@ -153,8 +153,8 @@ elif [[ $os_dist == "centos" ]]; then
 fi
 
 func_dbask () {
-          echo -e "\033[32m"
-	  read -n 1 -p "Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: " db
+          echo -e "\033[32m Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
+	  read -n 1 -p "1/2: " db
         if [ "$db" = "1" ]; then
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
