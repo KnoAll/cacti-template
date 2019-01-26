@@ -446,7 +446,7 @@ sudo crontab -u cacti mycron
 
 echo -e "\033[32m Installing Cacti upgrade script for future use at /home/cacti/cacti-upgrade.sh..."
 echo -e -n "\033[0m"
-sudo -u cacti wget -P /home/cacti/ https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
+sudo -u cacti wget -q -P /home/cacti/ https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
 sudo chmod +x /home/cacti/cacti-upgrade.sh
 
 echo -e "\033[32m All Done!"
