@@ -319,8 +319,6 @@ elif [[ $os_dist == "centos" ]]; then
 			fi	
 	fi
 fi
-grep -q -w "mysqld" $mycnf_path
-if [ $? -ne 0 ];then
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function update-php () {
