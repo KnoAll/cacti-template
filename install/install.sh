@@ -106,7 +106,7 @@ if [[ $os_dist == "raspian" ]]; then
 		sudo systemctl start apache2 && sudo systemctl enable apache2 && sudo systemctl start mariadb && sudo systemctl enable mariadb
 	fi
 elif [[ $os_dist == "centos" ]]; then
-	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano wget
+	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano wget git
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
