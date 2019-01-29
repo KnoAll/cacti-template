@@ -330,7 +330,7 @@ phpini_path=/etc/php/7.0/apache2/php.ini
 phpcliini_path=/etc/php/7.0/cli/php.ini
 elif [[ $os_dist == "centos" ]]; then
 phpini_path=/etc/php.ini
-
+fi
 grep -q -w "memory_limit = 128M" $phpini_path
 	if [ $? -ne 0 ];then
 		grep -q -w "memory_limit = 400M" $phpini_path
@@ -390,18 +390,16 @@ else
 	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' $phpini_path
 	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' $phpcliini_path
 	echo -e "\033[31m If you are not in America/Los_Angeles you will need to manually change the timezone using
-'sudo timedatectl set-timezone Your/Zone'
-and
-'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpini_path'
-'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpcliini_path'
-"
+	'sudo timedatectl set-timezone Your/Zone'
+	and
+	'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpini_path'
+	'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpcliini_path'
+	"
 	echo -e -n "\033[0m"
 fi
 
 echo -e "\033[32m Updating Apache Settings for Cacti 1.2.x"
 echo -e -n "\033[0m"
-#sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php/7.0/apache2/php.ini
-#sudo sed -i 's/memory_limit = 128/memory_limit = 400/g' /etc/php/7.0/apache2/php.ini
 sudo systemctl restart apache2
 }
 update-php
