@@ -167,7 +167,7 @@ func_dbask () {
 		exit 1
 		fi
 	elif [ "$db" = "2" ]; then
-		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/rpi-template/install/mysql.cacti_clean.sql | sudo mysql cacti
+		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
