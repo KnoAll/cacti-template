@@ -164,14 +164,18 @@ func_dbask () {
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
-		exit 1
+			exit 1
+		else
+			echo ""
 		fi
 	elif [ "$db" = "2" ]; then
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
-		exit 1
+			exit 1
+		else
+			echo ""
 		fi
 	else
 		echo ""
