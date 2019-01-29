@@ -106,7 +106,7 @@ if [[ $os_dist == "raspian" ]]; then
 		sudo systemctl start apache2 && sudo systemctl enable apache2 && sudo systemctl start mariadb && sudo systemctl enable mariadb
 	fi
 elif [[ $os_dist == "centos" ]]; then
-	sudo yum install -y -q httpd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano wget git
+	sudo yum install -y -q httpd php mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel mariadb-devel net-snmp-devel nano wget git
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
@@ -320,57 +320,60 @@ elif [[ $os_dist == "centos" ]]; then
 	fi
 fi
 
-function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function update-php () {
-if version_ge $prod_version 1.2.0; then
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
-grep -q -w "memory_limit = 128M" /etc/php/7.0/apache2/php.ini
-if [ $? -ne 0 ];then
-	grep -q -w "memory_limit = 400M" /etc/php/7.0/apache2/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
-		echo -e -n "\033[0m"
-	else
-		echo -e "\033[32m php memory_limit already = 400."
-		echo -e -n "\033[0m"
-	fi
-else
-        sudo sed -i 's/memory_limit = 128M/memory_limit = 400M/g' /etc/php/7.0/apache2/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m ERROR, php memory_limit NOT updated."
-		echo -e -n "\033[0m"
-	else
-		echo -e "\033[32m php memory_limit updated to 400."
-		echo -e -n "\033[0m"
-	fi
-fi
-grep -q -w "max_execution_time = 30" /etc/php/7.0/apache2/php.ini
-if [ $? -ne 0 ];then
-	#NOT 128, check for 800
-	grep -q -w "max_execution_time = 60" /etc/php/7.0/apache2/php.ini
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
-		echo -e -n "\033[0m"
-	else
-		echo -e "\033[32m php max_execution_time already = 60."
-		echo -e -n "\033[0m"
-	fi
-else
-        sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' /etc/php/7.0/apache2/php.ini
-			if [ $? -ne 0 ];then
-				echo -e "\033[31m ERROR, php max_execution_time NOT updated."
-				echo -e -n "\033[0m"
-			else
-				echo -e "\033[32m php max_execution_time updated to 60."
-				echo -e -n "\033[0m"
-			fi
-fi
-fi
+if [[ $os_dist == "raspbian" ]]; then
+phpini_path=/etc/php/7.0/apache2/php.ini
+phpcliini_path=/etc/php/7.0/cli/php.ini
+elif [[ $os_dist == "centos" ]]; then
+phpini_path=/etc/php.ini
 
-grep -q -w ";date.timezone =" /etc/php/7.0/apache2/php.ini
+grep -q -w "memory_limit = 128M" $phpini_path
+	if [ $? -ne 0 ];then
+		grep -q -w "memory_limit = 400M" $phpini_path
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
+			echo -e -n "\033[0m"
+		else
+			echo -e "\033[32m php memory_limit already = 400."
+			echo -e -n "\033[0m"
+		fi
+	else
+		sudo sed -i 's/memory_limit = 128M/memory_limit = 400M/g' $phpini_path
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m ERROR, php memory_limit NOT updated."
+			echo -e -n "\033[0m"
+		else
+			echo -e "\033[32m php memory_limit updated to 400."
+			echo -e -n "\033[0m"
+		fi
+	fi
+grep -q -w "max_execution_time = 30" $phpini_path
+	if [ $? -ne 0 ];then
+		#NOT 128, check for 800
+		grep -q -w "max_execution_time = 60" $phpini_path
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
+			echo -e -n "\033[0m"
+		else
+			echo -e "\033[32m php max_execution_time already = 60."
+			echo -e -n "\033[0m"
+		fi
+	else
+		sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' $phpini_path
+				if [ $? -ne 0 ];then
+					echo -e "\033[31m ERROR, php max_execution_time NOT updated."
+					echo -e -n "\033[0m"
+				else
+					echo -e "\033[32m php max_execution_time updated to 60."
+					echo -e -n "\033[0m"
+				fi
+	fi
+
+grep -q -w ";date.timezone =" $phpini_path
 if [ $? -ne 0 ];then
-	grep -q -w "max_execution_time = 60" /etc/php/7.0/apache2/php.ini
+	grep -q -w "max_execution_time = 60" $phpini_path
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
 		echo -e -n "\033[0m"
@@ -382,13 +385,13 @@ else
 	echo -e "\033[32m Updating Timezone settings to America/Los_Angeles."
 	echo -e -n "\033[0m"
 	sudo timedatectl set-timezone America/Los_Angeles
-	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/apache2/php.ini
-	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' /etc/php/7.0/cli/php.ini
+	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' $phpini_path
+	sudo sed -i 's/;date.timezone =/date.timezone="America\/Los_Angeles"/g' $phpcliini_path
 	echo -e "\033[31m If you are not in America/Los_Angeles you will need to manually change the timezone using
 'sudo timedatectl set-timezone Your/Zone'
 and
-'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' /etc/php/7.0/apache2/php.ini'
-'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' /etc/php/7.0/cli/php.ini'
+'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpini_path'
+'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpcliini_path'
 "
 	echo -e -n "\033[0m"
 fi
