@@ -14,6 +14,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	else
 		os_dist=raspian
 		os_name=Raspbian
+		webserver=apache2
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -23,6 +24,7 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 	else
 		os_dist=centos
 		os_name=CentOS7
+		webserver=httpd
 	fi
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
@@ -400,7 +402,7 @@ fi
 
 echo -e "\033[32m Updating Apache Settings for Cacti 1.2.x"
 echo -e -n "\033[0m"
-sudo systemctl restart apache2
+sudo systemctl restart $webserver
 }
 update-php
 
