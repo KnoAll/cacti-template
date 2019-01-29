@@ -20,9 +20,9 @@ Subsequent updates can be run by simply
 from the cacti user's home directory.
 
 The script will:
+* check for os version compatiblity
 * download the cacti-upgrade.sh script
 * setup the proper user
-* check for os version compatiblity
 * install the required software packages
 * setup the cacti database and user
  * asks if you want to use an untouched cacti databse or a tweaked database that I use
