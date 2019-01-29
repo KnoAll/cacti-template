@@ -328,10 +328,12 @@ function update-php () {
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
-phpini_path=/etc/php/7.0/apache2/php.ini
-phpcliini_path=/etc/php/7.0/cli/php.ini
+	phpini_path=/etc/php/7.0/apache2/php.ini
+	phpcliini_path=/etc/php/7.0/cli/php.ini
 elif [[ $os_dist == "centos" ]]; then
-phpini_path=/etc/php.ini
+	phpini_path=/etc/php.ini
+	sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
+	sudo systemctl restart firewalld
 fi
 grep -q -w "memory_limit = 128M" $phpini_path
 	if [ $? -ne 0 ];then
