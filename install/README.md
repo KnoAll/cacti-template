@@ -30,6 +30,8 @@ The script will:
 * install cacti to the current production release
 * install spine to the current production release
 
+The install has to setup matching timezone information for OS/PHP/MYSQL, so it will stomp on anything you might have setup originally. Apologies for this, you will have to change it back to wherever you are after install.
+
 Once the installation has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
 
