@@ -13,6 +13,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		exit 1
 	else
 		os_dist=raspian
+		os_name=Raspbian
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -21,6 +22,7 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		exit 1
 	else
 		os_dist=centos
+		os_name=CentOS7
 	fi
 else
     echo -e "\033[31m Uh-oh. We don't appear to be on a supported OS. Exiting..."
@@ -43,7 +45,7 @@ if [[ $1 == "develop" ]]; then
 fi
 
 echo -e "\033[32m This script installs all prerequisites and sets up Cacti."
-echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of $os_dist without any changes or updates."
+echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of $os_name without any changes or updates."
 echo -e "\033[32m Use only at your own risk!"
 echo -e -n "\033[0m"
 
@@ -70,7 +72,7 @@ installask
 echo -e "\033[32m Welcome to Kevin's CentOS7/RaspberryPi Cacti install script!"
 echo -e -n "\033[0m"
 
-echo -e "\033[32m Updating $os_dist, this will take a while..."
+echo -e "\033[32m Updating $os_name, this will take a while..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspian" ]]; then
 	sudo apt -y -qq update; sudo apt -y -qq upgrade
