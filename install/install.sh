@@ -233,8 +233,7 @@ elif [[ $os_dist == "centos" ]]; then
 	fi
 fi
 
-echo -e "\033[32m Updating mysql for Cacti v1.2.x"
-echo -e -n "\033[0m"
+echo -e "\033[32m DEBUG Updating mysql for Cacti v1.2.x"
 if [[ $os_dist == "raspbian" ]]; then
 	echo "raspbian"
 	mycnf_path=/etc/mysql/my.cnf
