@@ -338,6 +338,8 @@ if [[ $os_dist == "raspbian" ]]; then
 	phpcliini_path=/etc/php/7.0/cli/php.ini
 elif [[ $os_dist == "centos" ]]; then
 	phpini_path=/etc/php.ini
+	echo -e "\033[32m Allowing http/s access through firewall..."
+	echo -e -n "\033[0m"
 	sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
 	sudo systemctl restart firewalld
 fi
