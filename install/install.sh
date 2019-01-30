@@ -173,6 +173,7 @@ func_dbask () {
 			echo ""
 		fi
 	elif [ "$db" = "2" ]; then
+		ehco ""
 		echo -e "\033[32m Importing Kevin's tweaked db..."
 		echo -e -n "\033[0m"
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/mysql.cacti_clean.sql | sudo mysql cacti
