@@ -217,7 +217,7 @@ if [[ $os_dist == "raspian" ]]; then
 		echo -e -n "\033[0m"
 		exit 1
 	else
-	sudo systemctl start snmpd && systemctl enable snmpd
+	sudo systemctl start snmpd && sudo systemctl enable snmpd
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
 			echo -e -n "\033[0m"
