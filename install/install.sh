@@ -230,6 +230,7 @@ if [[ $os_dist == "raspbian" ]]; then
 	fi
 elif [[ $os_dist == "centos" ]]; then
 	sudo sed -i 's/OPTIONS="-LS0-6d"/OPTIONS="-Ls3d"/g' /etc/sysconfig/snmpd
+	sudo systemctl start snmpd && sudo systemctl enable snmpd
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
 		echo -e -n "\033[0m"
