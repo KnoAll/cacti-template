@@ -233,17 +233,13 @@ elif [[ $os_dist == "centos" ]]; then
 	fi
 fi
 
-echo -e "\033[32m DEBUG Updating mysql for Cacti v1.2.x"
+echo -e "\033[32m Updating mysql for Cacti v1.2.x"
 if [[ $os_dist == "raspbian" ]]; then
-	echo "raspbian"
 	mycnf_path=/etc/mysql/my.cnf
 	dbserver=mysql
 elif [[ $os_dist == "centos" ]]; then
-	echo "centos"
 	mycnf_path=/etc/my.cnf
 	dbserver=mariadb
-else
-	echo "os " $os_dist $mycnf_path
 fi
 grep -q -w "mysqld" $mycnf_path
 if [ $? -ne 0 ];then
