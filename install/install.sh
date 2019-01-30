@@ -12,7 +12,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		echo -e -n "\033[0m"
 		exit 1
 	else
-		os_dist=raspian
+		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
 	fi
