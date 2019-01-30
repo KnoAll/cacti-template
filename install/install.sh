@@ -162,6 +162,8 @@ func_dbask () {
           echo -e "\033[32m Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
 	  read -n 1 -p "1/2: " db
         if [ "$db" = "1" ]; then
+		echo -e "\033[32m Importing default Cacti db..."
+		echo -e -n "\033[0m"
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
@@ -171,6 +173,8 @@ func_dbask () {
 			echo ""
 		fi
 	elif [ "$db" = "2" ]; then
+		echo -e "\033[32m Importing Kevin's tweaked db..."
+		echo -e -n "\033[0m"
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
