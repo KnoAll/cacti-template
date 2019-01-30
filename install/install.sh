@@ -112,7 +112,7 @@ if [[ $os_dist == "raspbian" ]]; then
 elif [[ $os_dist == "centos" ]]; then
 	curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 	sudo sed -i 's/enforcing/disabled/g' /etc/selinux/config
-	sudo yum install -y -q httpd php php-mysql MariaDB-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
+	sudo yum install -y -q httpd php php-mysql MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
