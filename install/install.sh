@@ -246,7 +246,7 @@ if [ $? -ne 0 ];then
 	#Fugly but works for now...
 	sudo sed  -i '$ a [mysqld]' $mycnf_path
 	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
-	sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
+#	sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
 	sudo sed  -i '$ a innodb_flush_log_at_timeout=3' $mycnf_path 
 	sudo sed  -i '$ a innodb_read_io_threads=32' $mycnf_path
 	sudo sed  -i '$ a innodb_write_io_threads=16' $mycnf_path 
