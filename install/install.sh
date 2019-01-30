@@ -242,6 +242,8 @@ elif [[ $os_dist == "centos" ]]; then
 	echo "centos"
 	mycnf_path=/etc/my.cnf
 	dbserver=mariadb
+else
+	echo "else echo"
 fi
 grep -q -w "mysqld" $mycnf_path
 if [ $? -ne 0 ];then
