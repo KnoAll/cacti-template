@@ -478,6 +478,7 @@ func_reboot () {
         if [ "$rebootnow" = "y" ]; then
 	echo ""
 	echo -e "\033[32m Rebooting, see you soon!"
+	echo -e -n "\033[0m"
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
 		echo ""
