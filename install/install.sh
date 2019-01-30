@@ -256,7 +256,8 @@ if [ $? -ne 0 ];then
 	sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
 	sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
 	sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
-	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
+	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
+	sudo sed  -i '$ a innodb_buffer_pool_instances=5' $mycnf_path 
 	sudo systemctl restart $dbserver.service
 		if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong restarting mysql, exiting..."
