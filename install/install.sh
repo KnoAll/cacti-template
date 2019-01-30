@@ -236,15 +236,18 @@ fi
 echo -e "\033[32m Updating mysql for Cacti v1.2.x"
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
+	echo "raspbian"
 	mycnf_path=/etc/mysql/my.cnf
 	dbserver=mysql
 elif [[ $os_dist == "centos" ]]; then
+	echo "centos"
 	mycnf_path=/etc/my.cnf
 	dbserver=mariadb
 fi
 grep -q -w "mysqld" $mycnf_path
 if [ $? -ne 0 ];then
 	#Fugly but works for now...
+	echo "doing seds"
 	sudo sed  -i '$ a [mysqld]' $mycnf_path
 	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
 #	sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
@@ -259,6 +262,7 @@ if [ $? -ne 0 ];then
 	sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
 	sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
 	sudo sed  -i '$ a innodb_buffer_pool_instances=5' $mycnf_path 
+	echo "restarting dbserver"
 	sudo systemctl restart $dbserver.service
 		if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong restarting mysql, exiting..."
@@ -266,7 +270,7 @@ if [ $? -ne 0 ];then
 		exit 1
 		fi
 else
-	echo ""
+	echo "my.cnf already has mysqld entry"
 fi
 
 echo -e "\033[32m Setting up Cacti"
