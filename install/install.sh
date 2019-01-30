@@ -76,10 +76,10 @@ echo -e -n "\033[0m"
 
 echo -e "\033[32m Updating $os_name, this will take a while..."
 echo -e -n "\033[0m"
-if [[ $os_dist == "raspian" ]]; then
+if [[ $os_dist == "raspbian" ]]; then
 	sudo apt -y -qq update; sudo apt -y -qq upgrade
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m Something went wrong updating Raspian, exiting..."
+		echo -e "\033[31m Something went wrong updating Raspbian, exiting..."
 		echo -e -n "\033[0m"
 		exit 1
 	fi
@@ -98,7 +98,7 @@ fi
 
 echo -e "\033[32m Installing prerequisites, this will take a while too..."
 echo -e -n "\033[0m"
-if [[ $os_dist == "raspian" ]]; then
+if [[ $os_dist == "raspbian" ]]; then
 	sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
@@ -124,7 +124,7 @@ elif [[ $os_dist == "centos" ]]; then
 	fi
 fi
 
-if [[ $os_dist == "raspian" ]]; then
+if [[ $os_dist == "raspbian" ]]; then
 	echo -e "\033[32m Setting up Cacti user, get ready to enter a password!!"
 	echo -e -n "\033[0m"
 	sudo adduser cacti 
@@ -210,7 +210,7 @@ fi
 
 echo -e "\033[32m Enabling local SNMP"
 echo -e -n "\033[0m"
-if [[ $os_dist == "raspian" ]]; then
+if [[ $os_dist == "raspbian" ]]; then
 	sudo sed -i 's/#mibs/mibs/g' /etc/snmp/snmp.conf
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong enabling SNMP, exiting..."
