@@ -351,12 +351,12 @@ grep -q -w "memory_limit = 128M" $phpini_path
 			echo -e -n "\033[0m"
 		fi
 	else
-		sudo sed -i 's/memory_limit = 128M/memory_limit = 400M/g' $phpini_path
+		sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' $phpini_path
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m ERROR, php memory_limit NOT updated."
 			echo -e -n "\033[0m"
 		else
-			echo -e "\033[32m php memory_limit updated to 400."
+			echo -e "\033[32m php memory_limit updated to 800."
 			echo -e -n "\033[0m"
 		fi
 	fi
