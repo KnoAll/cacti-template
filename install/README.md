@@ -8,9 +8,9 @@ As of the writing of this script, the current cacti release is v1.2.1. I will ke
 
 Based on a clean Centos7 Minimal or Raspian Stretch Lite default install. This has been developed on a RasperryPi 3 B+. As Cacti is a monitoring tool I highly recomend only using ethernet for the best reliability. I reccomend against running on a Pi Zero W as the cpu power is half that of the 3 B+.
 
-# Centos7 specific requirements: You must have already setup a 'cacti' user with sudoer rights. This script will kick out if not running under that user.
+#### Centos7 specific requirements: You must have already setup a 'cacti' user with sudoer rights. This script will kick out if not running under that user.
 
-# Raspian specific requirements: You must run this as the default 'pi' user. This script will kick out if not running under that user.
+#### Raspian specific requirements: You must run this as the default 'pi' user. This script will kick out if not running under that user.
 
 Run this from the command line...
 ```bash
