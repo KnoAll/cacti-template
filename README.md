@@ -7,7 +7,7 @@ http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 
 ## Initial Cacti installation
 If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
-[Cacti installation script](install/README.md)
+[Cacti installation script](install/)
 
 ## Initial Upgrade Setup Instructions
 
