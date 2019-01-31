@@ -1,6 +1,6 @@
 # cacti-install
 
-:warning: **[This assumes you have a brand-new, clean, un-used/updated version of  Raspian Stretch Lite.] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
+:warning: **[This assumes you have a brand-new, clean, un-used/updated version of CentOS7 Minimal or Raspian Stretch Lite.] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
 
 As of the writing of this script, the current cacti release is v1.2.1. I will keep this script updated to follow the official Cacti releases, and you can use the cacti-upgrade.sh moving forward.
 
