@@ -5,7 +5,9 @@
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
 http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 
-As of the writing of this script, the current cacti release is v1.1.38. This script will upgrade to that release only. I am working on updates that will allow the upcoming development v1.2.x which is currently in beta 4. There are some significant changes required to support the new version which I am working through.
+## Initial Cacti installation
+If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
+[Cacti installation script](install/README.md)
 
 ## Initial Upgrade Setup Instructions
 
