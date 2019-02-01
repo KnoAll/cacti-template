@@ -74,7 +74,7 @@ installask
 echo -e "\033[32m Welcome to Kevin's CentOS7/RaspberryPi Cacti install script!"
 echo -e -n "\033[0m"
 
-echo -e "\033[32m Updating $os_name, this will take a while..."
+echo -e "\033[32m Updating $os_name, this may take a while..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
 	sudo apt -y -qq update; sudo apt -y -qq upgrade
@@ -96,7 +96,7 @@ else
     exit 1
 fi
 
-echo -e "\033[32m Installing prerequisites, this will take a while too..."
+echo -e "\033[32m Installing prerequisites, this may take a while too..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
 	sudo apt -y -qq install unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
@@ -111,7 +111,7 @@ if [[ $os_dist == "raspbian" ]]; then
 	fi
 elif [[ $os_dist == "centos" ]]; then
 	curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
-	sudo sed -i 's/enforcing/disabled/g' /etc/selinux/config
+	sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
 	sudo yum install -y -q httpd php php-mysql MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
