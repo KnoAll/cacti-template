@@ -342,29 +342,38 @@ function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 cd
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-if [ $? -ne 0 ];then
-                echo -e "\033[31m Spine download error cannot install..."
-                echo -e -n "\033[0m"
+if [ $2 == "develop" ] then;
+	echo -e "\033[32m Cloning from Git..."
+	echo -e -n "\033[0m"
+	git clone https://github.com/Cacti/spine.git
+	git checkout develop
+	cd spine
+	./bootstrap
 else
-	if [[ $pkg_mgr == "yum" ]]; then
-		sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+	if [ $? -ne 0 ];then
+			echo -e "\033[31m Spine download error cannot install..."
+			echo -e -n "\033[0m"
 	else
-		sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+		tar -xzf cacti-spine-*.tar.gz
+		rm cacti-spine-*.tar.gz
+		cd cacti-spine-*
 	fi
-	tar -xzf cacti-spine-*.tar.gz
-	rm cacti-spine-*.tar.gz
-	cd cacti-spine-*
-	./configure
-	make -s 
-	sudo make install -s
-	cd
-	rm -rf cacti-spine-*
-	cd /usr/local/spine/bin
-	sudo chown root:root spine
-	sudo chmod +s spine
-	echo ""
 fi
+if [[ $pkg_mgr == "yum" ]]; then
+	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+else
+	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+fi
+./configure
+make -s 
+sudo make install -s
+cd /usr/local/spine/bin
+sudo chown root:root spine
+sudo chmod +s spine
+echo ""
+cd
+rm -rf *spine*
 }
 
 function compress-delete () {
