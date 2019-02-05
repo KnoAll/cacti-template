@@ -272,7 +272,12 @@ if [[ $2 == "develop" ]]; then
 	echo -e -n "\033[0m"
 	mv cacti/ cacti_$cactiver/
 	git clone https://github.com/Cacti/cacti.git
-	git checkout $2
+	if [ $? -ne 0 ]; then
+		echo -e "\033[31m Git clone error, exiting..."
+		echo -e -n "\033[0m"
+	else
+		git checkout $2
+	fi
 else
 	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 	if [ $? -ne 0 ];then
