@@ -31,6 +31,7 @@ if [[ $1 == "dev" ]]; then
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
 	if [[ $2 == "develop" ]]; then
+	echo "param1 $1, param2 $2"
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
 		echo -e -n "\033[0m"
