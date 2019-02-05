@@ -32,7 +32,7 @@ if [[ $1 == "dev" ]]; then
 	echo -e -n "\033[0m"
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-		echo -e "\033[31m Switching to DEVELOP version v$prod_version..."
+		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
 		echo -e -n "\033[0m"
 	fi
 else
@@ -267,30 +267,38 @@ function upgrade-cacti () {
 echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
-if [ $? -ne 0 ];then
-                echo -e "\033[31m Cacti download error cannot install, exiting..."
-                echo -e -n "\033[0m"
-		exit 1
+if [ $2 == "develop" ] then;
+	echo -e "\033[32m Cloning from Git..."
+	echo -e -n "\033[0m"
+	mv cacti/ cacti_$cactiver/
+	git clone https://github.com/Cacti/cacti.git
+	git checkout develop
 else
-tar -xzf $prod_version.tar.gz
+	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 	if [ $? -ne 0 ];then
-                echo -e "\033[31m Cacti unpack error cannot install, exiting..."
-                echo -e -n "\033[0m"
-		exit 1
+			echo -e "\033[31m Cacti download error cannot install, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
 	else
-		sudo $pkg_mgr install -y -q php-gmp sendmail
-		mv cacti/ cacti_$cactiver/
-		rm $prod_version.tar.gz
-		mv cacti-release-$prod_version cacti
-		cp -a cacti_$cactiver/rra/* cacti/rra/
-		cp -a cacti_$cactiver/scripts/* cacti/scripts/
-		cp -a cacti_$cactiver/resource/* cacti/resource/
-		cp -a cacti_$cactiver/plugins/* cacti/plugins/
-		update-config
-		update-permissions
-		echo ""
+	tar -xzf $prod_version.tar.gz
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Cacti unpack error cannot install, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+		else
+			sudo $pkg_mgr install -y -q php-gmp sendmail
+			mv cacti/ cacti_$cactiver/
+			rm $prod_version.tar.gz
+			mv cacti-release-$prod_version cacti
+		fi
 	fi
+	cp -a cacti_$cactiver/rra/* cacti/rra/
+	cp -a cacti_$cactiver/scripts/* cacti/scripts/
+	cp -a cacti_$cactiver/resource/* cacti/resource/
+	cp -a cacti_$cactiver/plugins/* cacti/plugins/
+	update-config
+	update-permissions
+	echo ""
 fi
 }
 
