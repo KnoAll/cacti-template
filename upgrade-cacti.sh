@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh)
-echo "param1 $1, param2 $2"
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
@@ -27,11 +26,12 @@ if [ $? -ne 0 ];then
 	exit 1
 fi
 if [[ $1 == "dev" ]]; then
+	param1=$1
+	param2=$2
 	branch=dev
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
-	if [[ $2 == "develop" ]]; then
-	echo "param1 $1, param2 $2"
+	if [[ $param2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
 		echo -e -n "\033[0m"
@@ -268,8 +268,7 @@ function upgrade-cacti () {
 echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-echo "param1 $1, param2 $2"
-if [[ $2 == "develop" ]]; then
+if [[ $param2 == "develop" ]]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	mv cacti/ cacti_$cactiver/
@@ -278,7 +277,7 @@ if [[ $2 == "develop" ]]; then
 		echo -e "\033[31m Git clone error, exiting..."
 		echo -e -n "\033[0m"
 	else
-		git checkout $2
+		git checkout $param2
 	fi
 else
 	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
@@ -349,11 +348,11 @@ function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 cd
-if [ $2 == "develop" ]; then
+if [ $param2 == "develop" ]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	git clone https://github.com/Cacti/spine.git
-	git checkout $2
+	git checkout $param2
 	cd spine
 	./bootstrap
 else
