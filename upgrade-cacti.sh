@@ -272,7 +272,7 @@ if [ $2 == "develop" ]; then
 	echo -e -n "\033[0m"
 	mv cacti/ cacti_$cactiver/
 	git clone https://github.com/Cacti/cacti.git
-	git checkout develop
+	git checkout $2
 else
 	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 	if [ $? -ne 0 ];then
@@ -346,7 +346,7 @@ if [ $2 == "develop" ]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	git clone https://github.com/Cacti/spine.git
-	git checkout develop
+	git checkout $2
 	cd spine
 	./bootstrap
 else
