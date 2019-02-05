@@ -13,21 +13,12 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
 fi
-if [[ $1 == "dev" ]]; then
-	branch=dev
-	echo -e "\033[31m Now on DEV script."
-	echo -e -n "\033[0m"
-elif [[ $1 == "develop" ]]; then
-	branch=develop
-else
-	branch=master
-fi
 
 # get the Cacti version
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.2
+prod_version=1.2.1
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
@@ -35,17 +26,19 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $branch == "develop" ]]; then
+if [[ $1 == "dev" ]]; then
+	branch=dev
+	echo -e "\033[31m Now on DEV script."
+	echo -e -n "\033[0m"
+elif [[ $1 == "develop" ]]; then
+	branch=dev
 	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m Switching to DEV version v$prod_version failed, cannot proceed..."
-		echo -e -n "\033[0m"
-		exit 1
-	else
-	    	echo -e "\033[31m Switching to DEV version v$prod_version..."
-    		echo -e -n "\033[0m"
-	fi
+	echo -e "\033[31m Switching to DEVELOP version v$prod_version..."
+	echo -e -n "\033[0m"
+else
+	branch=master
 fi
+
 if which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
