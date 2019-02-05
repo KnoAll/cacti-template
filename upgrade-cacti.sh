@@ -296,10 +296,10 @@ else
 	cp -a cacti_$cactiver/scripts/* cacti/scripts/
 	cp -a cacti_$cactiver/resource/* cacti/resource/
 	cp -a cacti_$cactiver/plugins/* cacti/plugins/
-	update-config
-	update-permissions
-	echo ""
 fi
+update-config
+update-permissions
+echo ""
 }
 
 function update-config () {
