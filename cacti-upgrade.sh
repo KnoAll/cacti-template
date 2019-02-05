@@ -14,7 +14,7 @@ fi
 if [[ $1 == "dev" ]]; then
 	echo -e "\033[31m Switching to DEV script..."
 	echo -e -n "\033[0m"
-    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1
+    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1 $2
 else
-    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh) $1
+    bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh) $1 $2
 fi
