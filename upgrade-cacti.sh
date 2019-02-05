@@ -267,6 +267,7 @@ function upgrade-cacti () {
 echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
+echo $2
 if [[ $2 == "develop" ]]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
