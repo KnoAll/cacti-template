@@ -286,7 +286,7 @@ else
 			echo -e -n "\033[0m"
 			exit 1
 	else
-	tar -xzf $prod_version.tar.gz
+		tar -xzf $prod_version.tar.gz
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Cacti unpack error cannot install, exiting..."
 			echo -e -n "\033[0m"
@@ -298,11 +298,11 @@ else
 			mv cacti-release-$prod_version cacti
 		fi
 	fi
-	cp -a cacti_$cactiver/rra/* cacti/rra/
-	cp -a cacti_$cactiver/scripts/* cacti/scripts/
-	cp -a cacti_$cactiver/resource/* cacti/resource/
-	cp -a cacti_$cactiver/plugins/* cacti/plugins/
 fi
+cp -a cacti_$cactiver/rra/* cacti/rra/
+cp -a cacti_$cactiver/scripts/* cacti/scripts/
+cp -a cacti_$cactiver/resource/* cacti/resource/
+cp -a cacti_$cactiver/plugins/* cacti/plugins/
 update-config
 update-permissions
 echo ""
@@ -352,8 +352,10 @@ if [ $param2 == "develop" ]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	git clone https://github.com/Cacti/spine.git
-	git checkout $param2
 	cd spine
+	git checkout $param2
+	echo -e "\033[32m Bootstrapping spine..."
+	echo -e -n "\033[0m"
 	./bootstrap
 else
 	wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
@@ -372,8 +374,8 @@ else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
 fi
 ./configure
-make -s 
-sudo make install -s
+make 
+sudo make install
 cd /usr/local/spine/bin
 sudo chown root:root spine
 sudo chmod +s spine
