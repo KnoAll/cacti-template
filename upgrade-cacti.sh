@@ -30,7 +30,7 @@ if [[ $1 == "dev" ]]; then
 	branch=dev
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
-elif [[ $1 == "develop" ]]; then
+elif [[ $2 == "develop" ]]; then
 	branch=dev
 	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 	echo -e "\033[31m Switching to DEVELOP version v$prod_version..."
