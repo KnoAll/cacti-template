@@ -31,7 +31,7 @@ if [[ $1 == "dev" ]]; then
 	branch=dev
 	echo -e "\033[31m Now on DEV script."
 	echo -e -n "\033[0m"
-	if [[ $param2 == "develop" ]]; then
+	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
 		echo -e -n "\033[0m"
@@ -268,7 +268,7 @@ function upgrade-cacti () {
 echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-if [[ $param2 == "develop" ]]; then
+if [[ $1 == "develop" ]]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	mv cacti/ cacti_$cactiver/
@@ -277,7 +277,7 @@ if [[ $param2 == "develop" ]]; then
 		echo -e "\033[31m Git clone error, exiting..."
 		echo -e -n "\033[0m"
 	else
-		git checkout $param2
+		git checkout $1
 	fi
 else
 	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
@@ -348,12 +348,12 @@ function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 cd
-if [ $param2 == "develop" ]; then
+if [ $1 == "develop" ]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	git clone https://github.com/Cacti/spine.git
 	cd spine
-	git checkout $param2
+	git checkout $1
 	echo -e "\033[32m Bootstrapping spine..."
 	echo -e -n "\033[0m"
 	./bootstrap
@@ -430,10 +430,10 @@ fi
 check-permissions
 backup-db
 update-cactidir
-upgrade-cacti
+upgrade-cacti $2
 update-php
 update-mysqld
-upgrade-spine
+upgrade-spine $2
 compress-delete
 upgrade-plugins
 check-smokeping
