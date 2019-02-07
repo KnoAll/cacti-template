@@ -4,6 +4,12 @@
 
 As of the writing of this script, the current cacti release is v1.2.1. I will keep this script updated to follow the official Cacti releases, and you can use the cacti-upgrade.sh moving forward.
 
+
+## Issues
+This is all still actively being worked on, so you may see changes to how things work and interact.
+If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
+
+
 ## Initial install Setup Instructions
 
 Based on a clean Centos7 Minimal or Raspian Stretch Lite default install. This has been developed on a RasperryPi 3 B+. As Cacti is a monitoring tool I highly recomend only using ethernet for the best reliability. I reccomend against running on a Pi Zero W as the cpu power is half that of the 3 B+.
@@ -38,8 +44,3 @@ The install has to setup matching timezone information for OS/PHP/MYSQL, so it w
 
 Once the installation has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
-
-
-### Issues
-This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
