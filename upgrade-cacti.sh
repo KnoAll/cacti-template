@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh)
-
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
@@ -12,15 +11,6 @@ if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
     echo -e -n "\033[0m"
     exit 1
-fi
-if [[ $1 == "dev" ]]; then
-	branch=dev
-	echo -e "\033[31m Now on DEV script."
-	echo -e -n "\033[0m"
-elif [[ $1 == "develop" ]]; then
-	branch=develop
-else
-	branch=master
 fi
 
 # get the Cacti version
@@ -35,17 +25,21 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $branch == "develop" ]]; then
-	prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m Switching to DEV version v$prod_version failed, cannot proceed..."
+if [[ $1 == "dev" ]]; then
+	param1=$1
+	param2=$2
+	branch=dev
+	echo -e "\033[31m Now on DEV script."
+	echo -e -n "\033[0m"
+	if [[ $2 == "develop" ]]; then
+		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
+		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
 		echo -e -n "\033[0m"
-		exit 1
-	else
-	    	echo -e "\033[31m Switching to DEV version v$prod_version..."
-    		echo -e -n "\033[0m"
 	fi
+else
+	branch=master
 fi
+
 if which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
@@ -274,31 +268,44 @@ function upgrade-cacti () {
 echo -e "\033[32m Beginning Cacti upgrade..."
 echo -e -n "\033[0m"
 cd /var/www/html/
-wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
-if [ $? -ne 0 ];then
-                echo -e "\033[31m Cacti download error cannot install, exiting..."
-                echo -e -n "\033[0m"
-		exit 1
-else
-tar -xzf $prod_version.tar.gz
-	if [ $? -ne 0 ];then
-                echo -e "\033[31m Cacti unpack error cannot install, exiting..."
-                echo -e -n "\033[0m"
-		exit 1
+if [[ $1 == "develop" ]]; then
+	echo -e "\033[32m Cloning from Git..."
+	echo -e -n "\033[0m"
+	mv cacti/ cacti_$cactiver/
+	git clone https://github.com/Cacti/cacti.git
+	if [ $? -ne 0 ]; then
+		echo -e "\033[31m Git clone error, exiting..."
+		echo -e -n "\033[0m"
 	else
-		sudo $pkg_mgr install -y -q php-gmp sendmail
-		mv cacti/ cacti_$cactiver/
-		rm $prod_version.tar.gz
-		mv cacti-release-$prod_version cacti
-		cp -a cacti_$cactiver/rra/* cacti/rra/
-		cp -a cacti_$cactiver/scripts/* cacti/scripts/
-		cp -a cacti_$cactiver/resource/* cacti/resource/
-		cp -a cacti_$cactiver/plugins/* cacti/plugins/
-		update-config
-		update-permissions
-		echo ""
+		git checkout $1
+	fi
+else
+	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
+	if [ $? -ne 0 ];then
+			echo -e "\033[31m Cacti download error cannot install, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+	else
+		tar -xzf $prod_version.tar.gz
+		if [ $? -ne 0 ];then
+			echo -e "\033[31m Cacti unpack error cannot install, exiting..."
+			echo -e -n "\033[0m"
+			exit 1
+		else
+			sudo $pkg_mgr install -y -q php-gmp sendmail
+			mv cacti/ cacti_$cactiver/
+			rm $prod_version.tar.gz
+			mv cacti-release-$prod_version cacti
+		fi
 	fi
 fi
+cp -a cacti_$cactiver/rra/* cacti/rra/
+cp -a cacti_$cactiver/scripts/* cacti/scripts/
+cp -a cacti_$cactiver/resource/* cacti/resource/
+cp -a cacti_$cactiver/plugins/* cacti/plugins/
+update-config
+update-permissions
+echo ""
 }
 
 function update-config () {
@@ -326,7 +333,10 @@ groups | grep -q '\$permgrp\b'
 if [ $? -ne 0 ];then
 sudo usermod -a -G $perm_grp cacti
 fi
-sudo chgrp -R $perm_grp /var/www/html
+sudo chgrp -R $perm_grp /var/www/html/cacti/log
+sudo chgrp -R $perm_grp /var/www/html/cacti/resource
+sudo chgrp -R $perm_grp /var/www/html/cacti/cache
+sudo chgrp -R $perm_grp /var/www/html/cacti/scripts
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
@@ -341,29 +351,40 @@ function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 cd
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-if [ $? -ne 0 ];then
-                echo -e "\033[31m Spine download error cannot install..."
-                echo -e -n "\033[0m"
+if [[ $1 == "develop" ]]; then
+	echo -e "\033[32m Cloning from Git..."
+	echo -e -n "\033[0m"
+	git clone https://github.com/Cacti/spine.git
+	cd spine
+	git checkout $1
+	echo -e "\033[32m Bootstrapping spine..."
+	echo -e -n "\033[0m"
+	./bootstrap
 else
-	if [[ $pkg_mgr == "yum" ]]; then
-		sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+	if [ $? -ne 0 ];then
+			echo -e "\033[31m Spine download error cannot install..."
+			echo -e -n "\033[0m"
 	else
-		sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+		tar -xzf cacti-spine-*.tar.gz
+		rm cacti-spine-*.tar.gz
+		cd cacti-spine-*
 	fi
-	tar -xzf cacti-spine-*.tar.gz
-	rm cacti-spine-*.tar.gz
-	cd cacti-spine-*
-	./configure
-	make -s 
-	sudo make install -s
-	cd
-	rm -rf cacti-spine-*
-	cd /usr/local/spine/bin
-	sudo chown root:root spine
-	sudo chmod +s spine
-	echo ""
 fi
+if [[ $pkg_mgr == "yum" ]]; then
+	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+else
+	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+fi
+./configure
+make 
+sudo make install
+cd /usr/local/spine/bin
+sudo chown root:root spine
+sudo chmod +s spine
+echo ""
+cd
+rm -rf *spine*
 }
 
 function compress-delete () {
@@ -412,10 +433,10 @@ fi
 check-permissions
 backup-db
 update-cactidir
-upgrade-cacti
+upgrade-cacti $2
 update-php
 update-mysqld
-upgrade-spine
+upgrade-spine $2
 compress-delete
 upgrade-plugins
 check-smokeping
