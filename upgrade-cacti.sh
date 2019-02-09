@@ -348,7 +348,7 @@ function upgrade-spine () {
 echo -e "\033[32m Upgrading spine..."
 echo -e -n "\033[0m"
 cd
-if [ $1 == "develop" ]; then
+if [[ $1 == "develop" ]]; then
 	echo -e "\033[32m Cloning from Git..."
 	echo -e -n "\033[0m"
 	git clone https://github.com/Cacti/spine.git
