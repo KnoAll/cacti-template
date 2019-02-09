@@ -334,6 +334,9 @@ if [ $? -ne 0 ];then
 sudo usermod -a -G $perm_grp cacti
 fi
 sudo chgrp -R $perm_grp /var/www/html/cacti/log
+sudo chgrp -R $perm_grp /var/www/html/cacti/resource
+sudo chgrp -R $perm_grp /var/www/html/cacti/cache
+sudo chgrp -R $perm_grp /var/www/html/cacti/scripts
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
