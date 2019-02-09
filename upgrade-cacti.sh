@@ -333,7 +333,7 @@ groups | grep -q '\$permgrp\b'
 if [ $? -ne 0 ];then
 sudo usermod -a -G $perm_grp cacti
 fi
-sudo chgrp -R $perm_grp /var/www/html
+sudo chgrp -R $perm_grp /var/www/html/cacti/log
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
