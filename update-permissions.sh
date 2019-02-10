@@ -1,51 +1,37 @@
 #!/bin/bash
 
-echo -e "\033[32m Updating Apache permissions"
-echo -e -n "\033[0m"
-if [[ $os_dist == "raspbian" ]]; then
-	sudo chgrp -R www-data /var/www/html/cacti/log
-	sudo chgrp -R www-data /var/www/html/cacti/resource
-	sudo chgrp -R www-data /var/www/html/cacti/cache
-	sudo chgrp -R www-data /var/www/html/cacti/scripts
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m Something went updating permissions, exiting..."
+if which yum >/dev/null; then
+	pkg_mgr=yum
+elif which apt >/dev/null; then
+	pkg_mgr=apt
+else
+		echo -e "\033[31m You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		echo -e -n "\033[0m"
 		exit 1
-	else
-		sudo chmod -R g+w /var/www/html/
-			if [ $? -ne 0 ];then
-				echo -e "\033[31m Something went updating permissions, exiting..."
-				echo -e -n "\033[0m"
-				exit 1
-			else
-				sudo find /var/www/html -type d -exec chmod g+rwx {} +
-				sudo find /var/www/html -type f -exec chmod g+rw {} +
-				sudo find /var/www/html -type d -exec chmod u+rwx {} +
-				sudo find /var/www/html -type f -exec chmod u+rw {} +
-				sudo find /var/www/html -type d -exec chmod g+s {} +
-			fi	
-	fi
-elif [[ $os_dist == "centos" ]]; then
-	sudo chgrp -R apache /var/www/html/cacti/log
-	sudo chgrp -R apache /var/www/html/cacti/resource
-	sudo chgrp -R apache /var/www/html/cacti/cache
-	sudo chgrp -R apache /var/www/html/cacti/scripts
-	if [ $? -ne 0 ];then
-		echo -e "\033[31m Something went updating permissions, exiting..."
-		echo -e -n "\033[0m"
-		exit 1
-	else
-		sudo chmod -R g+w /var/www/html/
-			if [ $? -ne 0 ];then
-				echo -e "\033[31m Something went updating permissions, exiting..."
-				echo -e -n "\033[0m"
-				exit 1
-			else
-				sudo find /var/www/html -type d -exec chmod g+rwx {} +
-				sudo find /var/www/html -type f -exec chmod g+rw {} +
-				sudo find /var/www/html -type d -exec chmod u+rwx {} +
-				sudo find /var/www/html -type f -exec chmod u+rw {} +
-				sudo find /var/www/html -type d -exec chmod g+s {} +
-			fi	
-	fi
 fi
+
+echo -e "\033[32m Fixing file permissions..."
+echo -e -n "\033[0m"
+if [[ $pkg_mgr == "yum" ]]; then
+	perm_grp=apache
+else
+	perm_grp=www-data
+fi
+groups | grep -q '\$permgrp\b'
+if [ $? -ne 0 ];then
+sudo usermod -a -G $perm_grp cacti
+fi
+sudo chgrp -R $perm_grp /var/www/html/cacti/log
+sudo chgrp -R $perm_grp /var/www/html/cacti/resource
+sudo chgrp -R $perm_grp /var/www/html/cacti/cache
+sudo chgrp -R $perm_grp /var/www/html/cacti/scripts
+sudo chown -R cacti /var/www/html
+sudo find /var/www/html -type d -exec chmod g+rwx {} +
+sudo find /var/www/html -type f -exec chmod g+rw {} +
+sudo find /var/www/html -type d -exec chmod u+rwx {} +
+sudo find /var/www/html -type f -exec chmod u+rw {} +
+sudo find /var/www/html -type d -exec chmod g+s {} +
+touch /var/www/html/cacti/log/cacti.log
+chmod g+w /var/www/html/cacti/log/cacti.log
+
+exit
