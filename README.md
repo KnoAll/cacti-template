@@ -5,9 +5,13 @@
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
 http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 
+## Issues
+This is all still actively being worked on, so you may see changes to how things work and interact.
+If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the GitHub system above.
+
 ## Initial Cacti installation
 If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
-[Cacti installation script](install/README.md)
+[Cacti installation script](install/)
 
 ## Initial Upgrade Setup Instructions
 
@@ -41,8 +45,3 @@ The script will:
 
 Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
-
-
-### Issues
-This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
