@@ -291,7 +291,7 @@ else
 fi
 
 # fixup permissions
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-permissions.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
 
 function update-php () {
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
