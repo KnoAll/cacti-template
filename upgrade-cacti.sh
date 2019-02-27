@@ -322,7 +322,7 @@ fi
 }
 
 function update-permissions () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-permissions.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
 }
 
 function upgrade-spine () {
