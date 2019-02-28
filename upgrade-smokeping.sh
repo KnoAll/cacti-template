@@ -131,6 +131,7 @@ else
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
 			echo ""
+			echo ""
 		fi
 	fi
 fi
