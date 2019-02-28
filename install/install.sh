@@ -37,7 +37,7 @@ fi
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.2.1
 test -f /var/www/html/cacti/include/cacti_version
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-cacti&write=0 )
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-cacti-$prod_version&write=0 )
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
 	echo -e -n "\033[0m"
