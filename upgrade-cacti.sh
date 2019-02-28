@@ -12,7 +12,9 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
 fi
-
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+echo ""
+echo ""
 # get the Cacti version
 upgrade_version=1.1.6
 # get ready for dynamic update
