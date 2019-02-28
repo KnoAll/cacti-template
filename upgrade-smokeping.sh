@@ -20,7 +20,7 @@ prod_version=2.007003
 web_version=2.7.3
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-smokeping&write=0 )
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$smokever-$prod_version&write=0 )
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
 	echo -e -n "\033[0m"
