@@ -11,6 +11,9 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit
 fi
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+echo ""
+echo ""
 if [[ $1 == "dev" ]]; then
 	echo -e "\033[31m Switching to DEV script..."
 	echo -e -n "\033[0m"
