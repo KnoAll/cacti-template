@@ -35,7 +35,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.1
+prod_version=1.2.2
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -289,7 +289,11 @@ else
 	mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
 	sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
+	echo ""
+	echo ""
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
+	echo ""
+	echo ""
 fi
 
 # fixup permissions

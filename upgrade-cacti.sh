@@ -299,8 +299,11 @@ else
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
+			echo ""
+			echo ""
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
-
+			echo ""
+			echo ""			
 		fi
 	fi
 fi
