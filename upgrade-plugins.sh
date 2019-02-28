@@ -10,6 +10,8 @@ else
 	branch=master
 fi
 counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
+echo ""
+echo ""
 cd /var/www/html/cacti/plugins
 
 for dir in ./*/
