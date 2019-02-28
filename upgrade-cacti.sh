@@ -20,7 +20,6 @@ upgrade_version=1.1.6
 prod_version=1.2.2
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-cacti&write=0 )
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	echo -e -n "\033[0m"
@@ -43,8 +42,10 @@ fi
 
 if which yum >/dev/null; then
 	pkg_mgr=yum
+	os_dist=centos
 elif which apt >/dev/null; then
 	pkg_mgr=apt
+	os_dist=raspbian
 else
 		echo -e "\033[31m You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		echo -e -n "\033[0m"
@@ -297,6 +298,9 @@ else
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
+			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
+			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
+
 		fi
 	fi
 fi
