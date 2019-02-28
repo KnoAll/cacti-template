@@ -9,7 +9,7 @@ elif [[ $1 == "develop" ]]; then
 else
 	branch=master
 fi
-
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
 cd /var/www/html/cacti/plugins
 
 for dir in ./*/

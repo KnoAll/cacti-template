@@ -20,6 +20,7 @@ upgrade_version=1.1.6
 prod_version=1.2.2
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-cacti&write=0 )
 if [ $? -ne 0 ];then
 	echo -e "\033[31m Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	echo -e -n "\033[0m"
