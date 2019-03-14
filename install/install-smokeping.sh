@@ -114,19 +114,16 @@ else
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
-			#cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
 			update-config
-			#cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
-			#cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
+			ln -s /var/www/smokeping /opt/smokeping/htdocs/
+			cp /opt/smokeping/htdocs/smokeping.fcgi.dist /opt/smokeping/htdocs/smokeping.cgi
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
-			echo ""
-			echo ""
+
+			
 		fi
 	fi
 fi
@@ -160,6 +157,12 @@ update-permissions
 upgrade-fping
 install-smokeping
 update-permissions
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
+echo ""
+echo ""
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
+echo ""
+echo ""
 echo -e "\033[32m Smokeping upgraded to v$prod_version! Proceed to the web interface..."
 echo -e -n "\033[0m"
 exit 0
