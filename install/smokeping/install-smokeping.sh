@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install-smokeping.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh)
 
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
@@ -122,10 +122,10 @@ else
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping-init.d
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping-init.d
 			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping.conf
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.conf
 			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
 			#sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 
@@ -141,7 +141,7 @@ echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping.config
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
 }
