@@ -81,7 +81,7 @@ echo -e "\033[32m Beginning Smokeping install..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool
+sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
 if [ $? -ne 0 ];then
                 echo -e "\033[31m CentOS update error cannot install, exiting..."
                 echo -e -n "\033[0m"
