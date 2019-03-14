@@ -32,12 +32,12 @@ upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
 dev_version=
-#smokever=$( /opt/smokeping/bin/smokeping --version )
-#if [ $? == 0 ];then
-#	echo -e "\033[31m Smokeping is already installed, you will need to upgrade not install from scratch,, exiting..."
-#	echo -e -n "\033[0m"
-#	exit 1
-#fi
+
+if [ -f /opt/smokeping/bin/smokeping ];then
+	echo -e "\033[31m Smokeping is already installed, you will need to upgrade not install from scratch or you will lose data, exiting..."
+	echo -e -n "\033[0m"
+	exit 1
+fi
 
 echo -e "\033[32m Welcome to Kevin's SmokePing install script!"
 echo -e -n "\033[0m"
