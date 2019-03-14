@@ -69,7 +69,7 @@ fi
 
 function install-smokeping () {
 echo -e "\033[32m Beginning SmokePing install..."
-echo -e "\033[32m Updating CentOS packages..."
+echo -e "\033[32m Installing required CentOS packages..."
 echo -e -n "\033[0m"
 cd
 sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
