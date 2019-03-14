@@ -161,6 +161,6 @@ echo ""
 counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
 echo ""
 echo ""
-echo -e "\033[32m Smokeping upgraded to v$prod_version! Proceed to the web interface..."
+echo -e "\033[32m Installed Smokeping v$prod_version at http://../smokeping/smokeping.cgi Proceed to the web interface..."
 echo -e -n "\033[0m"
 exit 0
