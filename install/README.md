@@ -1,3 +1,6 @@
+# SmokePing install
+Please visit [SmokePing installation script](install/smokeping) to install SmokePing
+
 # cacti-install
 
 :warning: **[This assumes you have a brand-new, clean, un-used/updated version of CentOS7 Minimal or Raspian Stretch Lite.] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
