@@ -9,7 +9,7 @@ This is all still actively being worked on, so you may see changes to how things
 If you run into trouble with the script please [submit an issue](../../../../issues/) in the Github system above.
 
 
-## Initial install Setup Instructions
+## Initial install setup instructions
 
 Based on a clean Centos7 Minimal or Raspian Stretch Lite default install. This has been developed on a RasperryPi 3 B+. As SmokePing is a very sensetive monitoring tool I highly recomend only using ethernet for the best reliability. I reccomend against running on a Pi Zero W as the cpu power is half that of the 3 B+.
 
