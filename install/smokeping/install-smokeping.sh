@@ -107,9 +107,6 @@ else
 			mkdir /opt/smokeping/data			
 			mkdir /opt/smokeping/htdocs/cache
 			update-config
-			#ln -s /var/www/smokeping /opt/smokeping/htdocs/
-			#cp /opt/smokeping/htdocs/smokeping.fcgi.dist /opt/smokeping/htdocs/smokeping.cgi
-			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
@@ -139,7 +136,6 @@ function update-permissions () {
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh)
 }
 
-update-permissions
 upgrade-fping
 install-smokeping
 update-permissions
