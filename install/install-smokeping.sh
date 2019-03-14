@@ -161,6 +161,27 @@ echo ""
 counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
 echo ""
 echo ""
-echo -e "\033[32m Installed Smokeping v$prod_version at http://../smokeping/smokeping.cgi Proceed to the web interface..."
-echo -e -n "\033[0m"
+func_reboot () {
+	echo -e "\033[32m"
+	echo -e "\033[32m Installed Smokeping v$prod_version at http://../smokeping/smokeping.cgi"
+	echo -e "\033[32m"
+	echo -e -n "\033[0m"read -n 1 -p "You must reboot to complete SmokePing setup. Reboot now? y/n: " rebootnow
+        if [ "$rebootnow" = "y" ]; then
+	echo ""
+	echo -e "\033[32m Rebooting, see you soon!"
+	echo -e -n "\033[0m"
+	sudo reboot
+	elif [ "$rebootnow" = "n" ]; then
+		echo ""
+		echo -e "\033[32m Don't forget to reboot, SmokePing will not load if you do not. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+		echo ""
+		echo -e "\033[31m Not a valid selection, please try again..."
+		echo -e -n "\033[0m"
+		func_reboot
+	fi
+}
+func_reboot
 exit 0
