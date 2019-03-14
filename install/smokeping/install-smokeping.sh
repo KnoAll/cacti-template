@@ -110,10 +110,10 @@ else
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping-init.d
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping-init.d
 			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.conf
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.conf
 			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
 			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart httpd.service			
 		fi
@@ -127,13 +127,13 @@ echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.config
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
 function update-permissions () {
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions-smokeping.sh)
 }
 
 upgrade-fping
