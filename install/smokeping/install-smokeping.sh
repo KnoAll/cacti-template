@@ -7,24 +7,15 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
 elif [[ `whoami` == "cacti" ]]; then
-	if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+	if [ -f ~/cacti-upgrade.sh ]
+	then
+		if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		echo -e "\033[31m Uh-oh. RaspberryPi is not yet supported. Exiting..."
 		exit 1
-		if [[ `whoami` != "pi" ]]; then
-			echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
-			echo -e -n "\033[0m"
-			exit 1
-		else
 			os_dist=raspbian
 			os_name=Raspbian
 			webserver=apache2
-		fi
-	elif grep -q "CentOS Linux 7" /etc/os-release; then
-		if [[ `whoami` != "cacti" ]]; then
-			echo -e "\033[31m Uh-oh. You are not logged in as the default cacti user. Exiting..."
-			echo -e -n "\033[0m"
-			exit 1
-		else
+		elif grep -q "CentOS Linux 7" /etc/os-release; then
 			os_dist=centos
 			os_name=CentOS7
 			webserver=httpd
