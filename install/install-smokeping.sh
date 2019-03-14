@@ -121,6 +121,9 @@ else
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping-init.d
+			sudo mv smokeping-init.d /etc/init.d/smokeping
+			sudo chmod +x /etc/init.d/smokeping
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 
 			
