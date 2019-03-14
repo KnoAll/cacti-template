@@ -115,7 +115,7 @@ else
 			sudo chmod +x /etc/init.d/smokeping
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.conf
 			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
-			sudo systemctl enable smokeping.service	&& sudo systemctl start smokeping.service && sudo systemctl restart httpd.service			
+			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart httpd.service			
 		fi
 	fi
 fi
