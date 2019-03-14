@@ -127,9 +127,7 @@ else
 			sudo chmod +x /etc/init.d/smokeping
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.conf
 			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
-			#sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
-
-			
+			sudo systemctl enable smokeping.service			
 		fi
 	fi
 fi
@@ -145,7 +143,6 @@ else
 	mv smokeping.config /opt/smokeping/etc/config
 fi
 }
-
 
 function update-permissions () {
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh)
