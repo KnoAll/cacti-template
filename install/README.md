@@ -1,5 +1,5 @@
 # SmokePing install
-Please visit [SmokePing installation script](install/smokeping) to install SmokePing
+Please visit [SmokePing installation script](smokeping) to install SmokePing
 
 # cacti-install
 
