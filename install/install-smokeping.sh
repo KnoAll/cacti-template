@@ -148,15 +148,7 @@ fi
 
 
 function update-permissions () {
-echo -e "\033[32m Fixing file permissions..."
-echo -e -n "\033[0m"
-sudo chown -R cacti /opt
-sudo chgrp -R apache /opt
-sudo find /opt -type d -exec chmod g+rwx {} +
-sudo find /opt -type f -exec chmod g+rw {} +
-sudo find /opt -type d -exec chmod u+rwx {} +
-sudo find /opt -type f -exec chmod u+rw {} +
-sudo find /opt -type d -exec chmod g+s {} +
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh)
 }
 
 update-permissions
