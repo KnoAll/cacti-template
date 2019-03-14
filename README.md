@@ -7,7 +7,7 @@ http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 
 ## Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please [submit an issue](../../../issues/) in the GitHub system above.
+If you run into trouble with the script please [submit an issue](../../issues/) in the GitHub system above.
 
 ## Initial Cacti installation
 If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
