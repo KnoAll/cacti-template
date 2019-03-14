@@ -114,7 +114,7 @@ else
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
 			mkdir /opt/smokeping/htdocs/cache
-			cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
+			#cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
 			update-config
 			#cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
 			#cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
@@ -135,8 +135,10 @@ fi
 function update-config () {
 echo -e "\033[32m Updating Smokeping config..."
 echo -e -n "\033[0m"
-if [ -f  /opt/smokeping/etc/config ];
-then
+if [ -f  /opt/smokeping/etc/config ]; then
+	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
+else
+	cp /opt/smokeping/etc/config.dist /opt/smokeping/etc/config
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 fi
 }
