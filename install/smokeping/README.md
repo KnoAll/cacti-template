@@ -6,8 +6,8 @@ As of the writing of this script, the current SmokePing release is v2.7.3. I wil
 
 ## Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
-[GitHub Issues](../../../../issues/)
+If you run into trouble with the script please [submit an issue](../../../../issues/) in the Github system above.
+
 
 ## Initial install Setup Instructions
 
