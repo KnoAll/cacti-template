@@ -41,12 +41,12 @@ upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
 dev_version=
-smokever=$( /opt/smokeping/bin/smokeping --version )
-if [ $? == 0 ];then
-	echo -e "\033[31m Smokeping is already installed, you will need to upgrade not install from scratch,, exiting..."
-	echo -e -n "\033[0m"
-	exit 1
-fi
+#smokever=$( /opt/smokeping/bin/smokeping --version )
+#if [ $? == 0 ];then
+#	echo -e "\033[31m Smokeping is already installed, you will need to upgrade not install from scratch,, exiting..."
+#	echo -e -n "\033[0m"
+#	exit 1
+#fi
 
 echo -e "\033[32m Welcome to Kevin's Smokeping install script!"
 echo -e -n "\033[0m"
@@ -141,8 +141,8 @@ echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	cp /opt/smokeping/etc/config.dist /opt/smokeping/etc/config
-	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping.config
+	mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
