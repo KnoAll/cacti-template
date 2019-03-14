@@ -113,18 +113,21 @@ else
 			cd
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
+			mkdir /opt/smokeping/data			
 			mkdir /opt/smokeping/htdocs/cache
 			update-config
-			ln -s /var/www/smokeping /opt/smokeping/htdocs/
-			cp /opt/smokeping/htdocs/smokeping.fcgi.dist /opt/smokeping/htdocs/smokeping.cgi
+			#ln -s /var/www/smokeping /opt/smokeping/htdocs/
+			#cp /opt/smokeping/htdocs/smokeping.fcgi.dist /opt/smokeping/htdocs/smokeping.cgi
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping-init.d
-			sudo mv smokeping-init.d /etc/init.d/smokeping
+			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
-			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping.conf
+			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
+			#sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 
 			
 		fi
