@@ -9,7 +9,7 @@ As of the writing of this script, the current cacti release is v1.2.1. I will ke
 
 ## Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
-If you run into trouble with the script please <a href="https://github.com/KnoAll/cacti-template/issues">submit an issue</a> in the Github system above.
+If you run into trouble with the script please [submit an issue](../../../../issues/) in the Github system above.
 
 
 ## Initial install Setup Instructions
