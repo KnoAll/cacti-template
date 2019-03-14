@@ -123,7 +123,7 @@ else
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-os_dist&write=0 )
+			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
 			echo ""
 			echo ""
