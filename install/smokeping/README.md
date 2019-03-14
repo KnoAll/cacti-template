@@ -1,5 +1,5 @@
 # SmokePing install
-:warning: **[This assumes you have ALREAY installed cacti via the install script] If you have installed SmokePing or any other software via your own method or adjusted the OS this will break your install!! :warning:
+:warning: **[This assumes you have ALREADY installed cacti via the install script] If you have installed SmokePing or any other software via your own method or adjusted the OS this will break your install!! :warning:
 
 As of the writing of this script, the current SmokePing release is v2.7.3. I will keep this script updated to follow the official SmokePing releases, and you can use the cacti-upgrade.sh moving forward.
 
