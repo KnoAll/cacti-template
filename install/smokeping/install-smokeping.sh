@@ -48,7 +48,7 @@ dev_version=
 #	exit 1
 #fi
 
-echo -e "\033[32m Welcome to Kevin's Smokeping install script!"
+echo -e "\033[32m Welcome to Kevin's SmokePing install script!"
 echo -e -n "\033[0m"
 sudo echo ""
 
@@ -77,7 +77,7 @@ fi
 }
 
 function install-smokeping () {
-echo -e "\033[32m Beginning Smokeping install..."
+echo -e "\033[32m Beginning SmokePing install..."
 echo -e "\033[32m Updating CentOS packages..."
 echo -e -n "\033[0m"
 cd
@@ -87,22 +87,22 @@ if [ $? -ne 0 ];then
                 echo -e -n "\033[0m"
 		exit 1
 else
-	echo -e "\033[32m Getting Smokeping..."
+	echo -e "\033[32m Getting SmokePing..."
 	echo -e -n "\033[0m"
 	cd
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
-                echo -e "\033[31m Smokeping download error cannot install, exiting..."
+                echo -e "\033[31m SmokePing download error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
 	else
 	tar -xzf smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
-                	echo -e "\033[31m Smokeping unpack error cannot install, exiting..."
+                	echo -e "\033[31m SmokePing unpack error cannot install, exiting..."
                 	echo -e -n "\033[0m"
 			exit 1
 		else
-			echo -e "\033[32m Setting up Smokeping..."
+			echo -e "\033[32m Setting up SmokePing..."
 			echo -e -n "\033[0m"
 			#sudo systemctl stop smokeping.service
 			#sudo mv /opt/smokeping /opt/smokeping_$smokever
@@ -136,7 +136,7 @@ fi
 }
 
 function update-config () {
-echo -e "\033[32m Updating Smokeping config..."
+echo -e "\033[32m Updating SmokePing config..."
 echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
@@ -164,7 +164,7 @@ echo ""
 
 function func_reboot () {
 	echo -e "\033[32m"
-	echo -e "\033[32m Installed Smokeping v$prod_version at http://../smokeping/smokeping.cgi"
+	echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
 	echo -e "\033[32m"
 	echo -e -n "\033[0m"
 	read -n 1 -p "You must reboot to complete SmokePing setup. Reboot now? y/n: " rebootnow
