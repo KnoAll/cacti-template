@@ -137,8 +137,8 @@ bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/updat
 }
 
 upgrade-fping
-install-smokeping
 update-permissions
+install-smokeping
 counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
 echo ""
 echo ""
