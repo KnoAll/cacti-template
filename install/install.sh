@@ -433,6 +433,25 @@ echo -e -n "\033[0m"
 sudo -u cacti wget -q -P /home/cacti/ https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
 sudo chmod +x /home/cacti/cacti-upgrade.sh
 
+func_smokeask () {
+          echo -e "\033[32m"
+	  read -n 1 -p "Would you like to install SmokePing? y/n: " smokeinstall
+        if [ "$smokeinstall" = "y" ]; then
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install-smokeping.sh)
+	elif [ "$smokeinstall" = "n" ]; then
+		echo ""
+		echo -e "\033[32m Thanks for considering, going to back..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+		echo ""
+		echo -e "\033[31m Not a valid selection, please try again..."
+		echo -e -n "\033[0m"
+		func_smokeask
+	fi
+}
+func_smokeask
+
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
 
