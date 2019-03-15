@@ -1,6 +1,9 @@
-# cacti-template
+# Initial Cacti installation
+If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
+[Cacti installation script](install/)
 
-:warning: **[This assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
+# Cacti template upgrade
+:warning: **[This upgrade script assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
 
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
 http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
@@ -9,12 +12,7 @@ http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
 This is all still actively being worked on, so you may see changes to how things work and interact.
 If you run into trouble with the script please [submit an issue](../../issues/) in the GitHub system above.
 
-## Initial Cacti installation
-If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
-[Cacti installation script](install/)
-
 ## Initial Upgrade Setup Instructions
-
 Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater:
 Run this from the command line...
 

@@ -19,7 +19,7 @@ Based on a clean Centos7 Minimal or Raspian Stretch Lite default install. This h
 
 Run this from the command line...
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install-smokeping.sh)
 ```
 
 Subsequent updates can be run by simply 
