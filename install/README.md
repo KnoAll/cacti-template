@@ -1,5 +1,5 @@
 ## SmokePing install
-SmokePing can be installed as part of the Cacti install. If you need to install SmokePing manually, please visit [SmokePing installation script](smokeping) to install SmokePing
+SmokePing can be installed as part of the Cacti install. If you already have an installed Cacti from my script and want to add SmokePing, please visit [SmokePing installation script](smokeping) to install SmokePing
 
 # Cacti network grapher installation
 :warning: **[This assumes you have a brand-new, clean, un-used/updated version of CentOS7 Minimal or Raspian Stretch Lite.] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
