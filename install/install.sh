@@ -453,8 +453,8 @@ func_smokeask () {
 func_smokeask
 
 
-function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
-if version_ge $web_version $prod_version; then
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+if version_lt $prod_version $web_version; then
 	echo -e "\033[32m"
 	read -n 1 -p "There is an update available for Cacti, install? y/n: " runupgrade
         if [ "$runupgrade" = "y" ]; then
@@ -479,7 +479,7 @@ func_reboot () {
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
 		echo ""
-		echo -e "\033[31m Don't forget to reboot or your graphs may not display propery. exiting..."
+		echo -e "\033[31m Don't forget to reboot or your graphs will not display propery. exiting..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
