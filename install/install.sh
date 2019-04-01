@@ -398,6 +398,7 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 				tar xzf cacti-spine-$prod_version.tar.gz
 				rm cacti-spine-$prod_version.tar.gz
 				cd cacti-spine-$prod_version
+				./bootstrap
 				./configure
 				make
 				sudo make install
