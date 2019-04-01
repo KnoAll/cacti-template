@@ -454,7 +454,7 @@ func_smokeask
 
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
-if version_ge $prod_version $web_version; then
+if version_ge $web_version $prod_version; then
 	echo -e "\033[32m"
 	read -n 1 -p "There is an update available for Cacti, install? y/n: " runupgrade
         if [ "$runupgrade" = "y" ]; then
