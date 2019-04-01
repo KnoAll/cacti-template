@@ -35,6 +35,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
+web_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 prod_version=1.2.2
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
@@ -440,7 +441,7 @@ func_smokeask () {
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install-smokeping.sh)
 	elif [ "$smokeinstall" = "n" ]; then
 		echo ""
-		echo -e "\033[32m Thanks for considering, going to back..."
+		echo -e "\033[32m Thanks for considering, going back..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
@@ -451,6 +452,20 @@ func_smokeask () {
 	fi
 }
 func_smokeask
+
+
+function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+if version_ge $prod_version $web_version; then
+	echo -e "\033[32m"
+	read -n 1 -p "There is an update available for Cacti, install? y/n: " runupgrade
+        if [ "$runupgrade" = "y" ]; then
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+	elif [ "$runupgrade" = "n" ]; then
+		echo ""
+		echo -e "\033[32m You can upgrade anytime by running ./cacti-upgrade from the cacti user home directory..."
+		echo -e -n "\033[0m"
+	fi
+ fi
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
