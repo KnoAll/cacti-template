@@ -364,7 +364,6 @@ if [[ $pkg_mgr == "yum" ]]; then
 else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
 fi
-./bootstrap
 ./configure
 make 
 sudo make install
