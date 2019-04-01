@@ -300,12 +300,7 @@ else
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
-			echo ""
-			echo ""
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
-			echo ""
-			echo ""			
+		
 		fi
 	fi
 fi
@@ -430,6 +425,16 @@ compress-delete
 upgrade-plugins
 check-smokeping
 update-permissions
+if [[ $1 == "dev" ]]; then
+	echo ""	
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
+	echo ""
+	echo ""
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
+	echo ""
+	echo ""	
+fi
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
