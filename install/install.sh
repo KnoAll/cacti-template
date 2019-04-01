@@ -443,7 +443,6 @@ func_smokeask () {
 		echo ""
 		echo -e "\033[32m Thanks for considering, going back..."
 		echo -e -n "\033[0m"
-		exit 1
 	else
 		echo ""
 		echo -e "\033[31m Not a valid selection, please try again..."
