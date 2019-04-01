@@ -453,19 +453,9 @@ func_smokeask () {
 }
 func_smokeask
 
-
-function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
-if version_lt $prod_version $web_version; then
-	echo -e "\033[32m"
-	read -n 1 -p "There is an update available for Cacti, install? y/n: " runupgrade
-        if [ "$runupgrade" = "y" ]; then
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
-	elif [ "$runupgrade" = "n" ]; then
-		echo ""
-		echo -e "\033[32m You can upgrade anytime by running ./cacti-upgrade from the cacti user home directory..."
-		echo -e -n "\033[0m"
-	fi
- fi
+echo -e "\033[32m Checking for Cacti updates..."
+echo -e -n "\033[0m"
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
