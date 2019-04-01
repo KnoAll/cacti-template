@@ -134,7 +134,7 @@ if version_ge $cactiver $upgrade_version; then
 		echo -e -n "\033[0m"
                 exit 0
         else
-		echo -e "\033[32m Installed cacti v$cactiver is greater than required v$upgrade_version! Upgrading to v$prod_version..."
+		echo -e "\033[32m Found compatible Cacti v$cactiver install, upgrading to v$prod_version..."
 		echo -e -n "\033[0m"
         fi
 else
