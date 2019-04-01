@@ -479,7 +479,7 @@ func_reboot () {
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
 		echo ""
-		echo -e "\033[32m Don't forget to reboot or your graphs may not display propery. exiting..."
+		echo -e "\033[31m Don't forget to reboot or your graphs may not display propery. exiting..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
