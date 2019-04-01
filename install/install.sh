@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/install/install/install.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh)
 
 if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
@@ -35,7 +35,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.2
+prod_version=1.2.3
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -397,6 +397,7 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 				tar xzf cacti-spine-$prod_version.tar.gz
 				rm cacti-spine-$prod_version.tar.gz
 				cd cacti-spine-$prod_version
+				./bootstrap
 				./configure
 				make
 				sudo make install
@@ -440,9 +441,8 @@ func_smokeask () {
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install-smokeping.sh)
 	elif [ "$smokeinstall" = "n" ]; then
 		echo ""
-		echo -e "\033[32m Thanks for considering, going to back..."
+		echo -e "\033[32m Thanks for considering, going back..."
 		echo -e -n "\033[0m"
-		exit 1
 	else
 		echo ""
 		echo -e "\033[31m Not a valid selection, please try again..."
@@ -451,6 +451,10 @@ func_smokeask () {
 	fi
 }
 func_smokeask
+
+echo -e "\033[32m Checking for Cacti updates..."
+echo -e -n "\033[0m"
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
@@ -465,7 +469,7 @@ func_reboot () {
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
 		echo ""
-		echo -e "\033[32m Don't forget to reboot or your graphs may not display propery. exiting..."
+		echo -e "\033[31m Don't forget to reboot or your graphs will not display propery. exiting..."
 		echo -e -n "\033[0m"
 		exit 1
 	else
