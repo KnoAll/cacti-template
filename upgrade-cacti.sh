@@ -357,7 +357,7 @@ fi
 if [[ $pkg_mgr == "yum" ]]; then
 	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
 else
-	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb
+	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 fi
 ./bootstrap
 ./configure
