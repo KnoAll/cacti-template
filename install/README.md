@@ -29,7 +29,7 @@ Subsequent updates can be run by simply
 ```bash
 ./cacti-upgrade
 ```
-from the cacti user's home directory. *** Be sure to run the upgrade after initial install as this install script may not be updated with every Cacti release.
+from the cacti user's home directory. ### Be sure to run the upgrade after initial install as this install script may not be updated with every Cacti release.
 
 The script will:
 * check for os version compatiblity
