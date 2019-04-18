@@ -107,7 +107,7 @@ case "$1" in
         if [ ! -d /tmp/smokeping ]; then
             mkdir /tmp/smokeping
             chown ${DAEMON_USER}.root /tmp/smokeping
-            chmod 0755 /var/run/smokeping
+            chmod 0755 /tmp/smokeping
         fi
 
         set +e
