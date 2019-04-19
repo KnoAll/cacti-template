@@ -1,5 +1,7 @@
 #!/bin/bash
 
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-permissions-smokeping.sh)
+
 if which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
