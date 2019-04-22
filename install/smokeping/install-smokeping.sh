@@ -17,8 +17,6 @@ case $(whoami) in
 		if [ -f ~/cacti-upgrade.sh ]
 		then
 			if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
-			echo -e "\033[31m Uh-oh. RaspberryPi is not yet supported. Exiting..."
-			#exit 1
 				os_dist=raspbian
 				os_name=Raspbian
 				webserver=apache2
