@@ -135,6 +135,7 @@ else
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping-init.d
 			case ${os_dist) in
 				centos)
+					echo ""
 				;;
 				raspbian)
 					sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
