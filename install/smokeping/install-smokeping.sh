@@ -2,33 +2,40 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh)
 
-if [[ `whoami` == "root" ]]; then
-    echo -e "\033[31m You ran me as root! Do not run me as root!"
-    echo -e -n "\033[0m"
-    exit 1
-elif [[ `whoami` == "cacti" ]]; then
-	if [ -f ~/cacti-upgrade.sh ]
-	then
-		if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
-		echo -e "\033[31m Uh-oh. RaspberryPi is not yet supported. Exiting..."
+case $(whoami) in
+        root)
+		echo -e "\033[31m You ran me as root! Do not run me as root!"
+		echo -e -n "\033[0m"
 		exit 1
-			os_dist=raspbian
-			os_name=Raspbian
-			webserver=apache2
-		elif grep -q "CentOS Linux 7" /etc/os-release; then
-			os_dist=centos
-			os_name=CentOS7
-			webserver=httpd
+		;;
+        pi)
+                echo "pi"
+                ;;
+        cacti)
+		if [ -f ~/cacti-upgrade.sh ]
+		then
+			if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+			echo -e "\033[31m Uh-oh. RaspberryPi is not yet supported. Exiting..."
+			#exit 1
+				os_dist=raspbian
+				os_name=Raspbian
+				webserver=apache2
+			elif grep -q "CentOS Linux 7" /etc/os-release; then
+				os_dist=centos
+				os_name=CentOS7
+				webserver=httpd
+			fi
 		fi
-	fi
-else
-echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-echo -e -n "\033[0m"
-exit 1
-fi
+                ;;
+        *)
+		echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+                ;;
+esac
 
 # get the Smokeping version
-upgrade_version=2.006011
+#upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
 dev_version=
@@ -72,9 +79,22 @@ echo -e "\033[32m Beginning SmokePing install..."
 echo -e "\033[32m Installing required CentOS packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
+case $os_dist in
+	raspbian)
+		sudo apt install librrds-perl dnsutils daemon python3-pip
+		sudo a2enmod -q  cgi
+		;;
+	centos)
+		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
+		;;
+	*)
+		echo -e "\033[31m Uh-oh. Sorry, unsupported OS Exiting..."
+		exit 1
+		;;
+esac
+
 if [ $? -ne 0 ];then
-                echo -e "\033[31m CentOS update error cannot install, exiting..."
+                echo -e "\033[31m Update error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
 else
