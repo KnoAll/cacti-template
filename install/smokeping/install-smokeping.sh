@@ -133,6 +133,13 @@ else
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping-init.d
+			case ${os_dist)in
+				centos)
+				;;
+				raspbian)
+					sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
+				;;
+			esac
 			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.conf
