@@ -9,7 +9,9 @@ case $(whoami) in
 		exit 1
 		;;
         pi)
-                echo "pi"
+		echo -e "\033[31m You ran me as pi user! Do not run me as pi!"
+		echo -e -n "\033[0m"
+		exit 1
                 ;;
         cacti)
 		if [ -f ~/cacti-upgrade.sh ]
@@ -135,7 +137,7 @@ else
 			sudo chmod +x /etc/init.d/smokeping
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.conf
 			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
-			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart httpd.service			
+			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service			
 		fi
 	fi
 fi
