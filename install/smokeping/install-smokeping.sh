@@ -20,10 +20,12 @@ case $(whoami) in
 				os_dist=raspbian
 				os_name=Raspbian
 				webserver=apache2
+				webconf=/etc/apache2/sites-enabled
 			elif grep -q "CentOS Linux 7" /etc/os-release; then
 				os_dist=centos
 				os_name=CentOS7
 				webserver=httpd
+				webconf=/etc/httpd/conf.d
 			fi
 		fi
                 ;;
@@ -134,7 +136,7 @@ else
 			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.conf
-			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
+			sudo mv smokeping.conf $webconf/smokeping.conf
 			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service			
 		fi
 	fi
