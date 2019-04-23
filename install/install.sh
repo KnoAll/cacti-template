@@ -452,7 +452,7 @@ func_smokeask () {
 	fi
 }
 
-case $os-dist in
+case $os_dist in
 	raspbian)
 	;;
 	*)
