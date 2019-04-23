@@ -30,7 +30,7 @@ CONFIG=/opt/smokeping/etc/config
 PIDFILE=/opt/smokeping/var/$NAME.pid
 DAEMON_USER=cacti
 DEFAULTS=/opt/smokeping/etc/smoke-defaults
-#MODE=slave
+#MODE=slave - Moved to smoke-defaults if you wish to have a slave. this allows you to more easily configure without having to change the init script
 DAEMON_ARGS="--config=$CONFIG"
 
 # LC_ALL prevents resetting LC_NUMERIC which in turn interferes
