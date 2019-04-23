@@ -19,7 +19,7 @@ RETVAL=0
 case "$1" in
   start)
         echo -n $"Starting SMOKEPING: "
-        daemon $SMOKEPING
+        daemon -u $SMOKEPING
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch $LOCKF
