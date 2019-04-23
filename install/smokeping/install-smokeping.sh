@@ -193,10 +193,8 @@ case $param1 in
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
 	echo ""
 	echo ""
-	echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
-	echo -e -n "\033[0m"
 	;;
 esac
-
-
+	echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
+	echo -e -n "\033[0m"
 exit 0
