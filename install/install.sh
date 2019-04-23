@@ -454,15 +454,17 @@ func_smokeask () {
 
 case $os_dist in
 	raspbian)
+		echo -e "\033[32m If you want to install SmokePing check my install script at https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping"
+		echo -e "\033[32m Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		echo -e -n "\033[0m"
 	;;
 	*)
 		func_smokeask
+		echo -e "\033[32m Checking for Cacti updates..."
+		echo -e -n "\033[0m"
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
 	;;
 esac
-
-echo -e "\033[32m Checking for Cacti updates..."
-echo -e -n "\033[0m"
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"
