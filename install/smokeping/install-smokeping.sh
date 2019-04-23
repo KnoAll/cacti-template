@@ -27,6 +27,10 @@ case $(whoami) in
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
 			fi
+		else
+			echo -e "\033[31m You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"
+			
+			echo -e -n "\033[0m"	
 		fi
                 ;;
         *)
