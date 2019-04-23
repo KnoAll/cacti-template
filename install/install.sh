@@ -451,7 +451,14 @@ func_smokeask () {
 		func_smokeask
 	fi
 }
-func_smokeask
+
+case $os-dist in
+	raspbian)
+	;;
+	*)
+		func_smokeask
+	;;
+esac
 
 echo -e "\033[32m Checking for Cacti updates..."
 echo -e -n "\033[0m"
