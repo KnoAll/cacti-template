@@ -88,7 +88,7 @@ fi
 
 function install-smokeping () {
 echo -e "\033[32m Beginning SmokePing install..."
-echo -e "\033[32m Installing required CentOS packages..."
+echo -e "\033[32m Installing required $os_name packages..."
 echo -e -n "\033[0m"
 cd
 case $os_dist in
