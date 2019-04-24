@@ -8,8 +8,9 @@ elif [[ $1 == "develop" ]]; then
 	branch=develop
 else
 	branch=master
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
 fi
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
+
 echo ""
 echo ""
 cd /var/www/html/cacti/plugins
