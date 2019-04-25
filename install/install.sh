@@ -164,7 +164,8 @@ func_dbask () {
         if [ "$db" = "1" ]; then
 		echo -e "\033[32m Importing default Cacti db. The default username/password is admin and admin."
 		echo -e -n "\033[0m"
-		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
+		#curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
+		sudo mysql cacti < /var/www/html/cacti/cacti.sql
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
