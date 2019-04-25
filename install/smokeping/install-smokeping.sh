@@ -97,7 +97,7 @@ echo -e -n "\033[0m"
 cd
 case $os_dist in
 	raspbian)
-		sudo apt install librrds-perl dnsutils daemon python3-pip
+		sudo apt install -y librrds-perl dnsutils daemon python3-pip
 		sudo a2enmod -q  cgi
 		;;
 	centos)
