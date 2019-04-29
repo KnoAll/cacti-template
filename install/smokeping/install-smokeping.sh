@@ -171,6 +171,7 @@ echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
+	sudo echo ""
 	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
