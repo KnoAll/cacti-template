@@ -162,8 +162,6 @@ func_dbask () {
           echo -e "\033[32m Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
 	  read -n 1 -p "1/2: " db
         if [ "$db" = "1" ]; then
-		echo -e "\033[32m Importing default Cacti db. The default username/password is admin and admin."
-		echo -e -n "\033[0m"
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
 		#sudo mysql cacti < /var/www/html/cacti/cacti.sql
 		if [ $? -ne 0 ];then
@@ -171,7 +169,8 @@ func_dbask () {
 			echo -e -n "\033[0m"
 			exit 1
 		else
-			echo ""
+		echo -e "\033[32m Imported default Cacti db. The default username/password is admin and admin."
+		echo -e -n "\033[0m"
 		fi
 	elif [ "$db" = "2" ]; then
 		echo ""
