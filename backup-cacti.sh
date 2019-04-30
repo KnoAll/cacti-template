@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
+
 case $(whoami) in
         root)
 		echo -e "\033[31m You ran me as root! Do not run me as root!"
