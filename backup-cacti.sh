@@ -18,7 +18,7 @@ case $(whoami) in
                 echo -e -n "\033[0m"
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
-                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti-v$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
                 tar -pczf ~/backup_cacti-$cactiver.tar.gz -C ~/ cacti_$cactiver
                 ;;
