@@ -21,6 +21,7 @@ case $(whoami) in
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
                 tar -pczf ~/backup_cacti-$cactiver.tar.gz -C ~/ cacti_$cactiver
+		rm -rf cacti_$cactiver
                 ;;
         *)
 		echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
