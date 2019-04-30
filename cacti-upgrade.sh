@@ -22,10 +22,10 @@ case $1 in
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1 $2
 	;;
 	--fix-permissions)
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh) $1
 	;;
 	--backup-data)
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1
 	;;
 	*)
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh) $1 $2
