@@ -184,6 +184,7 @@ bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/u
 upgrade-fping
 update-permissions
 install-smokeping
+update-permissions
 case $param1 in
 	dev)
 	;;
