@@ -34,4 +34,6 @@ sudo find /var/www/html -type d -exec chmod g+s {} +
 touch /var/www/html/cacti/log/cacti.log
 chmod g+w /var/www/html/cacti/log/cacti.log
 
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=update-permissions&write=0 )
+
 exit
