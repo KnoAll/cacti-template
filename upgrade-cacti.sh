@@ -12,16 +12,6 @@ if [[ `whoami` == "root" ]]; then
     echo -e -n "\033[0m"
     exit 1
 fi
-echo ""
-echo ""
-
-# get latest version of cacti-upgrade
-if grep -q "case" ~/cacti-upgrade.sh; then
-	echo ""
-else
-  wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
-  chmod +x cacti-upgrade.sh
-fi
 
 # get the Cacti version
 upgrade_version=1.1.6
@@ -49,6 +39,15 @@ if [[ $1 == "dev" ]]; then
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
 	branch=master
+fi
+
+# get latest version of cacti-upgrade
+if grep -q case cacti-upgrade.sh; then
+	echo ""
+else
+  rm cacti-upgrade.sh
+  wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
+  chmod +x cacti-upgrade.sh
 fi
 
 if which yum >/dev/null; then
