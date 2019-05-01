@@ -14,6 +14,15 @@ if [[ `whoami` == "root" ]]; then
 fi
 echo ""
 echo ""
+
+# get latest version of cacti-upgrade
+if grep -q "case" ~/cacti-upgrade.sh; then
+	echo ""
+else
+  wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
+  chmod +x cacti-upgrade.sh
+fi
+
 # get the Cacti version
 upgrade_version=1.1.6
 # get ready for dynamic update
