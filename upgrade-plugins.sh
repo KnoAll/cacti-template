@@ -2,14 +2,20 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-plugins.sh)
 
-if [[ $1 == "dev" ]]; then
-	branch=dev
-elif [[ $1 == "develop" ]]; then
-	branch=develop
-else
-	branch=master
-fi
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
+case $1 in
+	dev)
+		branch=dev
+	;;
+	develop)
+		branch=develop
+	;;
+	*)
+		branch=master
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
+	;;
+esac
+
+
 echo ""
 echo ""
 cd /var/www/html/cacti/plugins

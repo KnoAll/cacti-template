@@ -99,7 +99,7 @@ fi
 echo -e "\033[32m Installing prerequisites, this may take a while too..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
-	sudo apt -y -qq install dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
+	sudo apt -y -qq install autoconf dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
 	if [ $? -ne 0 ];then
 		echo -e "\033[31m Something went wrong installing prerequisites, exiting..."
 		echo -e -n "\033[0m"
@@ -162,15 +162,18 @@ func_dbask () {
           echo -e "\033[32m Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
 	  read -n 1 -p "1/2: " db
         if [ "$db" = "1" ]; then
-		echo -e "\033[32m Importing default Cacti db..."
+		echo ""
+		echo -e "\033[32m Setting up default db..."
 		echo -e -n "\033[0m"
 		curl -s https://raw.githubusercontent.com/Cacti/cacti/master/cacti.sql | sudo mysql cacti
+		#sudo mysql cacti < /var/www/html/cacti/cacti.sql
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
 			exit 1
 		else
-			echo ""
+		echo -e "\033[32m Imported Cacti db. The default username/password is admin and admin."
+		echo -e -n "\033[0m"
 		fi
 	elif [ "$db" = "2" ]; then
 		echo ""
@@ -182,7 +185,8 @@ func_dbask () {
 			echo -e -n "\033[0m"
 			exit 1
 		else
-			echo ""
+		echo -e "\033[32m The default username/password is admin and Cactipw1! (including the exclamation)."
+		echo -e -n "\033[0m"
 		fi
 	else
 		echo ""
@@ -450,11 +454,20 @@ func_smokeask () {
 		func_smokeask
 	fi
 }
-func_smokeask
 
-echo -e "\033[32m Checking for Cacti updates..."
-echo -e -n "\033[0m"
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+case $os_dist in
+	raspbian)
+		echo -e "\033[32m If you want to install SmokePing check my install script at https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping"
+		echo -e "\033[32m Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		echo -e -n "\033[0m"
+	;;
+	*)
+		func_smokeask
+		echo -e "\033[32m Checking for Cacti updates..."
+		echo -e -n "\033[0m"
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+	;;
+esac
 
 echo -e "\033[32m All Done!"
 echo -e -n "\033[0m"

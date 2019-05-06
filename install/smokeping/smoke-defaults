@@ -1,0 +1,4 @@
+SHARED_SECRET=/opt/smokeping/etc/secret
+MASTER_URL=http://0.0.0.0/smokeping/smokeping.cgi
+SLAVE_NAME=$hostname
+MODE=slave

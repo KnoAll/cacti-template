@@ -2,33 +2,56 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh)
 
-if [[ `whoami` == "root" ]]; then
-    echo -e "\033[31m You ran me as root! Do not run me as root!"
-    echo -e -n "\033[0m"
-    exit 1
-elif [[ `whoami` == "cacti" ]]; then
-	if [ -f ~/cacti-upgrade.sh ]
-	then
-		if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
-		echo -e "\033[31m Uh-oh. RaspberryPi is not yet supported. Exiting..."
+case $(whoami) in
+        root)
+		echo -e "\033[31m You ran me as root! Do not run me as root!"
+		echo -e -n "\033[0m"
 		exit 1
-			os_dist=raspbian
-			os_name=Raspbian
-			webserver=apache2
-		elif grep -q "CentOS Linux 7" /etc/os-release; then
-			os_dist=centos
-			os_name=CentOS7
-			webserver=httpd
+		;;
+        pi)
+		echo -e "\033[31m You ran me as pi user! Do not run me as pi!"
+		echo -e -n "\033[0m"
+		exit 1
+                ;;
+        cacti)
+		if [ -f ~/cacti-upgrade.sh ]
+		then
+			if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+				os_dist=raspbian
+				os_name=Raspbian
+				webserver=apache2
+				webconf=/etc/apache2/sites-enabled
+			elif grep -q "CentOS Linux 7" /etc/os-release; then
+				os_dist=centos
+				os_name=CentOS7
+				webserver=httpd
+				webconf=/etc/httpd/conf.d
+			fi
+		else
+			echo -e "\033[31m You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"
+			
+			echo -e -n "\033[0m"	
 		fi
-	fi
-else
-echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-echo -e -n "\033[0m"
-exit 1
-fi
+                ;;
+        *)
+		echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+                ;;
+esac
+case $1 in
+	dev)
+		param1=$1
+		param2=$2
+		branch=dev
+	;;
+	*)
+		branch=master
+	;;
+esac
 
 # get the Smokeping version
-upgrade_version=2.006011
+#upgrade_version=2.006011
 prod_version=2.007003
 web_version=2.7.3
 dev_version=
@@ -69,12 +92,25 @@ fi
 
 function install-smokeping () {
 echo -e "\033[32m Beginning SmokePing install..."
-echo -e "\033[32m Installing required CentOS packages..."
+echo -e "\033[32m Installing required $os_name packages..."
 echo -e -n "\033[0m"
 cd
-sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
+case $os_dist in
+	raspbian)
+		sudo apt install -y librrds-perl dnsutils daemon python3-pip libnet-ssleay-perl
+		sudo a2enmod -q  cgi
+		;;
+	centos)
+		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
+		;;
+	*)
+		echo -e "\033[31m Uh-oh. Sorry, unsupported OS Exiting..."
+		exit 1
+		;;
+esac
+
 if [ $? -ne 0 ];then
-                echo -e "\033[31m CentOS update error cannot install, exiting..."
+                echo -e "\033[31m Update error cannot install, exiting..."
                 echo -e -n "\033[0m"
 		exit 1
 else
@@ -110,43 +146,57 @@ else
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping-init.d
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+case $os_dist in
+	centos)
+		echo ""
+	;;
+	raspbian)
+		sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
+	;;
+esac
 			sudo mv smokeping-init.d /etc/init.d/smokeping			
 			sudo chmod +x /etc/init.d/smokeping
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.conf
-			sudo mv smokeping.conf /etc/httpd/conf.d/smokeping.conf
-			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart httpd.service			
+			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+			sudo mv smokeping.conf $webconf/smokeping.conf
+			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service			
 		fi
 	fi
 fi
 }
-
+			
 function update-config () {
 echo -e "\033[32m Updating SmokePing config..."
 echo -e -n "\033[0m"
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/smokeping.config
+	sudo echo ""
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
 function update-permissions () {
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions-smokeping.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
 }
 
 upgrade-fping
 update-permissions
 install-smokeping
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
-echo ""
-echo ""
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
-echo ""
-echo ""
-
-echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
-echo -e -n "\033[0m"
-
+update-permissions
+case $param1 in
+	dev)
+	;;
+	*)
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
+	echo ""
+	echo ""
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
+	echo ""
+	echo ""
+	;;
+esac
+	echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
+	echo -e -n "\033[0m"
 exit 0
