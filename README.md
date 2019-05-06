@@ -1,3 +1,5 @@
+![Cacti Logo](/cacti.png)
+
 # Initial Cacti installation
 If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
 [Cacti installation script](install/)
