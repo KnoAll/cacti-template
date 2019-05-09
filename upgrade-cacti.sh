@@ -430,9 +430,6 @@ update-php
 update-mysqld
 upgrade-spine $2
 compress-delete
-upgrade-plugins
-check-smokeping
-update-permissions
 if [[ $1 == "dev" ]]; then
 	echo ""	
 else
@@ -443,6 +440,10 @@ else
 	echo ""
 	echo ""	
 fi
+upgrade-plugins
+check-smokeping
+update-permissions
+
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
