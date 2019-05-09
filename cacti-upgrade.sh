@@ -22,9 +22,11 @@ case $1 in
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1 $2
 	;;
 	--fix-permissions)
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=update-permissions&write=0 )
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh) $1
 	;;
 	--backup-data)
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1
 	;;
 	*)

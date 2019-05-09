@@ -30,5 +30,4 @@ case $(whoami) in
                 ;;
 esac
 
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
 exit
