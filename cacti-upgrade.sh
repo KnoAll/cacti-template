@@ -1,5 +1,5 @@
 #!/bin/bash
-
+scriptver=v1.2.3
 case $(whoami) in
 	root)
 		echo -e "\033[31m You ran me as root! Do not run me as root!"
