@@ -42,7 +42,7 @@ else
 fi
 
 # get latest version of cacti-upgrade
-if grep -q counter cacti-upgrade.sh; then
+if grep -q v1.2.3 cacti-upgrade.sh; then
 	echo ""
 else
   rm cacti-upgrade.sh
