@@ -17,7 +17,7 @@ fi
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.3
+prod_version=1.2.4
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
@@ -42,7 +42,7 @@ else
 fi
 
 # get latest version of cacti-upgrade
-if grep -q counter cacti-upgrade.sh; then
+if grep -q v1.2.3 cacti-upgrade.sh; then
 	echo ""
 else
   rm cacti-upgrade.sh
@@ -430,9 +430,6 @@ update-php
 update-mysqld
 upgrade-spine $2
 compress-delete
-upgrade-plugins
-check-smokeping
-update-permissions
 if [[ $1 == "dev" ]]; then
 	echo ""	
 else
@@ -443,6 +440,10 @@ else
 	echo ""
 	echo ""	
 fi
+upgrade-plugins
+check-smokeping
+update-permissions
+
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 echo -e -n "\033[0m"
 exit 0
