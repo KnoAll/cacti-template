@@ -28,7 +28,7 @@ Subsequent updates can be run by simply
 ```
 from the cacti user's home directory.
 
-For interim patches, you will need to go to the ../Cacti/Cacti Github page.
+For interim patches, you will need to go to the [Cacti github page](../Cacti/Caqcti/).
 
 The script will:
 * download the cacti-upgrade.sh script
