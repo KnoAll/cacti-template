@@ -445,5 +445,6 @@ check-smokeping
 update-permissions
 
 echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+echo -e "\033[32m For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
 echo -e -n "\033[0m"
 exit 0
