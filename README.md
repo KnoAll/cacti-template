@@ -15,7 +15,7 @@ This is all still actively being worked on, so you may see changes to how things
 If you run into trouble with the script please [submit an issue](../../issues/) in the GitHub system above.
 
 ## Initial Upgrade Setup Instructions
-Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater:
+Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater, this script will upgrade to the current release:
 Run this from the command line...
 
 ```bash
@@ -27,6 +27,8 @@ Subsequent updates can be run by simply
 ./cacti-upgrade
 ```
 from the cacti user's home directory.
+
+For interim patches, you will need to go to the ../Cacti/Cacti Github page.
 
 The script will:
 * download the cacti-upgrade.sh script
