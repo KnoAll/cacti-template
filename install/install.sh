@@ -305,12 +305,16 @@ else
 	touch /var/www/html/cacti/log/cacti.log
 	mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
 	sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
-	echo ""
-	echo ""
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
-	echo ""
-	echo ""
+	if [[ $1 == "dev" ]]; then
+		echo ""	
+	else
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
+		echo ""
+		echo ""
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
+		echo ""
+		echo ""
+	fi
 fi
 
 # fixup permissions
