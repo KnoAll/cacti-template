@@ -32,6 +32,19 @@ else
     exit 1
 fi
 
+if [[ $1 == "dev" ]]; then
+	param1=$1
+	param2=$2
+	branch=dev
+	echo -e "\033[31m Now on DEV script."
+	echo -e -n "\033[0m"
+	if [[ $2 == "develop" ]]; then
+		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
+		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
+		echo -e -n "\033[0m"
+	fi
+else
+
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
@@ -179,7 +192,7 @@ func_dbask () {
 		echo ""
 		echo -e "\033[32m Importing Kevin's tweaked db..."
 		echo -e -n "\033[0m"
-		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/mysql.cacti_clean.sql | sudo mysql cacti
+		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
 			echo -e "\033[31m Something went wrong importing Cacti database, exiting..."
 			echo -e -n "\033[0m"
@@ -301,7 +314,7 @@ else
 fi
 
 # fixup permissions
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
 
 function update-php () {
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
@@ -435,14 +448,14 @@ sudo crontab -u cacti mycron
 
 echo -e "\033[32m Installing Cacti upgrade script for future use at /home/cacti/cacti-upgrade.sh..."
 echo -e -n "\033[0m"
-sudo -u cacti wget -q -P /home/cacti/ https://raw.githubusercontent.com/KnoAll/cacti-template/master/cacti-upgrade.sh
+sudo -u cacti wget -q -P /home/cacti/ https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
 sudo chmod +x /home/cacti/cacti-upgrade.sh
 
 func_smokeask () {
           echo -e "\033[32m"
 	  read -n 1 -p "Would you like to install SmokePing? y/n: " smokeinstall
         if [ "$smokeinstall" = "y" ]; then
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping/install-smokeping.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/install-smokeping.sh)
 	elif [ "$smokeinstall" = "n" ]; then
 		echo ""
 		echo -e "\033[32m Thanks for considering, going back..."
@@ -465,7 +478,7 @@ case $os_dist in
 		func_smokeask
 		echo -e "\033[32m Checking for Cacti updates..."
 		echo -e -n "\033[0m"
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-cacti.sh)
 	;;
 esac
 
