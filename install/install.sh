@@ -48,7 +48,7 @@ else
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.3
+prod_version=1.2.4
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
