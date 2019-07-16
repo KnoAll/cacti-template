@@ -245,8 +245,9 @@ if version_ge $prod_version 1.2.0; then
 			sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
 			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
 			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
+			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
 		else
-			sudo sed  -i '$ a innodb_large_prefix = 1' $mycnf_path
+			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
 		fi
 	sudo systemctl restart mysqld.service
 	fi
