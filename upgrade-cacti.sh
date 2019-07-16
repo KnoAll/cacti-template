@@ -223,12 +223,12 @@ if version_ge $prod_version 1.2.0; then
 		echo ""
 	else
 		echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
-	echo -e -n "\033[0m"
-	if [[ $pkg_mgr == "yum" ]]; then
-		mycnf_path=/etc/my.cnf
-	else
-		mycnf_path=/etc/mysql/my.cnf
-	fi
+		echo -e -n "\033[0m"
+		if [[ $pkg_mgr == "yum" ]]; then
+			mycnf_path=/etc/my.cnf
+		else
+			mycnf_path=/etc/mysql/my.cnf
+		fi
 		grep -q -w "mysqld" $mycnf_path
 		if [ $? -ne 0 ];then
 			#Fugly but works for now...
@@ -252,28 +252,7 @@ if version_ge $prod_version 1.2.0; then
 	sudo systemctl restart mysqld.service
 	fi
 fi
-		grep -q -w "mysqld" $mycnf_path
-		if [ $? -ne 0 ];then
-			#Fugly but works for now...
-			sudo sed  -i '$ a [mysqld]' $mycnf_path
-			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
-			sudo sed  -i '$ a innodb_additional_mem_pool_size=80M' $mycnf_path 
-			sudo sed  -i '$ a innodb_flush_log_at_timeout=3' $mycnf_path 
-			sudo sed  -i '$ a innodb_read_io_threads=32' $mycnf_path
-			sudo sed  -i '$ a innodb_write_io_threads=16' $mycnf_path 
-			sudo sed  -i '$ a max_heap_table_size=30M' $mycnf_path 
-			sudo sed  -i '$ a tmp_table_size=30M' $mycnf_path 
-			sudo sed  -i '$ a join_buffer_size=58M' $mycnf_path 
-			sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
-			sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
-			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
-			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
-			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
-		else
-			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
-		fi
-	sudo systemctl restart mysqld.service
-	fi
+
 grep -q -w "innodb_large_prefix" $mycnf_path
 if [ $? -ne 0 ];then
 	sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
