@@ -218,17 +218,17 @@ fi
 }
 
 function update-mysqld () {
+if [[ $pkg_mgr == "yum" ]]; then
+	mycnf_path=/etc/my.cnf
+else
+	mycnf_path=/etc/mysql/my.cnf
+fi
 if version_ge $prod_version 1.2.0; then
 	if version_ge $cactiver 1.2.0; then
 		echo ""
 	else
 		echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
-	echo -e -n "\033[0m"
-	if [[ $pkg_mgr == "yum" ]]; then
-		mycnf_path=/etc/my.cnf
-	else
-		mycnf_path=/etc/mysql/my.cnf
-	fi
+		echo -e -n "\033[0m"
 		grep -q -w "mysqld" $mycnf_path
 		if [ $? -ne 0 ];then
 			#Fugly but works for now...
@@ -252,10 +252,11 @@ if version_ge $prod_version 1.2.0; then
 	fi
 fi
 
+#Update mysql for large_prefix
 grep -q -w "innodb_large_prefix" $mycnf_path
 	if [ $? -ne 0 ];then
 		sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
-		#sudo systemctl restart mysqld.service
+		sudo systemctl restart mysqld.service
 	else
 		echo ""
 	fi
