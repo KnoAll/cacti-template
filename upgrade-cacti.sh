@@ -255,7 +255,7 @@ fi
 grep -q -w "innodb_large_prefix" $mycnf_path
 	if [ $? -ne 0 ];then
 		sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
-		sudo systemctl restart mysqld.service
+		#sudo systemctl restart mysqld.service
 	else
 		echo ""
 	fi
