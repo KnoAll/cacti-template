@@ -223,12 +223,12 @@ if version_ge $prod_version 1.2.0; then
 		echo ""
 	else
 		echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
-		echo -e -n "\033[0m"
-		if [[ $pkg_mgr == "yum" ]]; then
-			mycnf_path=/etc/my.cnf
-		else
-			mycnf_path=/etc/mysql/my.cnf
-		fi
+	echo -e -n "\033[0m"
+	if [[ $pkg_mgr == "yum" ]]; then
+		mycnf_path=/etc/my.cnf
+	else
+		mycnf_path=/etc/mysql/my.cnf
+	fi
 		grep -q -w "mysqld" $mycnf_path
 		if [ $? -ne 0 ];then
 			#Fugly but works for now...
@@ -245,21 +245,20 @@ if version_ge $prod_version 1.2.0; then
 			sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
 			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
 			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
-			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
 		else
-			sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
+			echo "put in other mysqld stuff here"
 		fi
 	sudo systemctl restart mysqld.service
 	fi
 fi
 
 grep -q -w "innodb_large_prefix" $mycnf_path
-if [ $? -ne 0 ];then
-	sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
-	sudo systemctl restart mysqld.service
-else
-	echo ""
-fi
+	if [ $? -ne 0 ];then
+		sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
+		sudo systemctl restart mysqld.service
+	else
+		echo ""
+	fi
 }
 
 function backup-db () {
