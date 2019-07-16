@@ -246,7 +246,7 @@ if version_ge $prod_version 1.2.0; then
 			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
 			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
 		else
-			echo "put in other mysqld stuff here"
+			sudo sed  -i '$ a innodb_large_prefix = 1' $mycnf_path
 		fi
 	sudo systemctl restart mysqld.service
 	fi
