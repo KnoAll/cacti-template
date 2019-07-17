@@ -50,7 +50,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.4
+prod_version=1.2.5
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -189,6 +189,7 @@ func_dbask () {
 		else
 		echo -e "\033[32m Imported Cacti db. The default username/password is admin and admin."
 		echo -e -n "\033[0m"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
 		fi
 	elif [ "$db" = "2" ]; then
 		echo ""
@@ -202,6 +203,7 @@ func_dbask () {
 		else
 		echo -e "\033[32m The default username/password is admin and Cactipw1! (including the exclamation)."
 		echo -e -n "\033[0m"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-kevin&write=0 )
 		fi
 	else
 		echo ""
