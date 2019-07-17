@@ -136,6 +136,7 @@ if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		echo ""
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
 		upgrade-plugins
 		check-smokeping
 		echo -e "\033[32m All done!"
