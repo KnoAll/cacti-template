@@ -44,11 +44,13 @@ if [[ $1 == "dev" ]]; then
 		echo -e -n "\033[0m"
 	fi
 else
+	branch=master
+fi
 
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.4
+prod_version=1.2.5
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -59,7 +61,7 @@ if [[ $1 == "develop" ]]; then
 	prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
 fi
 
-echo -e "\033[32m This script installs all prerequisites and sets up Cacti."
+echo -e "\033[32m This script installs all prerequisites and sets up Cacti v$prod_version."
 echo -e "\033[32m This\033[31m ONLY\033[32m works on a brand new clean install of $os_name without any changes or updates."
 echo -e "\033[32m Use only at your own risk!"
 echo -e -n "\033[0m"
@@ -187,6 +189,7 @@ func_dbask () {
 		else
 		echo -e "\033[32m Imported Cacti db. The default username/password is admin and admin."
 		echo -e -n "\033[0m"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
 		fi
 	elif [ "$db" = "2" ]; then
 		echo ""
@@ -200,6 +203,7 @@ func_dbask () {
 		else
 		echo -e "\033[32m The default username/password is admin and Cactipw1! (including the exclamation)."
 		echo -e -n "\033[0m"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-kevin&write=0 )
 		fi
 	else
 		echo ""
