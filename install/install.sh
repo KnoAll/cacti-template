@@ -44,7 +44,7 @@ if [[ $1 == "dev" ]]; then
 		echo -e -n "\033[0m"
 	fi
 else
-	echo ""
+	branch=master
 fi
 
 # get the Cacti version
