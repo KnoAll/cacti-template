@@ -6,7 +6,7 @@ if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
     exit 1
-elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
 		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
 		echo -e -n "\033[0m"
