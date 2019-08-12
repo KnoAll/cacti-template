@@ -6,6 +6,17 @@ if [[ `whoami` == "root" ]]; then
     echo -e "\033[31m You ran me as root! Do not run me as root!"
     echo -e -n "\033[0m"
     exit 1
+elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+	if [[ `whoami` != "pi" ]]; then
+		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
+		echo -e -n "\033[0m"
+		exit 1
+	else
+		os_dist=raspbian
+		os_name=Raspbian
+		webserver=apache2
+		php-ver=7.0
+	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
 		echo -e "\033[31m Uh-oh. You are not logged in as the default pi user. Exiting..."
@@ -15,6 +26,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
+		php-ver=7.3
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -328,8 +340,8 @@ function update-php () {
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
-	phpini_path=/etc/php/7.0/apache2/php.ini
-	phpcliini_path=/etc/php/7.0/cli/php.ini
+	phpini_path=/etc/php/$php-ver/apache2/php.ini
+	phpcliini_path=/etc/php/$php-ver/cli/php.ini
 elif [[ $os_dist == "centos" ]]; then
 	phpini_path=/etc/php.ini
 	echo -e "\033[32m Allowing http/s access through firewall..."
