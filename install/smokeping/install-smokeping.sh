@@ -16,7 +16,7 @@ case $(whoami) in
         cacti)
 		if [ -f ~/cacti-upgrade.sh ]
 		then
-			if grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
+			if grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 				os_dist=raspbian
 				os_name=Raspbian
 				webserver=apache2
