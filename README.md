@@ -45,5 +45,3 @@ The script will:
 
 Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
-
-test ![Image of Yaktocat](http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&trackip=0&cache=0&inc=0)
