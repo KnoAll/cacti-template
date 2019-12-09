@@ -271,6 +271,8 @@ if [ $? -ne 0 ];then
 		echo ""
 	fi
 
+mysql -u root -pcacti cacti -s -e "ALTER DATABASE cacti CHARACTER SET = utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 }
 
 function backup-db () {
