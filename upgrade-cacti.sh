@@ -17,7 +17,7 @@ fi
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.7
+prod_version=1.2.8
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [ $? -ne 0 ];then
@@ -245,7 +245,8 @@ if version_ge $prod_version 1.2.0; then
 			sudo sed  -i '$ a innodb_buffer_pool_size=450M' $mycnf_path 
 			sudo sed  -i '$ a character-set-server=utf8mb4' $mycnf_path 
 			sudo sed  -i '$ a collation-server=utf8mb4_unicode_ci' $mycnf_path 
-			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path 
+			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
+			sudo sed  -i '$ a innodb_file_format=Barracuda' $mycnf_path
 		else
 			echo "put in other mysqld stuff here"
 		fi
@@ -261,6 +262,17 @@ grep -q -w "innodb_large_prefix" $mycnf_path
 	else
 		echo ""
 	fi
+#Barracuda file format update
+grep -q -w "innodb_file_format" $mycnf_path
+if [ $? -ne 0 ];then
+		sudo sed  -i '$ a innodb_file_format=Barracuda' $mycnf_path
+		sudo systemctl restart mysqld.service
+	else
+		echo ""
+	fi
+
+mysql -u root -pcacti cacti -s -e "ALTER DATABASE cacti CHARACTER SET = utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 }
 
 function backup-db () {
