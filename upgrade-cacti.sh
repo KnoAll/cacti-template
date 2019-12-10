@@ -50,7 +50,7 @@ else
   chmod +x cacti-upgrade.sh
 fi
 
-file="~/cacti_template"
+file="template"
 if [ -e "$file" ]
 then
 	echo "$file found."
