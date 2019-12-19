@@ -54,7 +54,7 @@ file="template"
 if [ -e "$file" ]
 then
 	echo "$file found."
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-template&write=0 )
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
 	rm $file
 else
 	echo "$file not found."
