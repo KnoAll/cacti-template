@@ -15,7 +15,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
-		verphp=7.0
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
@@ -26,7 +26,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
-		verphp=7.3
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
