@@ -15,7 +15,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
-		php-ver=7.0
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
@@ -26,7 +26,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
-		php-ver=7.3
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -62,7 +62,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.5
+prod_version=1.2.8
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	echo -e "\033[31m Cacti is already installed, cannot proceed..."
@@ -340,8 +340,8 @@ function update-php () {
 echo -e "\033[32m Updating php settings for cacti v1.2.x..."
 echo -e -n "\033[0m"
 if [[ $os_dist == "raspbian" ]]; then
-	phpini_path=/etc/php/$php-ver/apache2/php.ini
-	phpcliini_path=/etc/php/$php-ver/cli/php.ini
+	phpini_path=/etc/php/$verphp/apache2/php.ini
+	phpcliini_path=/etc/php/$verphp/cli/php.ini
 elif [[ $os_dist == "centos" ]]; then
 	phpini_path=/etc/php.ini
 	echo -e "\033[32m Allowing http/s access through firewall..."
