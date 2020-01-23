@@ -16695,7 +16695,7 @@
 	<hash_0300136320f60a36204553a3f3eb5a0cbe3cf0>
 		<name>Percona Get MySQL Stats/MyISAM Indexes IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gg,gh,gi,gj --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gg,gh,gi,gj --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013934cdf24b514089e80686e33c1991951>
 				<name>Hostname</name>
@@ -16783,7 +16783,7 @@
 	<hash_030013b3beeeac34ff6f5bb8fb016dc2823f12>
 		<name>Percona Get MySQL Stats/MyISAM Key Cache IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items og,oh,oi --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items og,oh,oi --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013bc34bd6e24a311f053c88354a3af36e0>
 				<name>Hostname</name>
@@ -16862,7 +16862,7 @@
 	<hash_0300135e5197697ae02f2a202687ebb97f2e97>
 		<name>Percona Get MySQL Stats/InnoDB Buffer Pool IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gq,gr,gs,gt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gq,gr,gs,gt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013fd86b8b9d8eb25f22b3ac683a5f3c9bf>
 				<name>Hostname</name>
@@ -16950,7 +16950,7 @@
 	<hash_0300137d353b85917b1971e0520a40f9dd1f1e>
 		<name>Percona Get MySQL Stats/InnoDB I/O IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gx,gy,gz,hg --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gx,gy,gz,hg --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700138791cb2e26158b5d7b5b866411831904>
 				<name>Hostname</name>
@@ -17038,7 +17038,7 @@
 	<hash_0300132645dedd2ea931cbaf5bf47e3db63763>
 		<name>Percona Get MySQL Stats/InnoDB Insert Buffer IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hq,hr,hs --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hq,hr,hs --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013c14695aa7e3e0abb7c496d09654957f3>
 				<name>Hostname</name>
@@ -17117,7 +17117,7 @@
 	<hash_030013c81cfb6fa66a3ff71c94a7ed55eae2ec>
 		<name>Percona Get MySQL Stats/InnoDB Insert Buffer Usage IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items no,np,nq --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items no,np,nq --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700133f801ffd02bb44b40c0058abd19726ad>
 				<name>Hostname</name>
@@ -17196,7 +17196,7 @@
 	<hash_030013cf16a609e4bf368aa9722c354a672d73>
 		<name>Percona Get MySQL Stats/InnoDB Semaphores IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ht,hu,hv --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ht,hu,hv --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013ca981294527cd8c10505e8e610f7b496>
 				<name>Hostname</name>
@@ -17275,7 +17275,7 @@
 	<hash_0300134cd4a1b51de43e349587ac1191e2493a>
 		<name>Percona Get MySQL Stats/InnoDB Row Operations IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hw,hx,hy,hz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hw,hx,hy,hz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700131115b10cd0b47a879e83258eab2be9c1>
 				<name>Hostname</name>
@@ -17363,7 +17363,7 @@
 	<hash_0300131152442f3f9cdf378632b8e0a7381f71>
 		<name>Percona Get MySQL Stats/MySQL Table Locks IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ig,ih,ii --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ig,ih,ii --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013246ffe6a70da833934ad58e470c05868>
 				<name>Hostname</name>
@@ -17442,7 +17442,7 @@
 	<hash_0300136e1114c09420a4a3911e549f3bab790e>
 		<name>Percona Get MySQL Stats/MySQL Connections IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ip,iq,ir,iu,ix,iz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ip,iq,ir,iu,ix,iz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700132352a983e585421f9a693578fb918064>
 				<name>Hostname</name>
@@ -17548,7 +17548,7 @@
 	<hash_030013e9c0ac7839f867fff41b6bb31a0197ac>
 		<name>Percona Get MySQL Stats/MySQL Replication IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jg,jh,ji,jj,jk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jg,jh,ji,jj,jk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001338e8e144895068156aafa00f1adbaee9>
 				<name>Hostname</name>
@@ -17645,7 +17645,7 @@
 	<hash_0300138df187756a87c00434aa900062649301>
 		<name>Percona Get MySQL Stats/MySQL Query Cache IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jn,jo,jp,jq,jr --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jn,jo,jp,jq,jr --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700134a0c0ef4952e834015bb938e9d2fadde>
 				<name>Hostname</name>
@@ -17742,7 +17742,7 @@
 	<hash_030013351ff9fcc681ed9b6158b300c46b0442>
 		<name>Percona Get MySQL Stats/MySQL Query Cache Memory IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jl,jm,js,jt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items jl,jm,js,jt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013623de342f970b6a7bb12b9bb7b78d3b3>
 				<name>Hostname</name>
@@ -17830,7 +17830,7 @@
 	<hash_030013f432443f4222c3e87a89a3ae0d89bbfc>
 		<name>Percona Get MySQL Stats/MySQL Command Counters IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ju,jv,jw,jx,jy,jz,kg,kh,ki,kj,kk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ju,jv,jw,jx,jy,jz,kg,kh,ki,kj,kk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013fbe2b7a3aa88d34cf34f219fe89b01f3>
 				<name>Hostname</name>
@@ -17981,7 +17981,7 @@
 	<hash_0300138867049d5b38d19ffeaca629ff9dc1f6>
 		<name>Percona Get MySQL Stats/MySQL Select Types IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kl,km,kn,ko,kp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kl,km,kn,ko,kp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001349f278096b8fed1b231578c8bd93780f>
 				<name>Hostname</name>
@@ -18078,7 +18078,7 @@
 	<hash_0300137f039b51462f5f9eb7a20b3377152b44>
 		<name>Percona Get MySQL Stats/MySQL Sorts IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kq,kr,ks,kt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kq,kr,ks,kt --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700137c730380a7f8d70eeb903eab317c57d2>
 				<name>Hostname</name>
@@ -18166,7 +18166,7 @@
 	<hash_030013523e081a07d958e7b642bdaab1ab5e37>
 		<name>Percona Get MySQL Stats/MySQL Temporary Objects IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ku,kv,kw --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ku,kv,kw --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013d4b1fac5caa7ac08e230c37b96cd7abe>
 				<name>Hostname</name>
@@ -18245,7 +18245,7 @@
 	<hash_0300130dabeece58fb8b6deacbed3bc9076279>
 		<name>Percona Get MySQL Stats/MySQL Network Traffic IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kx,ky --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kx,ky --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013fbe53f14791e2b46cc4040f0b84fad5d>
 				<name>Hostname</name>
@@ -18315,7 +18315,7 @@
 	<hash_03001334b7fe57a875f7508ef08f5f26908192>
 		<name>Percona Get MySQL Stats/InnoDB Buffer Pool Activity IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gu,gv,gw --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gu,gv,gw --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001313d07eee4573b5a0dc1f6bacd4e16853>
 				<name>Hostname</name>
@@ -18394,7 +18394,7 @@
 	<hash_030013eb9e9b0210dfd3e8d04ca5e4f2fa99c0>
 		<name>Percona Get MySQL Stats/InnoDB I/O Pending IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hh,hi,hj,hk,hl,hm,hn,ho,hp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items hh,hi,hj,hk,hl,hm,hn,ho,hp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700138f37467adf39bc8205c54ad8bdec0486>
 				<name>Hostname</name>
@@ -18527,7 +18527,7 @@
 	<hash_03001354fd9a8b8b6a60ed8d66f5f4a71e49d1>
 		<name>Percona Get MySQL Stats/InnoDB Log IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kz,lg,lh,li --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items kz,lg,lh,li --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700139a086a96ab9c7bd0cc82ad731d292a35>
 				<name>Hostname</name>
@@ -18615,7 +18615,7 @@
 	<hash_0300132205d3c2ac1d8f4cdcf5f6f51f510f5e>
 		<name>Percona Get MySQL Stats/MySQL Binary/Relay Logs IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lj,ll,lm,ln --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lj,ll,lm,ln --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013ee624627bc965743a9d207f4dd32bd1b>
 				<name>Hostname</name>
@@ -18703,7 +18703,7 @@
 	<hash_0300134eaa3d6ccca5894624923d3e49cdb859>
 		<name>Percona Get MySQL Stats/InnoDB Transactions IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gk,gl --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gk,gl --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013bc2c8c35f40923041ab9d532770c46ae>
 				<name>Hostname</name>
@@ -18773,7 +18773,7 @@
 	<hash_030013b87a5d417101e815ee8ad896e2ac66bb>
 		<name>Percona Get MySQL Stats/InnoDB Transactions Active/Locked IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gm,gn,go,gp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items gm,gn,go,gp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013a958b96b688f3c0c8ed7258f70de8b43>
 				<name>Hostname</name>
@@ -18861,7 +18861,7 @@
 	<hash_030013ba52c7a68e8c3ca86370472569d141b5>
 		<name>Percona Get MySQL Stats/MySQL Files and Tables IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ij,ik,il,io --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ij,ik,il,io --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700131f0f5fb3cc50f16f3cad159275589d31>
 				<name>Hostname</name>
@@ -18949,7 +18949,7 @@
 	<hash_030013f3060ab3a7e67f43617f145b959f0bfd>
 		<name>Percona Get MySQL Stats/MySQL Threads IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items it,iu,iv,iw,iy --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items it,iu,iv,iw,iy --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700131e18bc2f121f2e62990bc9744f8093a7>
 				<name>Hostname</name>
@@ -19046,7 +19046,7 @@
 	<hash_030013183248368488396581316becd0d7e3d0>
 		<name>Percona Get MySQL Stats/InnoDB Memory Allocation IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nl,nm --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nl,nm --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700134984a6cf23b43395f483400e1e892db3>
 				<name>Hostname</name>
@@ -19116,7 +19116,7 @@
 	<hash_030013609fee6e584ebf0494849e520dfe7113>
 		<name>Percona Get MySQL Stats/InnoDB Adaptive Hash Index IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nj,nk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nj,nk --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700136880e76515aaac6cb4cafdfd42d8175a>
 				<name>Hostname</name>
@@ -19186,7 +19186,7 @@
 	<hash_0300139bdc8ceb6aa4362f7367ad425b3fb91f>
 		<name>Percona Get MySQL Stats/InnoDB Internal Hash Memory Usage IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nr,ns,nt,nu,nv,nw,nx --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nr,ns,nt,nu,nv,nw,nx --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013fb81e85fa1ae5cb03938d486249aa536>
 				<name>Hostname</name>
@@ -19301,7 +19301,7 @@
 	<hash_0300136f3e1d8018935708aa53dd47b41117ff>
 		<name>Percona Get MySQL Stats/InnoDB Tables In Use IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lo,nh --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lo,nh --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001310a5a931937b566939b3a71d091f1543>
 				<name>Hostname</name>
@@ -19371,7 +19371,7 @@
 	<hash_030013d9050900f7c66bd270702f10d3b65f1f>
 		<name>Percona Get MySQL Stats/InnoDB Current Lock Waits IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ni --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ni --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001371e7debe6e2a4dbde8d173248bc120e6>
 				<name>Hostname</name>
@@ -19432,7 +19432,7 @@
 	<hash_0300139956a9f92530dd2783d7af01bf009372>
 		<name>Percona Get MySQL Stats/InnoDB Lock Structures IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001391c2ff570fd3c54a08ac6cef2c28926d>
 				<name>Hostname</name>
@@ -19493,7 +19493,7 @@
 	<hash_030013dd79a9fc94eadde02a0a88867929b27c>
 		<name>Percona Get MySQL Stats/InnoDB Checkpoint Age IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nn --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nn --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001363427b9862358dae8270ec597e49198f>
 				<name>Hostname</name>
@@ -19554,7 +19554,7 @@
 	<hash_0300139a4bce05445d5525d812bb4a0228fff9>
 		<name>Percona Get MySQL Stats/InnoDB Row Lock Time IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items oj --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items oj --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013564b918da78974a86135fdf7299c6e48>
 				<name>Hostname</name>
@@ -19615,7 +19615,7 @@
 	<hash_030013d7b63e62949e69cd3d7183e1257d7214>
 		<name>Percona Get MySQL Stats/InnoDB Row Lock Waits IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ok --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ok --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001362099653ccc6f7dde0aef559ca3d57bb>
 				<name>Hostname</name>
@@ -19676,7 +19676,7 @@
 	<hash_030013ed8edb819a12225d370e91503ca31e0b>
 		<name>Percona Get MySQL Stats/InnoDB Semaphore Waits IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ny --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ny --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013e23e84db6e3ed07ea222ec64ed094fda>
 				<name>Hostname</name>
@@ -19737,7 +19737,7 @@
 	<hash_0300132a4eb423ea00daa984e873c866756499>
 		<name>Percona Get MySQL Stats/InnoDB Semaphore Wait Time IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items nz --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001325f594243c1172d3f963db5241538e3b>
 				<name>Hostname</name>
@@ -19798,7 +19798,7 @@
 	<hash_03001372b047fd9e1573caf94f00a872835b6a>
 		<name>Percona Get MySQL Stats/MySQL Processlist IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lq,lr,ls,lt,lu,lv,lw,lx,ly,lz,mg,mh,mi,mj,mk,ml --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items lq,lr,ls,lt,lu,lv,lw,lx,ly,lz,mg,mh,mi,mj,mk,ml --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700132e3c57a0fba51952adbd8d8cf8902e33>
 				<name>Hostname</name>
@@ -19994,7 +19994,7 @@
 	<hash_030013b3c2892eaa4a1c3c4f03d176e4dc04b0>
 		<name>Percona Get MySQL Stats/MySQL Transaction Handler IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items mm,mw,mx,my --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items mm,mw,mx,my --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013fb572751eda1ba0e068769a49f268e39>
 				<name>Hostname</name>
@@ -20082,7 +20082,7 @@
 	<hash_030013c245e15cc8f12b9c21eb0a2d6790e11a>
 		<name>Percona Get MySQL Stats/MySQL Handlers IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items mn,mq,mr,ms,mt,mu,mv,mz,ng --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items mn,mq,mr,ms,mt,mu,mv,mz,ng --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013010ab87ad58048db81c71ab784dfc036>
 				<name>Hostname</name>
@@ -20215,7 +20215,7 @@
 	<hash_030013380e0845ae1e8577bb10877f6acccc7d>
 		<name>Percona Get MySQL Stats/MySQL Query Time Histogram (Count) IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ol,om,on,oo,op,oq,or,os,ot,ou,ov,ow,ox,oy --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items ol,om,on,oo,op,oq,or,os,ot,ou,ov,ow,ox,oy --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_07001387477c4deff6a96fc3ef09fe4a9ac338>
 				<name>Hostname</name>
@@ -20393,7 +20393,7 @@
 	<hash_030013cb1b17eebe006186fc0c0dc733e099a6>
 		<name>Percona Get MySQL Stats/MySQL Query Response Time (Microseconds) IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items oz,pg,ph,pi,pj,pk,pl,pm,pn,po,pp,pq,pr,ps --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items oz,pg,ph,pi,pj,pk,pl,pm,pn,po,pp,pq,pr,ps --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_070013c7515944198d7a7c8c7fba51ca7a4bd2>
 				<name>Hostname</name>
@@ -20571,7 +20571,7 @@
 	<hash_03001381e23a94026e7252453f4b45aac75644>
 		<name>Percona Get MySQL Stats/InnoDB Buffer Pool Efficiency IM</name>
 		<type_id>1</type_id>
-		<input_string>&lt;path_php_binary&gt; -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items qo,qp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
+		<input_string>php -q &lt;path_cacti&gt;/scripts/ss_get_mysql_stats.php --host &lt;hostname&gt; --items qo,qp --user &lt;username&gt; --pass &lt;password&gt; --port &lt;port&gt; --server-id &lt;serverid&gt;</input_string>
 		<fields>
 			<hash_0700133e502d00f18ff491439d8b97fa2016a8>
 				<name>Hostname</name>
