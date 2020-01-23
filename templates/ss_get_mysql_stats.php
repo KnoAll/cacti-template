@@ -230,7 +230,8 @@ function parse_cmdline( $args ) {
          if ($nextparam !== false && strpos($nextparam, '--') !==0) {
             list($tmp, $value) = each($args);
          }
-         $options[$param] = $value;
+ #        $options[$param] = $value;
+         if ($value != '') $options[$param] = $value;
       }
    }
    if ( array_key_exists('host', $options) ) {
