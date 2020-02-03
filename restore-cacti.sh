@@ -31,12 +31,6 @@ case $(whoami) in
                 ;;
 esac
 
-# get file from param - list files for selection?
-# unzip file and check for .cacti-backup
-# drop/restore mysql cacti db
-# dump exiting rra and move backup rra
-# check for proper file permissions
-
 check-cacti() {
 # check existing cacti installation
 	test -f /var/www/html/cacti/include/cacti_version
@@ -58,5 +52,10 @@ check-cacti() {
 }
 
 
+# get file from param - list files for selection?
+# unzip file and check for .cacti-backup
+# drop/restore mysql cacti db
+# dump exiting rra and move backup rra
+# check for proper file permissions
 
 exit 0
