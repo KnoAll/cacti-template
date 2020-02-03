@@ -3,15 +3,15 @@
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/restore-cacti.sh)
 
 printinfo() {
-  printf "::: ${green}%s${reset}\n" "$@"
+	printf "::: ${green}%s${reset}\n" "$@"
 }
 
 printwarn() {
- printf "${tan}*** WARNING: %s${reset}\n" "$@"
+	printf "${tan}*** WARNING: %s${reset}\n" "$@"
 }
 
 printerror() {
- printf "${red}*** ERROR: %s${reset}\n" "$@"
+	printf "${red}*** ERROR: %s${reset}\n" "$@"
 }
 
 case $(whoami) in
@@ -53,6 +53,19 @@ check-cacti() {
 
 
 # get file from param - list files for selection?
+
+backupFile=backup_cacti-1.2.5.tar.gz
+unpack-check() {
+	tar -xzf ~/$backupFile
+		if [ $? -ne 0 ];then
+			printerror "Cacti unpack error cannot restore, exiting..."
+			exit 1
+		fi
+	test -e ~/$backupFile
+		if [ $? -ne 0 ];then
+			printerror "Cacti unpack error cannot restore, exiting..."
+		else
+}
 # unzip file and check for .cacti-backup
 # drop/restore mysql cacti db
 # dump exiting rra and move backup rra
