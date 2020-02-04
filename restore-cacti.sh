@@ -60,7 +60,6 @@ check-cacti() {
 
 # get file from param - list files for selection?
 backupfile=backup_cacti-20200203.tar.gz
-restorefolder=cacti_1.2.8
 unpack-check() {
 	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
@@ -70,7 +69,7 @@ unpack-check() {
 		else
 			printinfo "Unpack success, moving on..."	
 		fi
-	test -e ~/$restorefolder/.cacti-backup
+	restoreFolder=$( find . -type f -name 'cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
 		if [ $? -ne 0 ];then
 			printerror "Backup file not usable, cannot restore, exiting..."
 		else
