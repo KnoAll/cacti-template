@@ -16,7 +16,7 @@ printwarn() {
 }
 
 printerror() {
-	printf "${red}*** ERROR: %s${reset}\n" "$@"
+	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
 case $(whoami) in
