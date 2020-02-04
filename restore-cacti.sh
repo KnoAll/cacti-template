@@ -59,7 +59,7 @@ check-cacti() {
 
 
 # get file from param - list files for selection?
-backupfile=backup_cacti-20200203.tar.gz
+backupfile=backup_cacti-1.2.5.tar.gz
 unpack-check() {
 	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
