@@ -53,7 +53,7 @@ check-cacti() {
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
 		* ) 
 		printwarn "Skipping backup of existing Cacti."
-		exit;;
+		;;
 	esac
 }
 
