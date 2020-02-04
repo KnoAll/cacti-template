@@ -59,8 +59,6 @@ check-cacti() {
 
 
 # get file from param - list files for selection?
-printwarn "unpack check"
-
 #backupfile=backup_cacti-1.2.5.tar.gz
 #restorefolder=cacti_1.2.5
 unpack-check() {
