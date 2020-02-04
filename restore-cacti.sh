@@ -69,7 +69,7 @@ unpack-check() {
 		else
 			printinfo "Unpack success, moving on..."	
 		fi
-	restoreFolder=$( find . -type f -name 'cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
+	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
 		if [ $? -ne 0 ];then
 			printerror "Backup file not usable, cannot restore, exiting..."
 		else
