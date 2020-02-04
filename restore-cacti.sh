@@ -42,7 +42,7 @@ check-cacti() {
 		exit 1
 	fi
 # backup existing cacti data?
-	read -p "Do you want to continue to backup existing Cacti install before restoring over top? [y/N] " yn
+	read -p "Do you want to backup existing Cacti install before restoring over top? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
@@ -55,13 +55,14 @@ check-cacti() {
 # get file from param - list files for selection?
 
 backupFile=backup_cacti-1.2.5.tar.gz
+restoreFolder=cacti_1.2.5
 unpack-check() {
 	tar -xzf ~/$backupFile
 		if [ $? -ne 0 ];then
 			printerror "Cacti unpack error cannot restore, exiting..."
 			exit 1
 		fi
-	test -e ~/$backupFile
+	test -e ~/$restoreFolder/.cacti-backup
 		if [ $? -ne 0 ];then
 			printerror "Cacti unpack error cannot restore, exiting..."
 		else
