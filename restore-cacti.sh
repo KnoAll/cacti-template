@@ -2,6 +2,11 @@
 
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/restore-cacti.sh)
 
+green=$(tput setaf 76)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
+
 printinfo() {
 	printf "::: ${green}%s${reset}\n" "$@"
 }
@@ -13,10 +18,6 @@ printwarn() {
 printerror() {
 	printf "${red}*** ERROR: %s${reset}\n" "$@"
 }
-green=$(tput setaf 76)
-red=$(tput setaf 1)
-tan=$(tput setaf 3)
-reset=$(tput sgr0)
 
 case $(whoami) in
         root)
@@ -57,6 +58,7 @@ check-cacti() {
 
 
 # get file from param - list files for selection?
+printwarn "unpack check"
 
 backupfile=backup_cacti-1.2.5.tar.gz
 restorefolder=cacti_1.2.5
