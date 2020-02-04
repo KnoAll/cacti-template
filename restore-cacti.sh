@@ -8,7 +8,7 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 
 printinfo() {
-	printf "::: ${green}%s${reset}\n" "$@"
+	printf "${tan}::: ${green}%s${reset}\n" "$@"
 }
 
 printwarn() {
