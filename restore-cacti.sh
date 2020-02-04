@@ -59,8 +59,7 @@ check-cacti() {
 
 
 # TODO: get file from param - list files for selection?
-backupfile=backup_cacti-20200204.tar.gz
-
+backupfile=backup_cacti-1.2.3.tar.gz
 unpack-check() {
 	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
@@ -87,8 +86,21 @@ unpack-check() {
 	esac
 }
 
-# TODO: drop/restore mysql cacti db
 # TODO: dump exiting rra and move backup rra
+# TODO: drop/restore mysql cacti db
+drop-restore () {
+	gunzip $restoreFolder/mysql.cacti_*.sql.gz
+	if [ $? -ne 0 ];then
+		printerror "Backup db not usable, cannot restore, exiting..."
+		exit 1
+	else
+		sudo mysql -p cacti < $restoreFolder/mysql.cacti_*.sql
+		if [ $? -ne 0 ];then
+			printerror "Backup db did not restore properly, exiting..."
+		exit 1
+	fi
+}
+
 # TODO: check for proper file permissions
 
 check-cacti
