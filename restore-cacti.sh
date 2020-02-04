@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/restore-cacti.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/restore-cacti.sh)
 
 green=$(tput setaf 125)
 red=$(tput setaf 1)
@@ -58,7 +58,7 @@ check-cacti() {
 }
 
 
-# get file from param - list files for selection?
+# TODO: get file from param - list files for selection?
 backupfile=backup_cacti-20200204.tar.gz
 
 unpack-check() {
@@ -81,14 +81,15 @@ unpack-check() {
 		y | Y | yes | YES| Yes ) printinfo "Ok, moving on..."
 		;;
 		* ) 
-		printerror "NOT restoring Cacti v$restoreVersion."
+		printerror "NOT restoring Cacti v$restoreVersion. Exiting..."
+		exit 1
 		;;
 	esac
 }
 
-# drop/restore mysql cacti db
-# dump exiting rra and move backup rra
-# check for proper file permissions
+# TODO: drop/restore mysql cacti db
+# TODO: dump exiting rra and move backup rra
+# TODO: check for proper file permissions
 
 check-cacti
 unpack-check
