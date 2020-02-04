@@ -52,7 +52,7 @@ check-cacti() {
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
 		* ) 
-		printinfo "Ok, let's get out of here!"
+		printwarn "Ok, let's get out of here!"
 		exit;;
 	esac
 }
