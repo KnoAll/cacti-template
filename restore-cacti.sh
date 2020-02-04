@@ -97,7 +97,8 @@ drop-restore () {
 		sudo mysql -p cacti < $restoreFolder/mysql.cacti_*.sql
 		if [ $? -ne 0 ];then
 			printerror "Backup db did not restore properly, exiting..."
-		exit 1
+			exit 1
+		fi
 	fi
 }
 
