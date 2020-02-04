@@ -66,10 +66,14 @@ unpack-check() {
 		if [ $? -ne 0 ];then
 			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
+		else
+			printinfo "Unpack success, moving on..."	
 		fi
 	test -e ~/$restorefolder/.cacti-backup
 		if [ $? -ne 0 ];then
 			printerror "Backup file not usable, cannot restore, exiting..."
+		else
+			printinfo "Backup file usable..."
 		fi
 }
 # unzip file and check for .cacti-backup
