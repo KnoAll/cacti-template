@@ -78,6 +78,7 @@ unpack-check() {
 		fi
 }
 # unzip file and check for .cacti-backup
+	# check for version to be restored
 # drop/restore mysql cacti db
 # dump exiting rra and move backup rra
 # check for proper file permissions
