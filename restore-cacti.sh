@@ -62,6 +62,7 @@ check-cacti() {
 backupfile=backup_cacti-20200203.tar.gz
 restorefolder=cacti_1.2.5
 unpack-check() {
+	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
 		if [ $? -ne 0 ];then
 			printerror "Backup unpack error cannot restore, exiting..."
