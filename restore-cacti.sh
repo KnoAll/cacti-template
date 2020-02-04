@@ -65,7 +65,7 @@ unpack-check() {
 	test -e ~/$restoreFolder/.cacti-backup
 		if [ $? -ne 0 ];then
 			printerror "Cacti unpack error cannot restore, exiting..."
-		else
+		fi
 }
 # unzip file and check for .cacti-backup
 # drop/restore mysql cacti db
