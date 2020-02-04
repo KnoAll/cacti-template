@@ -62,15 +62,14 @@ check-cacti() {
 #backupfile=backup_cacti-1.2.5.tar.gz
 #restorefolder=cacti_1.2.5
 unpack-check() {
-	printwarn "unpack check"
 	tar -xzf ~/$backupfile
 		if [ $? -ne 0 ];then
-			printerror "Cacti unpack error cannot restore, exiting..."
+			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
 		fi
 	test -e ~/$restorefolder/.cacti-backup
 		if [ $? -ne 0 ];then
-			printerror "Cacti unpack error cannot restore, exiting..."
+			printerror "Backup file not usable, cannot restore, exiting..."
 		fi
 }
 # unzip file and check for .cacti-backup
