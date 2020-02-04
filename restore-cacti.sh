@@ -41,7 +41,6 @@ check-cacti() {
 	test -f /var/www/html/cacti/include/cacti_version
 	if [ $? -ne 1 ];then
 		printinfo "Valid Cacti install found..."
-		exit 0
 	else
 		printerror "Cacti is not already installed, cannot proceed."
 		exit 1
