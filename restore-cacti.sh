@@ -78,7 +78,7 @@ unpack-check() {
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
-		y | Y | yes | YES| Yes ) printinfo "Ok, moving on...
+		y | Y | yes | YES| Yes ) printinfo "Ok, moving on..."
 		;;
 		* ) 
 		printerror "NOT restoring Cacti v$restoreVersion."
