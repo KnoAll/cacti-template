@@ -60,25 +60,32 @@ check-cacti() {
 
 # get file from param - list files for selection?
 backupfile=backup_cacti-20200204.tar.gz
+
 unpack-check() {
 	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
 		if [ $? -ne 0 ];then
 			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
-		else
-			printinfo "Unpack success, moving on..."	
 		fi
 	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
 		if [ $? -ne 0 ];then
 			printerror "Backup file not usable, cannot restore, exiting..."
-		else
-			printinfo "Backup file usable..."
-			printwarn "Cacti folder $restoreFolder"
+			exit 1
 		fi
+	
+# check for version to be restored
+	restoreVersion=$( cat $restoreFolder/.cacti-backup )
+	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
+	case "$yn" in
+		y | Y | yes | YES| Yes ) printinfo "Ok, moving on...
+		;;
+		* ) 
+		printerror "NOT restoring Cacti v$restoreVersion."
+		;;
+	esac
 }
-# unzip file and check for .cacti-backup
-	# check for version to be restored
+
 # drop/restore mysql cacti db
 # dump exiting rra and move backup rra
 # check for proper file permissions
