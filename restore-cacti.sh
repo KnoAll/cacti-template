@@ -72,4 +72,7 @@ unpack-check() {
 # dump exiting rra and move backup rra
 # check for proper file permissions
 
+check-cacti
+unpack-check
+
 exit 0
