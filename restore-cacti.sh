@@ -13,6 +13,10 @@ printwarn() {
 printerror() {
 	printf "${red}*** ERROR: %s${reset}\n" "$@"
 }
+green=$(tput setaf 76)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
 
 case $(whoami) in
         root)
