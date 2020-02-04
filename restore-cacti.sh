@@ -74,6 +74,7 @@ unpack-check() {
 			printerror "Backup file not usable, cannot restore, exiting..."
 		else
 			printinfo "Backup file usable..."
+			cd $restoreFolder
 		fi
 }
 # unzip file and check for .cacti-backup
