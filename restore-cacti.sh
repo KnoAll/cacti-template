@@ -6,6 +6,7 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
+errorcount=0
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
@@ -69,14 +70,14 @@ unpack-check() {
 		fi
 	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
 		if [ $? -ne 0 ];then
-			printerror "Backup file not usable, cannot restore, exiting..."
+			printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 			exit 1
 		fi
 	
 # check for version to be restored
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
 		if [ $? -ne 0 ];then
-			printerror "Cannot verify backup for automated restore, exiting..."
+			printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 			exit 1
 		fi
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
@@ -84,7 +85,7 @@ unpack-check() {
 		y | Y | yes | YES| Yes ) printinfo "Restoring Cacti v$restoreVersion from backup..."
 		;;
 		* ) 
-		printerror "NOT restoring Cacti v$restoreVersion. Exiting..."
+		printerror "NOT restoring Cacti v$restoreVersion. Leaving unpacked files in $restoreFolder in place."
 		exit 1
 		;;
 	esac
@@ -114,13 +115,13 @@ replace-rra () {
 	mv $restoreFolder/rra /var/www/html/cacti/
 }
 
-# TODO: check for proper file permissions
+# Check file permissions
 fix-permissions () {
 	printinfo "Checking file permissions..."
 	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
 }
 
-# TODO: cleaup
+# Cleaup files
 cleanup-after () {
 	printinfo "Cleaning up source files..."
 	rm -rf $restoreFolder
@@ -130,9 +131,17 @@ check-cacti
 unpack-check
 drop-restore
 replace-rra
+#fix-permissions
 cleanup-after
 
-# TODO: counter
+# counter
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
+	
+if [ $errorcount -ne 0 ];then
+	printerror "Restoring Cacti did not complete successfully, you may be in an unstable state."
+	exit 1
+else
+	printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
+fi
 
-exit 0
+exit $errorcount
