@@ -83,7 +83,7 @@ selectBackup() {
 		    fi
 
 		    # now we can use the selected file
-		    echo "$filename installed"
+		    backupfile=$filename
 
 		    # it'll ask for another unless we leave the loop
 		    break
