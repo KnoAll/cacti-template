@@ -82,7 +82,7 @@ unpack-check() {
 			fi
 		echo "3rd Folder $restoreFolder"	
 		fi
-	
+		echo "4th Folder $restoreFolder"	
 # check for version to be restored
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
 		if [ $? -ne 0 ];then
@@ -96,6 +96,7 @@ unpack-check() {
 			echo "3rd Verson $restoreVersion"
 			fi
 		fi
+		echo "4th Verson $restoreVersion"		
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) printinfo "Restoring Cacti v$restoreVersion from backup..."
