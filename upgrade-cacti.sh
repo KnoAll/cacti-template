@@ -25,7 +25,7 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $1 == "dev"  || "--switch-dev" ]]; then
+if [[ $1 == "dev" || "--switch-dev" ]]; then
 	param1=$1
 	param2=$2
 	branch=dev
