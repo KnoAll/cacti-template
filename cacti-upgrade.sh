@@ -1,5 +1,5 @@
 #!/bin/bash
-scriptver=v1.2.3
+scriptver=v1.2.8
 case $(whoami) in
 	root)
 		echo -e "\033[31m You ran me as root! Do not run me as root!"
@@ -28,6 +28,9 @@ case $1 in
 	--backup-data)
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1
+	;;
+	--restore-data)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/restore-cacti.sh)
 	;;
 	*)
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh) $1 $2
