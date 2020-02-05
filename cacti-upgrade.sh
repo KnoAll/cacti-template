@@ -20,6 +20,16 @@ red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
 
+printinfo() {
+	printf "${tan}::: ${green}%s${reset}\n" "$@"
+}
+printwarn() {
+	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+}
+printerror() {
+	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+}
+
 welcomeMessage() {
   echo -n "${tan}"
   cat << "EOF"
@@ -72,6 +82,7 @@ case $1 in
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/restore-cacti.sh) $1 $2
 	;;
 	--switch-dev)
+		printwarn "Switching to DEV branch"
 		branch=dev
 		welcome-looper $2
 	;;
