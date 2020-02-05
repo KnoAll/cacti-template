@@ -48,6 +48,9 @@ EOF
   echo
 }
 
+branch=master
+
+welcome-looper() {
 case $1 in
 	dev)
 		echo -e "\033[31m Switching to DEV script..."
@@ -57,19 +60,26 @@ case $1 in
 	--fix-permissions)
 		welcomeMessage
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=update-permissions&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh) $1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh) $1 $2
 	;;
 	--backup-data)
 		welcomeMessage
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/backup-cacti.sh) $1 $2
 	;;
 	--restore-data)
 		welcomeMessage
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/restore-cacti.sh) $1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/restore-cacti.sh) $1 $2
+	;;
+	--switch-dev)
+		branch=dev
+		welcome-looper $2
 	;;
 	*)
 		welcomeMessage
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/upgrade-cacti.sh) $1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-cacti.sh) $1 $2
 	;;
 esac
+}
+
+welcome-looper
