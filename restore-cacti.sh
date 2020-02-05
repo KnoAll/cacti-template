@@ -64,7 +64,7 @@ check-cacti() {
 # TODO: get file from param - list files for selection?
 #backupfile=backup_cacti-1.2.3.tar.gz
 selectBackup() {
-		printinfo "The following `Cacti Backup archives were found; select one:"
+		printinfo "The following Cacti Backup archives were found; select one:"
 
 		# set the prompt used by select, replacing "#?"
 		PS3="Use number to select a file or 'stop' to cancel: "
