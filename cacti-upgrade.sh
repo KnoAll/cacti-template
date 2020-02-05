@@ -1,20 +1,5 @@
 #!/bin/bash
 scriptver=v1.2.8
-case $(whoami) in
-	root)
-		echo -e "\033[31m You ran me as root! Do not run me as root!"
-		echo -e -n "\033[0m"
-		exit 1
-	;;
-	cacti)
-	;;
-	*)
-		echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-		echo -e -n "\033[0m"
-		exit
-	;;
-esac
-
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -29,6 +14,19 @@ printwarn() {
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
+
+case $(whoami) in
+	root)
+		printerror "You ran me as root! Do not run me as root!"
+		exit 1
+	;;
+	cacti)
+	;;
+	*)
+		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
+		exit 1
+	;;
+esac
 
 welcomeMessage() {
   echo -n "${tan}"
