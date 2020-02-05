@@ -37,6 +37,8 @@ case $(whoami) in
                 ;;
 esac
 
+printwarn "Beginning Cacti data restore process..."
+
 check-cacti() {
 # check existing cacti installation
 	test -f /var/www/html/cacti/include/cacti_version
@@ -61,6 +63,7 @@ check-cacti() {
 
 # TODO: get file from param - list files for selection?
 backupfile=backup_cacti-1.2.3.tar.gz
+
 unpack-check() {
 	printinfo "Unpacking backup..."
 	tar -xzf ~/$backupfile
