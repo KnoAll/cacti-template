@@ -72,10 +72,10 @@ unpack-check() {
 			exit 1
 		fi
 	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
-		if [ $? -ne 0 ];then
+		if [[ -z $restoreFolder ]];then
 			echo "1st Folder $restoreFolder"
 			restoreFolder=$( find . -type f -name 'cacti_version' | sed -r 's|/[^/]+$||' | sed -r 's|/[^/]+$||' )
-			if [ $? -ne 0 ];then
+			if [[ -z $restoreFolder ]];then
 			echo "2nd Folder $restoreFolder"
 				printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 				exit 1
