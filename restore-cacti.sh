@@ -76,7 +76,7 @@ unpack-check() {
 # check for version to be restored
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
 		if [ $? -ne 0 ];then
-			printerror "Backup not compatible, cannot restore, exiting..."
+			printerror "Cannot verify backup for automated restore, exiting..."
 			exit 1
 		fi
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
