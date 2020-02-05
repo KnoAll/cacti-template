@@ -108,6 +108,7 @@ drop-restore () {
 
 # TODO: check for proper file permissions
 # TODO: cleaup
+# TODO: counter
 
 check-cacti
 unpack-check
