@@ -92,7 +92,16 @@ unpack-check() {
 
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
-		y | Y | yes | YES| Yes ) printinfo "Restoring Cacti v$restoreVersion from backup..."
+		y | Y | yes | YES| Yes ) 
+		read -p "Are you REALLY sure you want to restore? This will destructively overwrite the existing Cacti installation and is irreversible. [y/N] " yn
+			case "$yn" in
+				y | Y | yes | YES| Yes ) printinfo "Restoring Cacti v$restoreVersion from backup..."
+				;;
+				* ) 
+				printerror "NOT restoring Cacti v$restoreVersion. Leaving unpacked files in $restoreFolder in place."
+				exit 1
+				;;
+			esac
 		;;
 		* ) 
 		printerror "NOT restoring Cacti v$restoreVersion. Leaving unpacked files in $restoreFolder in place."
