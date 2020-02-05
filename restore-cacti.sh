@@ -79,8 +79,8 @@ unpack-check() {
 			echo "2nd Folder $restoreFolder"
 				printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 				exit 1
-				echo "3rd Folder $restoreFolder"
 			fi
+		echo "3rd Folder $restoreFolder"	
 		fi
 	
 # check for version to be restored
@@ -91,7 +91,7 @@ unpack-check() {
 			if [ $? -ne 0 ];then
 			echo "2nd Verson $restoreVersion"
 				printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
-			exit 1
+				exit 1
 			else
 			echo "3rd Verson $restoreVersion"
 			fi
