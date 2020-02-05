@@ -97,12 +97,26 @@ unpack-check() {
 			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
 		fi
-	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
+	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' )
 		if [[ -z $restoreFolder ]];then
 			restoreFolder=$( find . -type f -name 'cacti_version' | sed -r 's|/[^/]+$||' | sed -r 's|/[^/]+$||' )
 			if [[ -z $restoreFolder ]];then
-				printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
-				exit 1
+				restoreFolder=$( find . -type f -name 'mysql.cacti_*.sql.gz' | sed -r 's|/[^/]+$||' )
+				if [[ -z $restoreFolder ]];then
+					printerror "Backup file not usable. Leaving unpacked files in $restoreFolder in place."
+					exit 1
+				else
+					printwarn "Old backup found, but Cacti version cannot be verified."
+					read -p "Do you want to try to restore this unknown version? [y/N] " yn
+					case "$yn" in
+						y | Y | yes | YES| Yes ) printinfo "OK, moving on..."
+						;;
+						* ) 
+						printerror "NOT restoring Cacti. Leaving unpacked files in $restoreFolder in place."
+						exit 1
+						;;
+					esac
+				fi
 			fi
 		fi
 
