@@ -81,7 +81,7 @@ unpack-check() {
 		fi
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
-		y | Y | yes | YES| Yes ) printinfo "Ok, moving on..."
+		y | Y | yes | YES| Yes ) printinfo "Restoring Cacti v$restoreVersion from backup..."
 		;;
 		* ) 
 		printerror "NOT restoring Cacti v$restoreVersion. Exiting..."
