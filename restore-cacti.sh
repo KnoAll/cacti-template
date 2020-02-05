@@ -90,28 +90,49 @@ unpack-check() {
 	esac
 }
 
-# TODO: dump exiting rra and move backup rra
 # TODO: drop/restore mysql cacti db
 drop-restore () {
+	printinfo "Restoring Cacti DB..."
 	gunzip $restoreFolder/mysql.cacti_*.sql.gz
 	if [ $? -ne 0 ];then
-		printerror "Backup db not usable, cannot restore, exiting..."
+		printerror "Backup DB not usable, cannot restore, exiting..."
 		exit 1
 	else
 		sudo mysql -p cacti < $restoreFolder/mysql.cacti_*.sql
 		if [ $? -ne 0 ];then
-			printerror "Backup db did not restore properly, exiting..."
+			printerror "Backup DB did not restore properly, exiting..."
 			exit 1
 		fi
 	fi
 }
 
+
+# TODO: dump exiting rra and move backup rra
+replace-rra () {
+	printinfo "Restoring RRA data..."
+	rm -rf /var/www/html/cacti/rra
+	mv $restoreFolder/rra /var/www/html/cacti/
+}
+
 # TODO: check for proper file permissions
+fix-permissions () {
+	printinfo "Checking file permissions..."
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
+}
+
 # TODO: cleaup
-# TODO: counter
+cleanup-after () {
+	printinfo "Cleaning up source files..."
+	rm -rf $restoreFolder
+}
 
 check-cacti
 unpack-check
 drop-restore
+replace-rra
+cleanup-after
+
+# TODO: counter
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
 
 exit 0
