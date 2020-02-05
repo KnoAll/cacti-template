@@ -60,11 +60,10 @@ EOF
 
 branch=master
 
-welcome-looper() {
+welcomeLooper() {
 case $1 in
 	dev)
-		echo -e "\033[31m Switching to DEV script..."
-		echo -e -n "\033[0m"
+		printwarn "Switching to DEV script"
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh) $1 $2
 	;;
 	--fix-permissions)
@@ -84,7 +83,7 @@ case $1 in
 	--switch-dev)
 		printwarn "Switching to DEV branch"
 		branch=dev
-		welcome-looper $2
+		welcomeLooper $2
 	;;
 	*)
 		welcomeMessage
@@ -93,4 +92,4 @@ case $1 in
 esac
 }
 
-welcome-looper
+welcomeLooper $1 $2
