@@ -62,7 +62,33 @@ check-cacti() {
 
 
 # TODO: get file from param - list files for selection?
-backupfile=backup_cacti-1.2.3.tar.gz
+#backupfile=backup_cacti-1.2.3.tar.gz
+selectBackup() {
+		printinfo "The following `Cacti Backup archives were found; select one:"
+
+		# set the prompt used by select, replacing "#?"
+		PS3="Use number to select a file or 'stop' to cancel: "
+
+		# allow the user to choose a file
+		select filename in backup_cacti-*.tar.gz
+		do
+		    # leave the loop if the user says 'stop'
+		    if [[ "$REPLY" == stop ]]; then break; fi
+
+		    # complain if no file was selected, and loop to ask again
+		    if [[ "$filename" == "" ]]
+		    then
+			echo "'$REPLY' is not a valid number"
+			continue
+		    fi
+
+		    # now we can use the selected file
+		    echo "$filename installed"
+
+		    # it'll ask for another unless we leave the loop
+		    break
+		done
+}
 
 unpack-check() {
 	printinfo "Unpacking backup..."
@@ -147,6 +173,7 @@ cleanup-after () {
 }
 
 check-cacti
+selectBackup
 unpack-check
 drop-restore
 replace-rra
