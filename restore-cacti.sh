@@ -73,15 +73,21 @@ unpack-check() {
 		fi
 	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' |sort |uniq )
 		if [ $? -ne 0 ];then
-			printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
-			exit 1
+			restoreFolder=$( find . -type f -name 'cacti_version' | sed -r 's|/[^/]+$||' | sed -r 's|/[^/]+$||' )
+			if [ $? -ne 0 ];then
+				printerror "Backup file not usable, the archive may be too old. Leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
+				exit 1
+			fi
 		fi
 	
 # check for version to be restored
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
 		if [ $? -ne 0 ];then
-			printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
+			restoreVersion=$( cat $restoreFolder/include/cacti_version )
+			if [ $? -ne 0 ];then
+				printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 			exit 1
+			fi
 		fi
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
