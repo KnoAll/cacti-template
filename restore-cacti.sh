@@ -110,5 +110,6 @@ drop-restore () {
 
 check-cacti
 unpack-check
+drop-restore
 
 exit 0
