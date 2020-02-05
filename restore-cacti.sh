@@ -85,10 +85,10 @@ unpack-check() {
 		echo "4th Folder $restoreFolder"	
 # check for version to be restored
 	restoreVersion=$( cat $restoreFolder/.cacti-backup )
-		if [ $? -ne 0 ];then
+		if [[ -z $restoreVersion ]];then
 			echo "1st Verson $restoreVersion"
 			restoreVersion=$( cat $restoreFolder/include/cacti_version )
-			if [ $? -ne 0 ];then
+			if [[ -z $restoreVersion ]];then
 			echo "2nd Verson $restoreVersion"
 				printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 				exit 1
