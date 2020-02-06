@@ -12,15 +12,12 @@ branch=master
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
 }
-
 printwarn() {
 	printf "${tan}*** WARNING: %s${reset}\n" "$@"
 }
-
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
-
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
