@@ -25,11 +25,11 @@ if [ $? -ne 0 ];then
 	echo -e -n "\033[0m"
 	exit 1
 fi
-if [[ $1 == "dev" ]]; then
+if [[ $1 == "dev" || "--switch-dev" ]]; then
 	param1=$1
 	param2=$2
 	branch=dev
-	echo -e "\033[31m Now on DEV script."
+	echo -e "\033[31m Now on DEV branch."
 	echo -e -n "\033[0m"
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
@@ -42,7 +42,7 @@ else
 fi
 
 # get latest version of cacti-upgrade
-if grep -q v1.2.3 cacti-upgrade.sh; then
+if grep -q v1.2.8 cacti-upgrade.sh; then
 	echo ""
 else
   rm cacti-upgrade.sh
