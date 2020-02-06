@@ -140,7 +140,7 @@ fi
 }
 
 function update-config () {
-printerror "Updating Smokeping config..."
+printinfo "Updating Smokeping config..."
 if [ -f  /opt/smokeping/etc/config ];
 then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
