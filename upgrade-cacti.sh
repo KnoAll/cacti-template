@@ -143,42 +143,33 @@ fi
 }
 
 function upgrade-plugins() {
-	echo ""
-	echo -e "\033[32m Would you like to check your cacti plugins for updates?"
-	echo -e -n "\033[0m"
+	printinfo "Would you like to check your cacti plugins for updates?"
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
 			echo ""
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
 		else
-			echo ""
-			echo -e "\033[32m OK, no plug-up today..."
-			echo -e -n "\033[0m"
+			printinfo "OK, no plug-up today..."
 		fi
 }
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
-                echo -e "\033[32m Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
-		echo ""
+                printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
 		upgrade-plugins
 		check-smokeping
-		echo -e "\033[32m All done!"
-		echo -e -n "\033[0m"
+		printinfo "All done!"
                 exit 0
         else
-		echo -e "\033[32m Found compatible Cacti v$cactiver install, upgrading to v$prod_version..."
-		echo -e -n "\033[0m"
+		printinfo "Found compatible Cacti v$cactiver install, upgrading to v$prod_version..."
         fi
 else
-	echo -e "\033[31m Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
-	echo -e -n "\033[0m"
+	printerror "Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
 	exit 1
 fi
 
-echo -e "\033[32m Welcome to Kevin's Cacti Template upgrade script!"
-echo -e -n "\033[0m"
+printinfo "Welcome to Kevin's Cacti Template upgrade script!"
 sudo echo ""
 
 function update-php () {
@@ -186,8 +177,7 @@ if version_ge $prod_version 1.2.0; then
 	if version_ge $cactiver 1.2.0; then
 		echo ""
 	else
-		echo -e "\033[32m Updating php settings for cacti v1.2.x..."
-		echo -e -n "\033[0m"
+		printinfo "Updating php settings for cacti v1.2.x..."
 		if [[ $pkg_mgr == "yum" ]]; then
 			phpini_path=/etc/php.ini
 			webserver=httpd
@@ -195,26 +185,21 @@ if version_ge $prod_version 1.2.0; then
 			phpini_path=/etc/php/7.0/apache2/php.ini
 			phpclini_path=/etc/php/7.0/cli/php.ini
 			webserver=apache2
-
 		fi
 		grep -q -w "memory_limit = 128M" $phpini_path
 		if [ $? -ne 0 ];then
 			grep -q -w "memory_limit = 800M" $phpini_path
 			if [ $? -ne 0 ];then
-				echo -e "\033[31m php memory_limit neither 128 or 800, cannot update..."
-				echo -e -n "\033[0m"
+				printwarn "php memory_limit neither 128 or 800, cannot update..."
 			else
-				echo -e "\033[32m php memory_limit already = 800."
-				echo -e -n "\033[0m"
+				printinfo "php memory_limit already = 800."
 			fi
 		else
 			sudo sed -i 's/memory_limit = 128M/memory_limit = 800M/g' $phpini_path
 			if [ $? -ne 0 ];then
-				echo -e "\033[31m ERROR, php memory_limit NOT updated."
-				echo -e -n "\033[0m"
+				printerror "php memory_limit NOT updated."
 			else
-				echo -e "\033[32m php memory_limit updated to 800."
-				echo -e -n "\033[0m"
+				printinfo "php memory_limit updated to 800."
 			fi
 		fi
 		grep -q -w "max_execution_time = 30" $phpini_path
@@ -222,20 +207,16 @@ if version_ge $prod_version 1.2.0; then
 			#NOT 128, check for 800
 			grep -q -w "max_execution_time = 60" $phpini_path
 			if [ $? -ne 0 ];then
-				echo -e "\033[31m php max_execution_time neither 30 or 60, cannot update..."
-				echo -e -n "\033[0m"
+				printwarn "php max_execution_time neither 30 or 60, cannot update..."
 			else
-				echo -e "\033[32m php max_execution_time already = 60."
-				echo -e -n "\033[0m"
+				printinfo "php max_execution_time already = 60."
 			fi
 		else
 			sudo sed -i 's/max_execution_time = 30/max_execution_time = 60/g' $phpini_path
 					if [ $? -ne 0 ];then
-						echo -e "\033[31m ERROR, php max_execution_time NOT updated."
-						echo -e -n "\033[0m"
+						printwarn "php max_execution_time NOT updated."
 					else
-						echo -e "\033[32m php max_execution_time updated to 60."
-						echo -e -n "\033[0m"
+						printinfo "php max_execution_time updated to 60."
 					fi	
 		fi
 		sudo systemctl restart $webserver.service
@@ -253,8 +234,7 @@ if version_ge $prod_version 1.2.0; then
 	if version_ge $cactiver 1.2.0; then
 		echo ""
 	else
-		echo -e "\033[32m updating mysqld settings for cacti v1.2.x..."
-		echo -e -n "\033[0m"
+		printinfo "updating mysqld settings for cacti v1.2.x..."
 		grep -q -w "mysqld" $mycnf_path
 		if [ $? -ne 0 ];then
 			#Fugly but works for now...
@@ -273,7 +253,7 @@ if version_ge $prod_version 1.2.0; then
 			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
 			sudo sed  -i '$ a innodb_file_format=Barracuda' $mycnf_path
 		else
-			echo "put in other mysqld stuff here"
+			#printinfo "put in other mysqld stuff here"
 		fi
 	sudo systemctl restart mysqld.service
 	fi
@@ -310,8 +290,7 @@ echo ""
 function check-permissions () {
 touch /var/www/html/perm
 if [ $? -ne 0 ];then
-	echo -e "\033[31m File permissions not sufficient, attempting to repair..."
-	echo -e -n "\033[0m"
+	printwarn "File permissions not sufficient, attempting to repair..."
 	update-permissions
 else
 	rm /var/www/html/perm
@@ -324,38 +303,33 @@ function check-prerequisites () {
 }
 
 function upgrade-cacti () {
-echo -e "\033[32m Beginning Cacti upgrade..."
-echo -e -n "\033[0m"
+printinfo "Beginning Cacti upgrade..."
 cd /var/www/html/
 if [[ $1 == "develop" ]]; then
-	echo -e "\033[32m Cloning from Git..."
-	echo -e -n "\033[0m"
+	printinfo "Cloning from Git..."
 	mv cacti/ cacti_$cactiver/
 	git clone https://github.com/Cacti/cacti.git
 	if [ $? -ne 0 ]; then
-		echo -e "\033[31m Git clone error, exiting..."
-		echo -e -n "\033[0m"
+		printerror "Git clone error, exiting..."
+		exit 1
 	else
 		git checkout $1
 	fi
 else
 	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
 	if [ $? -ne 0 ];then
-			echo -e "\033[31m Cacti download error cannot install, exiting..."
-			echo -e -n "\033[0m"
+			printerror "Cacti download error cannot install, exiting..."
 			exit 1
 	else
 		tar -xzf $prod_version.tar.gz
 		if [ $? -ne 0 ];then
-			echo -e "\033[31m Cacti unpack error cannot install, exiting..."
-			echo -e -n "\033[0m"
+			printerror "Cacti unpack error cannot install, exiting..."
 			exit 1
 		else
 			sudo $pkg_mgr install -y -q php-gmp sendmail
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
-		
 		fi
 	fi
 fi
@@ -369,8 +343,7 @@ echo ""
 }
 
 function update-config () {
-echo -e "\033[32m Updating cacti config..."
-echo -e -n "\033[0m"
+printinfo "Updating cacti config..."
 cd /var/www/html/
 if [ -f  cacti/include/config.php ];
 then
@@ -386,23 +359,20 @@ function update-permissions () {
 }
 
 function upgrade-spine () {
-echo -e "\033[32m Upgrading spine..."
-echo -e -n "\033[0m"
+printinfo "Upgrading spine..."
 cd
 if [[ $1 == "develop" ]]; then
-	echo -e "\033[32m Cloning from Git..."
-	echo -e -n "\033[0m"
+	printinfo "Cloning from Git..."
 	git clone https://github.com/Cacti/spine.git
 	cd spine
 	git checkout $1
-	echo -e "\033[32m Bootstrapping spine..."
-	echo -e -n "\033[0m"
+	printinfo "Bootstrapping spine..."
 	./bootstrap
 else
 	wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 	if [ $? -ne 0 ];then
-			echo -e "\033[31m Spine download error cannot install..."
-			echo -e -n "\033[0m"
+			printerror "Spine download error cannot install, exiting. You will need to manually upgrade Spine."
+			exit 1
 	else
 		tar -xzf cacti-spine-*.tar.gz
 		rm cacti-spine-*.tar.gz
@@ -427,40 +397,33 @@ rm -rf *spine*
 }
 
 function compress-delete () {
-	echo -e "\033[32m Do you want to archive the original cacti directory?"
-	echo -e -n "\033[0m"
+	printinfo "Do you want to archive the original cacti directory?"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
 		echo ""
-		echo -e "\033[32m Creating compressed archive..."
-		echo -e -n "\033[0m"
+		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
 		if [ $? -ne 0 ];then
-			echo -e "\033[31m Archive creation failed."
-			echo -e -n "\033[0m"
+			printwarn "Archive creation failed."
 		else
 			rm -rf /var/www/html/cacti_$cactiver
-			echo -e "\033[32m Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
-			echo -e -n "\033[0m"			
+			printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
 		fi
         elif [ "$cleanup" = "n" ]; then
 		echo ""
         else
-		echo -e "\033[31m You have entered an invallid selection!"
-		echo "Please try again!"
-		echo -e -n "\033[0m"
+		printwarn "You have entered an invallid selection!"
+		printinfo "Please try again!"
             clear
 	fi
 }
 
 function update-cactidir () {
 if version_lt $cactiver $symlink_cactidir; then
-	echo -e "\033[32m Legacy cacti install directory found, updating..."
-	echo -e -n "\033[0m"
+	printinfo "Legacy cacti install directory found, updating..."
 	rm /var/www/html/cacti
 	if [ $? -ne 0 ];then
-		echo -e "\033[31m cacti directory update failed, exiting."
-		echo -e -n "\033[0m"
+		printerror "Cacti directory update failed, exiting."
 		exit 1
 	else
 	mv /var/www/html/cacti-$cactiver /var/www/html/cacti
@@ -491,7 +454,6 @@ upgrade-plugins
 check-smokeping
 update-permissions
 
-echo -e "\033[32m Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
-echo -e "\033[32m For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
-echo -e -n "\033[0m"
+printinfo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
+printinfo "For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
 exit 0
