@@ -64,7 +64,10 @@ selectBackup() {
 		select filename in backup_cacti-*.tar.gz
 		do
 		    # leave the loop if the user says 'stop'
-		    if [[ "$REPLY" == stop ]]; then break; fi
+		    if [[ "$REPLY" == stop ]]; then break;
+		    	printerror "Cannot restore as no file was selected, exiting..."
+			exit 1
+		    fi
 
 		    # complain if no file was selected, and loop to ask again
 		    if [[ "$filename" == "" ]]
