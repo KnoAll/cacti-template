@@ -280,8 +280,7 @@ mysql -u root -pcacti cacti -s -e "ALTER DATABASE cacti CHARACTER SET = utf8mb4 
 }
 
 function backup-db () {
-echo -e "\033[32m Backing up DB..."
-echo -e -n "\033[0m"
+printinfo "Backing up DB..."
 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 echo ""
 }
