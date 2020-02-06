@@ -61,11 +61,12 @@ fi
 
 # get latest version of cacti-upgrade
 if grep -q v1.2.8 cacti-upgrade.sh; then
-	echo ""
+	printinfo ""
 else
-  rm cacti-upgrade.sh
-  wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
-  chmod +x cacti-upgrade.sh
+	printinfo "Upgrading cacti.upgrade.sh"
+	rm cacti-upgrade.sh
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
+	chmod +x cacti-upgrade.sh
 fi
 
 file="template"
