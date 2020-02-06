@@ -1,17 +1,38 @@
 #!/bin/bash
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-cacti.sh)
-if [[ `whoami` == "root" ]]; then
-    echo -e "\033[31m You ran me as root! Do not run me as root!"
-    echo -e -n "\033[0m"
-    exit 1
-    elif [[ `whoami` == "cacti" ]]; then
-    	echo ""
-    else
-    echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-    echo -e -n "\033[0m"
-    exit 1
-fi
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
+errorcount=0
+branch=master
+
+printinfo() {
+	printf "${tan}::: ${green}%s${reset}\n" "$@"
+}
+printwarn() {
+	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+}
+printerror() {
+	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+}
+case $(whoami) in
+        root)
+		printerror "You ran me as root! Do not run me as root!"
+		exit 1
+		;;
+        pi)
+		printerror "You ran me as pi user! Do not run me as pi!"
+		exit 1
+                ;;
+        cacti)
+                ;;
+        *)
+		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
+		exit 1
+                ;;
+esac
 
 # get the Cacti version
 upgrade_version=1.1.6
