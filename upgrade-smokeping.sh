@@ -130,7 +130,7 @@ else
 			cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-			printerror "Restarting services..."
+			printinfo "Restarting services..."
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
 			echo ""
@@ -149,7 +149,7 @@ fi
 
 
 function update-permissions () {
-printerror "Fixing file permissions..."
+printinfo "Fixing file permissions..."
 sudo chown -R cacti /opt
 sudo chgrp -R apache /opt
 sudo find /opt -type d -exec chmod g+rwx {} +
@@ -160,17 +160,17 @@ sudo find /opt -type d -exec chmod g+s {} +
 }
 
 function compress-delete () {
-	printerror "Do you want to archive the original Smokeping directory?"
+	printinfo "Do you want to archive the original Smokeping directory?"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
 		echo ""
-		printerror "Creating compressed archive..."
+		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
 		if [ $? -ne 0 ];then
 			printerror "Archive creation failed."
 		else
 			rm -rf /opt/smokeping_$smokever
-			printerror "Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."		
+			printinfo "Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."		
 		fi
         elif [ "$cleanup" = "n" ]; then
 		echo ""
