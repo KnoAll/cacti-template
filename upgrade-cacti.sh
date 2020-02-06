@@ -41,21 +41,18 @@ upgrade_version=1.1.6
 prod_version=1.2.8
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-if [ $? -ne 0 ];then
-	echo -e "\033[31m Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
-	echo -e -n "\033[0m"
+if [[ -z $cactiver ]];then
+	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
 fi
 if [[ $1 == "dev" || "--switch-dev" ]]; then
 	param1=$1
 	param2=$2
 	branch=dev
-	echo -e "\033[31m Now on DEV branch."
-	echo -e -n "\033[0m"
+	printwarn "Now on DEV branch."
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-		echo -e "\033[31m Switching to DEVELOP version v$prod_version via git..."
-		echo -e -n "\033[0m"
+		printwarn "Switching to DEVELOP version v$prod_version via git..."
 	fi
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
