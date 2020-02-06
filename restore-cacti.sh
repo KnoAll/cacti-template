@@ -48,16 +48,7 @@ check-cacti() {
 		printerror "Cacti is not already installed, cannot proceed."
 		exit 1
 	fi
-# backup existing cacti data?
-	read -p "Do you want to backup existing Cacti install before restoring over top? [y/N] " yn
-	case "$yn" in
-		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
-		* ) 
-		printwarn "Skipping backup of existing Cacti."
-		;;
-	esac
+
 }
 
 
@@ -88,6 +79,19 @@ selectBackup() {
 		    # it'll ask for another unless we leave the loop
 		    break
 		done
+}
+
+backup-data() {
+# backup existing cacti data?
+	read -p "Do you want to backup existing Cacti install before restoring over top? [y/N] " yn
+	case "$yn" in
+		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
+		* ) 
+		printwarn "Skipping backup of existing Cacti."
+		;;
+	esac
 }
 
 unpack-check() {
@@ -188,6 +192,7 @@ cleanup-after () {
 
 check-cacti
 selectBackup
+backup-data
 unpack-check
 drop-restore
 replace-rra
