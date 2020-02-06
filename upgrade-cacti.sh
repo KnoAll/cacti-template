@@ -93,8 +93,7 @@ elif which apt >/dev/null; then
 	pkg_mgr=apt
 	os_dist=raspbian
 else
-		echo -e "\033[31m You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		echo -e -n "\033[0m"
+		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
 fi
 
@@ -119,35 +118,25 @@ else
 	systemctl -q is-enabled smokeping.service
 	if [ $? -ne 0 ];then
 		# smokeping not enabled
-		echo -e "\033[32m Smokeping service is disabled, do you wish to enable?"
-		echo -e -n "\033[0m"
+		printinfo "Smokeping service is disabled, do you wish to enable?"
 		read -n 1 -p "y/n: " smokeon
         		if [ "$smokeon" = "y" ]; then
-				echo ""
-				echo -e "\033[32m Enabling Smokeping service..."
-				echo -e -n "\033[0m"
+				printinfo "Enabling Smokeping service..."
 				sudo systemctl enable smokeping.service
 				sudo systemctl start smokeping.service
 			else
-				echo ""
-				echo -e "\033[32m OK, no Smokeping today, bye!"
-				echo -e -n "\033[0m"
+				printinfo "OK, no Smokeping today, bye!"
 			fi
 	else
 		# smokeping enabled
-		echo -e "\033[32m Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
-		echo -e -n "\033[0m"
+		printinfo "Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
 		read -n 1 -p "y/n: " smokeoff
 			if [ "$smokeoff" = "y" ]; then
-				echo ""
-				echo -e "\033[32m Disabling Smokeping service..."
-				echo -e -n "\033[0m"
+				printinfo "Disabling Smokeping service..."
 				sudo systemctl disable smokeping.service
 				sudo systemctl stop smokeping.service
 			else
-				echo ""
-				echo -e "\033[32m OK, leaving Smokeping enabled, you should check it out!"
-				echo -e -n "\033[0m"
+				printinfo "OK, leaving Smokeping enabled, you should check it out!"
 			fi
 	fi
 fi	
