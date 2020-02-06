@@ -7,6 +7,7 @@ red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
 errorcount=0
+branch=master
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
