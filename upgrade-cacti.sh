@@ -237,7 +237,7 @@ if version_ge $prod_version 1.2.0; then
 	else
 		printinfo "updating mysqld settings for cacti v1.2.x..."
 		grep -q -w "mysqld" $mycnf_path
-		if [ $? -ne 0 ];then
+		if [ $? -ne 0 ]; then
 			#Fugly but works for now...
 			sudo sed  -i '$ a [mysqld]' $mycnf_path
 			sudo sed  -i '$ a max_allowed_packet=16M' $mycnf_path
