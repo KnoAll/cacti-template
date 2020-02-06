@@ -2,17 +2,38 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-smokeping.sh)
 
-if [[ `whoami` == "root" ]]; then
-    echo -e "\033[31m You ran me as root! Do not run me as root!"
-    echo -e -n "\033[0m"
-    exit 1
-    elif [[ `whoami` == "cacti" ]]; then
-    	echo ""
-    else
-    echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-    echo -e -n "\033[0m"
-    exit 1
-fi
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
+errorcount=0
+branch=master
+
+printinfo() {
+	printf "${tan}::: ${green}%s${reset}\n" "$@"
+}
+printwarn() {
+	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+}
+printerror() {
+	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+}
+case $(whoami) in
+        root)
+		printerror "You ran me as root! Do not run me as root!"
+		exit 1
+		;;
+        pi)
+		printerror "You ran me as pi user! Do not run me as pi!"
+		exit 1
+                ;;
+        cacti)
+                ;;
+        *)
+		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
+		exit 1
+                ;;
+esac
 
 # get the Smokeping version
 upgrade_version=2.006011
@@ -21,8 +42,7 @@ web_version=2.7.3
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
-	echo -e "\033[31m Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
-	echo -e -n "\033[0m"
+	printerror "Smokeping is either not installed or not compatible with minimum required v$upgrade_version cannot proceed, exiting..."
 	exit 1
 fi
 
@@ -31,40 +51,31 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 if version_ge $smokever $upgrade_version; then
         if version_ge $smokever $prod_version; then
-                echo -e "\033[32m Smokeping v$smokever is up to date with production v$prod_version, nothing to do, exiting!"
-		echo -e -n "\033[0m"
+                printinfo "Smokeping v$smokever is up to date with production v$prod_version, nothing to do, exiting!"
                 exit 0
         else
-			echo ""
-			echo -e "\033[32m Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
-			echo -e -n "\033[0m"
+			printinfo "Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
 			read -n 1 -p "y/n: " smokeup1
        		 		if [ "$smokeup1" = "y" ]; then
 					echo ""
 				else
-					echo ""
-					echo -e "\033[32m OK, no Smokeping thing, bye!"
-					echo -e -n "\033[0m"
+					printinfo "OK, no Smokeping thing, bye!"
 					exit
 				fi
         fi
 else
-	echo -e "\033[31m Smokeping v$smokever is less than upgrade version v$upgrade_version cannot install, exiting..."
-	echo -e -n "\033[0m"
+	printwarn "Smokeping v$smokever is less than upgrade version v$upgrade_version cannot install, exiting..."
 	exit 1
 fi
 
-echo -e "\033[32m Welcome to Kevin's Smokeping upgrade script!"
-echo -e -n "\033[0m"
+printinfo "Welcome to Kevin's Smokeping upgrade script!"
 sudo echo ""
 
 function upgrade-fping () {
-                echo -e "\033[32m Checking fping version..."
-                echo -e -n "\033[0m"
+                printinfo "Checking fping version..."
 fping -4 -v > /dev/null 2>&1
 if [ $? -ne 0 ];then
-                echo -e "\033[31m Upgrading fping..."
-                echo -e -n "\033[0m"
+	printinfo "Upgrading fping..."
 	cd
 	git clone https://github.com/schweikert/fping.git
 	cd fping/
@@ -77,39 +88,32 @@ if [ $? -ne 0 ];then
 	cd
 	rm -rf fping
 else
-                echo -e "\033[32m fping version OK, moving on..."
-                echo -e -n "\033[0m"
+	printinfo "fping version OK, moving on..."
 fi
 }
 
 function upgrade-smokeping () {
-echo -e "\033[32m Beginning Smokeping upgrade..."
-echo -e "\033[32m Updating CentOS packages..."
-echo -e -n "\033[0m"
+printinfo "Beginning Smokeping upgrade..."
+printinfo "Updating CentOS packages..."
 cd
 sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build
 if [ $? -ne 0 ];then
-                echo -e "\033[31m CentOS update error cannot install, exiting..."
-                echo -e -n "\033[0m"
+                printerror "CentOS update error cannot install, exiting..."
 		exit 1
 else
-	echo -e "\033[32m Getting Smokeping..."
-	echo -e -n "\033[0m"
+	printinfo "Getting Smokeping..."
 	cd
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
-                echo -e "\033[31m Smokeping download error cannot install, exiting..."
-                echo -e -n "\033[0m"
+                printerror "Smokeping download error cannot install, exiting..."
 		exit 1
 	else
 	tar -xzf smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
-                	echo -e "\033[31m Smokeping unpack error cannot install, exiting..."
-                	echo -e -n "\033[0m"
+                	printerror "Smokeping unpack error cannot install, exiting..."
 			exit 1
 		else
-			echo -e "\033[32m Setting up Smokeping..."
-			echo -e -n "\033[0m"
+			printinfo "Setting up Smokeping..."
 			sudo systemctl stop smokeping.service
 			sudo mv /opt/smokeping /opt/smokeping_$smokever
 			rm smokeping-$web_version.tar.gz
@@ -126,11 +130,9 @@ else
 			cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
 			update-permissions
 			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-			echo -e "\033[32m Restarting services..."
-			echo -e -n "\033[0m"
+			printinfo "Restarting services..."
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
-			echo ""
 			echo ""
 		fi
 	fi
@@ -138,8 +140,7 @@ fi
 }
 
 function update-config () {
-echo -e "\033[32m Updating Smokeping config..."
-echo -e -n "\033[0m"
+printinfo "Updating Smokeping config..."
 if [ -f  /opt/smokeping/etc/config ];
 then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
@@ -148,8 +149,7 @@ fi
 
 
 function update-permissions () {
-echo -e "\033[32m Fixing file permissions..."
-echo -e -n "\033[0m"
+printinfo "Fixing file permissions..."
 sudo chown -R cacti /opt
 sudo chgrp -R apache /opt
 sudo find /opt -type d -exec chmod g+rwx {} +
@@ -160,29 +160,24 @@ sudo find /opt -type d -exec chmod g+s {} +
 }
 
 function compress-delete () {
-	echo -e "\033[32m Do you want to archive the original Smokeping directory?"
-	echo -e -n "\033[0m"
+	printinfo "Do you want to archive the original Smokeping directory?"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
 		echo ""
-		echo -e "\033[32m Creating compressed archive..."
-		echo -e -n "\033[0m"
+		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
 		if [ $? -ne 0 ];then
-			echo -e "\033[31m Archive creation failed."
-			echo -e -n "\033[0m"
+			printerror "Archive creation failed."
 		else
 			rm -rf /opt/smokeping_$smokever
-			echo -e "\033[32m Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."
-			echo -e -n "\033[0m"			
+			printinfo "Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."		
 		fi
         elif [ "$cleanup" = "n" ]; then
 		echo ""
         else
-		echo -e "\033[31m You have entered an invallid selection!"
-		echo "Please try again!"
-		echo -e -n "\033[0m"
-            clear
+		printerror "You have entered an invallid selection!"
+		printinfo "Please try again!"
+            	clear
 	fi
 }
 
@@ -191,6 +186,5 @@ upgrade-fping
 upgrade-smokeping
 update-permissions
 compress-delete
-echo -e "\033[32m Smokeping upgraded to v$prod_version! Proceed to the web interface..."
-echo -e -n "\033[0m"
+printerror "Smokeping upgraded to v$prod_version! Proceed to the web interface..."
 exit 0

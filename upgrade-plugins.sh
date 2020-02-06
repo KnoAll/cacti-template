@@ -15,9 +15,6 @@ case $1 in
 	;;
 esac
 
-
-echo ""
-echo ""
 cd /var/www/html/cacti/plugins
 
 for dir in ./*/
