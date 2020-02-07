@@ -57,6 +57,7 @@ if [[ $1 == "dev" || "--switch-dev" ]]; then
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
 	echo ""
+	echo ""
 	branch=master
 fi
 
