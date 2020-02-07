@@ -45,7 +45,7 @@ if [[ -z $cactiver ]];then
 	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
 fi
-if [[ $1 == "dev" || "--switch-dev" ]]; then
+if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	param1=$1
 	param2=$2
 	branch=dev

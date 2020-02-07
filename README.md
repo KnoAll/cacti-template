@@ -8,7 +8,7 @@ If you do not already have Cacti installed, you can install into a clean unused 
 :warning: **[This upgrade script assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
 
 If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
-http://www.kevinnoall.com/blog/2015/03/06/cacti-virtual-appliance/
+http://www.kevinnoall.com/blog/cacti
 
 ## Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
