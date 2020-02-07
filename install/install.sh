@@ -116,8 +116,7 @@ installask () {
 	echo -e -n "\033[0m"
 	case "$yn" in
 	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
+	;;
 	* ) 
 		printwarn "Thanks for considering, exiting now..."
 		exit 1
