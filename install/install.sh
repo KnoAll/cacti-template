@@ -325,7 +325,7 @@ else
 		echo ""	
 	else
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
-		touch /home/cacti/install
+		touch ~/.install
 		echo ""
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
 		echo ""
