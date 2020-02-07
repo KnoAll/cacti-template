@@ -56,6 +56,7 @@ if [[ $1 == "dev" || "--switch-dev" ]]; then
 	fi
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+	echo ""
 	branch=master
 fi
 
@@ -69,19 +70,21 @@ else
 	chmod +x cacti-upgrade.sh
 fi
 
-file="template"
+file="~/.template"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
+	echo ""
 	rm $file
 else
 	echo ""
 fi
 
-file="install"
+file="~/.install"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-$cactiver&write=0 )
+	echo ""
 	rm $file
 else
 	echo ""
@@ -158,6 +161,7 @@ if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
+		echo ""
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
