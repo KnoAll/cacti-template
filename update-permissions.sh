@@ -25,6 +25,7 @@ sudo chgrp -R $perm_grp /var/www/html/cacti/log
 sudo chgrp -R $perm_grp /var/www/html/cacti/resource
 sudo chgrp -R $perm_grp /var/www/html/cacti/cache
 sudo chgrp -R $perm_grp /var/www/html/cacti/scripts
+sudo chgrp -R $perm_grp /var/www/html/cacti/include/vendor/csrf
 sudo chown -R cacti /var/www/html
 sudo find /var/www/html -type d -exec chmod g+rwx {} +
 sudo find /var/www/html -type f -exec chmod g+rw {} +
