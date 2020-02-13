@@ -71,7 +71,7 @@ if [ -f /opt/smokeping/bin/smokeping ];then
 	exit 1
 fi
 printinfo "Welcome to Kevin's SmokePing install script!"
-sudo echo ""
+sudo printinfo ""
 
 function upgrade-fping () {
                 printinfo "Checking fping version..."
@@ -168,7 +168,7 @@ printinfo "Updating SmokePing config..."
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	sudo echo ""
+	sudo printinfo ""
 	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
@@ -186,10 +186,10 @@ case $param1 in
 	dev)
 	;;
 	*)
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
-	printinfo ""
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
-	printinfo ""
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
+		printinfo ""
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
+		printinfo ""
 	;;
 esac
 	printinfo "Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
