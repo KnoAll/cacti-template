@@ -2,15 +2,28 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh)
 
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
+
+printinfo() {
+	printf "${tan}::: ${green}%s${reset}\n" "$@"
+}
+printwarn() {
+	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+}
+printerror() {
+	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+}
+
 case $(whoami) in
         root)
-		echo -e "\033[31m You ran me as root! Do not run me as root!"
-		echo -e -n "\033[0m"
+		printerror "You ran me as root! Do not run me as root!"
 		exit 1
 		;;
         pi)
-		echo -e "\033[31m You ran me as pi user! Do not run me as pi!"
-		echo -e -n "\033[0m"
+		printerror "You ran me as pi user! Do not run me as pi!"
 		exit 1
                 ;;
         cacti)
@@ -28,14 +41,11 @@ case $(whoami) in
 				webconf=/etc/httpd/conf.d
 			fi
 		else
-			echo -e "\033[31m You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"
-			
-			echo -e -n "\033[0m"	
+			printerror "You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"	
 		fi
                 ;;
         *)
-		echo -e "\033[31m Uh-oh. You are not logged in as the cacti user. Exiting..."
-		echo -e -n "\033[0m"
+		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
 		exit 1
                 ;;
 esac
@@ -57,22 +67,17 @@ web_version=2.7.3
 dev_version=
 
 if [ -f /opt/smokeping/bin/smokeping ];then
-	echo -e "\033[31m Smokeping is already installed, you will need to upgrade not install from scratch or you will lose data, exiting..."
-	echo -e -n "\033[0m"
+	printerror "Smokeping is already installed, you will need to upgrade not install from scratch or you will lose data, exiting..."
 	exit 1
 fi
-
-echo -e "\033[32m Welcome to Kevin's SmokePing install script!"
-echo -e -n "\033[0m"
+printinfo "Welcome to Kevin's SmokePing install script!"
 sudo echo ""
 
 function upgrade-fping () {
-                echo -e "\033[32m Checking fping version..."
-                echo -e -n "\033[0m"
+                printinfo "Checking fping version..."
 fping -4 -v > /dev/null 2>&1
 if [ $? -ne 0 ];then
-                echo -e "\033[31m Upgrading fping..."
-                echo -e -n "\033[0m"
+                printinfo "Upgrading fping..."
 	cd
 	git clone https://github.com/schweikert/fping.git
 	cd fping/
@@ -85,15 +90,13 @@ if [ $? -ne 0 ];then
 	cd
 	rm -rf fping
 else
-                echo -e "\033[32m fping version OK, moving on..."
-                echo -e -n "\033[0m"
+                printinfo "fping version OK, moving on..."
 fi
 }
 
 function install-smokeping () {
-echo -e "\033[32m Beginning SmokePing install..."
-echo -e "\033[32m Installing required $os_name packages..."
-echo -e -n "\033[0m"
+printinfo "Beginning SmokePing install..."
+printinfo "Installing required $os_name packages..."
 cd
 case $os_dist in
 	raspbian)
@@ -104,33 +107,28 @@ case $os_dist in
 		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
 		;;
 	*)
-		echo -e "\033[31m Uh-oh. Sorry, unsupported OS Exiting..."
+		printinfo "Uh-oh. Sorry, unsupported OS Exiting..."
 		exit 1
 		;;
 esac
 
 if [ $? -ne 0 ];then
-                echo -e "\033[31m Update error cannot install, exiting..."
-                echo -e -n "\033[0m"
+                printerror "Update error cannot install, exiting..."
 		exit 1
 else
-	echo -e "\033[32m Getting SmokePing..."
-	echo -e -n "\033[0m"
+	printinfo "Getting SmokePing..."
 	cd
 	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 	if [ $? -ne 0 ];then
-                echo -e "\033[31m SmokePing download error cannot install, exiting..."
-                echo -e -n "\033[0m"
+                printerror "SmokePing download error cannot install, exiting..."
 		exit 1
 	else
 	tar -xzf smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
-                	echo -e "\033[31m SmokePing unpack error cannot install, exiting..."
-                	echo -e -n "\033[0m"
+                	printerror "SmokePing unpack error cannot install, exiting..."
 			exit 1
 		else
-			echo -e "\033[32m Setting up SmokePing..."
-			echo -e -n "\033[0m"
+			printinfo "Setting up SmokePing..."
 			#sudo systemctl stop smokeping.service
 			#sudo mv /opt/smokeping /opt/smokeping_$smokever
 			rm smokeping-$web_version.tar.gz
@@ -149,7 +147,7 @@ else
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
 case $os_dist in
 	centos)
-		echo ""
+		printinfo ""
 	;;
 	raspbian)
 		sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
@@ -166,8 +164,7 @@ fi
 }
 			
 function update-config () {
-echo -e "\033[32m Updating SmokePing config..."
-echo -e -n "\033[0m"
+printinfo "Updating SmokePing config..."
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
@@ -190,13 +187,10 @@ case $param1 in
 	;;
 	*)
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
-	echo ""
-	echo ""
+	printinfo ""
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$prod_version&write=0 )
-	echo ""
-	echo ""
+	printinfo ""
 	;;
 esac
-	echo -e "\033[32m Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
-	echo -e -n "\033[0m"
+	printinfo "Installed SmokePing v$prod_version at http://../smokeping/smokeping.cgi"
 exit 0
