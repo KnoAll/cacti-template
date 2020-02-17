@@ -313,14 +313,13 @@ else
 	mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
 	sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
 	if [[ $1 == "dev" ]]; then
-		echo ""	
+		printinfo	
 	else
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
 		touch ~/.install
-		echo ""
+		printinfo
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
-		echo ""
-		echo ""
+		printinfo
 	fi
 fi
 
@@ -445,7 +444,7 @@ func_smokeask () {
         if [ "$smokeinstall" = "y" ]; then
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/install-smokeping.sh)
 	elif [ "$smokeinstall" = "n" ]; then
-		echo ""
+		printinfo
 		printinfo "Thanks for considering, going back..."
 	else
 		printwarn "Not a valid selection, please try again..."
@@ -471,11 +470,11 @@ func_reboot () {
 	echo -e "\033[32m"
 	read -n 1 -p "You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
-	echo ""
+	printinfo
 	printwarn "Rebooting, see you soon!"
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
-		echo ""
+		printinfo
 		printwarn "Don't forget to reboot or your graphs will not display propery. exiting..."
 		exit 1
 	else
