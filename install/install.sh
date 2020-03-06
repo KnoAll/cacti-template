@@ -75,6 +75,15 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_name=CentOS7
 		webserver=httpd
 	fi
+elif grep -q "CentOS Linux 8" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=centos
+		os_name=CentOS8
+		webserver=httpd
+	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	exit 1
@@ -125,7 +134,7 @@ installask () {
 }
 installask
 
-printinfo "Welcome to Kevin's CentOS7/RaspberryPi Cacti install script!"
+printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
 
 printwarn "Updating $os_name, this may take a while..."
 if [[ $os_dist == "raspbian" ]]; then
