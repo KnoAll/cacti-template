@@ -238,6 +238,7 @@ func_dbask () {
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
 		fi
 	elif [ "$db" = "2" ]; then
+		printinfo
 		printinfo "Importing Kevin's tweaked db..."
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
