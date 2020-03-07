@@ -501,15 +501,17 @@ case $os_name in
 	Raspbian)
 		printinfo "If you want to install SmokePing check my install script at https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping"
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
 	CentOS8)
 		func_smokeask
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
 	*)
 		func_smokeask
-		printinfo "Checking for Cacti updates..."
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-cacti.sh)
+		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
 esac
 
