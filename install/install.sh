@@ -236,6 +236,7 @@ func_dbask () {
 		else
 		printinfo "Imported Cacti db. The default username/password is admin and admin."
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
+		printwarn "This script sets up 1m polling. When finishing install in the Web UI, be sure to select 1m polling and 1m cron"
 		fi
 	elif [ "$db" = "2" ]; then
 		printinfo
