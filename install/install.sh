@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -139,35 +139,29 @@ printinfo "Setting up Spine..."
 # spine
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 			if [ $? -ne 0 ];then
-				printerror "downloading Spine, exiting..."
-				exit 1
+				printerror "downloading Spine, you will need to use cmd.php..."
 			else
 				tar xzf cacti-spine-$prod_version.tar.gz
 				if [ $? -ne 0 ];then
-					printerror "unpacking Spine, exiting..."
-					exit 1
+					printerror "unpacking Spine, you will need to use cmd.php..."
 				fi
 				rm cacti-spine-$prod_version.tar.gz
 				cd cacti-spine-$prod_version
 				./bootstrap
 				if [ $? -ne 0 ];then
-					printerror "bootstrapping Spine, exiting..."
-					exit 1
+					printerror "bootstrapping Spine, you will need to use cmd.php..."
 				fi
 				./configure
 				if [ $? -ne 0 ];then
-					printerror "configuring Spine, exiting..."
-					exit 1
+					printerror "configuring Spine, you will need to use cmd.php..."
 				fi
 				make
 				if [ $? -ne 0 ];then
-					printerror "making Spine, exiting..."
-					exit 1
+					printerror "making Spine, you will need to use cmd.php..."
 				fi
 				sudo make install
 				if [ $? -ne 0 ];then
-					printerror "installing Spine, exiting..."
-					exit 1
+					printerror "installing Spine, you will need to use cmd.php..."
 				fi
 				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
 				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
