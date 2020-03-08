@@ -219,7 +219,7 @@ case $os_name in
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
 		printinfo "Setting up packages"
-		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
+		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
 			exit 1
