@@ -218,8 +218,6 @@ case $os_name in
 	CentOS8)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-		printinfo "Setting up help2man"
-		sudo dnf --enablerepo=PowerTools install -y help2man
 		printinfo "Setting up packages"
 		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
@@ -228,6 +226,8 @@ case $os_name in
 		else
 			printinfo "Enabling webserver and mysql server..."
 			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
+			printinfo "Setting up help2man"
+			sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
 esac
