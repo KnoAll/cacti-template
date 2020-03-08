@@ -38,7 +38,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.9
+prod_version=1.2.10
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if [[ -z $cactiver ]];then
@@ -56,8 +56,7 @@ if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	fi
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
-	echo ""
-	echo ""
+	printinfo
 	branch=master
 fi
 
@@ -75,20 +74,20 @@ file="~/template"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
-	echo ""
+	printinfo
 	rm $file
 else
-	echo ""
+	printinfo
 fi
 
 file="~/.install"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-$cactiver&write=0 )
-	echo ""
+	printinfo
 	rm $file
 else
-	echo ""
+	printinfo
 fi
 
 if which yum >/dev/null; then
@@ -109,7 +108,7 @@ function check-smokeping () {
 	test -e /opt/smokeping/bin/smokeping
 	if [ $? -ne 0 ];then
 		smokever=nosmoke
-		echo ""
+		printinfo
 	else
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
 		smokeping_onoff
@@ -118,7 +117,7 @@ function check-smokeping () {
 
 function smokeping_onoff () {
 if [[ $smokever == "nosmoke" ]]; then
-	echo ""
+	printinfo
 else
 	systemctl -q is-enabled smokeping.service
 	if [ $? -ne 0 ];then
@@ -151,7 +150,7 @@ function upgrade-plugins() {
 	printinfo "Would you like to check your cacti plugins for updates?"
 	read -n 1 -p "y/n: " plugup
         	if [ "$plugup" = "y" ]; then
-			echo ""
+			printinfo
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
 		else
 			printinfo "OK, no plug-up today..."
@@ -162,7 +161,7 @@ if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
-		echo ""
+		printinfo
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
@@ -176,12 +175,12 @@ else
 fi
 
 printinfo "Welcome to Kevin's Cacti Template upgrade script!"
-sudo echo ""
+sudo printinfo
 
 function update-php () {
 if version_ge $prod_version 1.2.0; then
 	if version_ge $cactiver 1.2.0; then
-		echo ""
+		printinfo
 	else
 		printinfo "Updating php settings for cacti v1.2.x..."
 		if [[ $pkg_mgr == "yum" ]]; then
@@ -238,7 +237,7 @@ else
 fi
 if version_ge $prod_version 1.2.0; then
 	if version_ge $cactiver 1.2.0; then
-		echo ""
+		printinfo
 	else
 		printinfo "updating mysqld settings for cacti v1.2.x..."
 		grep -q -w "mysqld" $mycnf_path
@@ -269,7 +268,7 @@ grep -q -w "innodb_large_prefix" $mycnf_path
 		sudo sed  -i '$ a innodb_large_prefix=1' $mycnf_path
 		sudo systemctl restart mysqld.service
 	else
-		echo ""
+		printinfo
 	fi
 #Barracuda file format update
 grep -q -w "innodb_file_format" $mycnf_path
@@ -277,7 +276,7 @@ if [ $? -ne 0 ];then
 		sudo sed  -i '$ a innodb_file_format=Barracuda' $mycnf_path
 		sudo systemctl restart mysqld.service
 	else
-		echo ""
+		printinfo
 	fi
 
 mysql -u root -pcacti cacti -s -e "ALTER DATABASE cacti CHARACTER SET = utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -287,7 +286,7 @@ mysql -u root -pcacti cacti -s -e "ALTER DATABASE cacti CHARACTER SET = utf8mb4 
 function backup-db () {
 printinfo "Backing up DB..."
 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
-echo ""
+printinfo
 }
 
 function check-permissions () {
@@ -297,12 +296,12 @@ if [ $? -ne 0 ];then
 	update-permissions
 else
 	rm /var/www/html/perm
-	echo ""
+	printinfo
 fi
 }
 
 function check-prerequisites () {
-	echo ""
+	printinfo
 }
 
 function upgrade-cacti () {
@@ -342,7 +341,7 @@ cp -a cacti_$cactiver/resource/* cacti/resource/
 cp -a cacti_$cactiver/plugins/* cacti/plugins/
 update-config
 update-permissions
-echo ""
+printinfo
 }
 
 function update-config () {
@@ -394,7 +393,7 @@ sudo make install
 cd /usr/local/spine/bin
 sudo chown root:root spine
 sudo chmod +s spine
-echo ""
+printinfo
 cd
 rm -rf *spine*
 }
@@ -403,7 +402,7 @@ function compress-delete () {
 	printinfo "Do you want to archive the original cacti directory?"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
-		echo ""
+		printinfo
 		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
 		if [ $? -ne 0 ];then
@@ -413,7 +412,7 @@ function compress-delete () {
 			printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
 		fi
         elif [ "$cleanup" = "n" ]; then
-		echo ""
+		printinfo
         else
 		printwarn "You have entered an invallid selection!"
 		printinfo "Please try again!"
@@ -444,14 +443,12 @@ update-mysqld
 upgrade-spine $2
 compress-delete
 if [[ $1 == "dev" ]]; then
-	echo ""	
+	printinfo
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
-	echo ""
-	echo ""
+	printinfo
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
-	echo ""
-	echo ""	
+	printinfo	
 fi
 upgrade-plugins
 check-smokeping

@@ -57,7 +57,7 @@ if version_ge $smokever $upgrade_version; then
 			printinfo "Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
 			read -n 1 -p "y/n: " smokeup1
        		 		if [ "$smokeup1" = "y" ]; then
-					echo ""
+					printinfo
 				else
 					printinfo "OK, no Smokeping thing, bye!"
 					exit
@@ -69,7 +69,7 @@ else
 fi
 
 printinfo "Welcome to Kevin's Smokeping upgrade script!"
-sudo echo ""
+sudo printinfo
 
 function upgrade-fping () {
                 printinfo "Checking fping version..."
@@ -133,7 +133,7 @@ else
 			printinfo "Restarting services..."
 			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
-			echo ""
+			printinfo
 		fi
 	fi
 fi
@@ -163,7 +163,7 @@ function compress-delete () {
 	printinfo "Do you want to archive the original Smokeping directory?"
 	read -n 1 -p "y/n: " cleanup
         if [ "$cleanup" = "y" ]; then
-		echo ""
+		printinfo
 		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
 		if [ $? -ne 0 ];then
@@ -173,7 +173,7 @@ function compress-delete () {
 			printinfo "Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."		
 		fi
         elif [ "$cleanup" = "n" ]; then
-		echo ""
+		printinfo
         else
 		printerror "You have entered an invallid selection!"
 		printinfo "Please try again!"

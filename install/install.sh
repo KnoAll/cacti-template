@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -75,6 +75,15 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_name=CentOS7
 		webserver=httpd
 	fi
+elif grep -q "CentOS Linux 8" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=centos
+		os_name=CentOS8
+		webserver=httpd
+	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	exit 1
@@ -96,7 +105,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.8
+prod_version=1.2.9
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	printerror "Cacti is already installed, cannot proceed..."
@@ -125,7 +134,44 @@ installask () {
 }
 installask
 
-printinfo "Welcome to Kevin's CentOS7/RaspberryPi Cacti install script!"
+installSpine() {
+printinfo "Setting up Spine..."
+# spine
+wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
+			if [ $? -ne 0 ];then
+				printerror "downloading Spine, you will need to use cmd.php..."
+			else
+				tar xzf cacti-spine-$prod_version.tar.gz
+				if [ $? -ne 0 ];then
+					printerror "unpacking Spine, you will need to use cmd.php..."
+				fi
+				rm cacti-spine-$prod_version.tar.gz
+				cd cacti-spine-$prod_version
+				./bootstrap
+				if [ $? -ne 0 ];then
+					printerror "bootstrapping Spine, you will need to use cmd.php..."
+				fi
+				./configure
+				if [ $? -ne 0 ];then
+					printerror "configuring Spine, you will need to use cmd.php..."
+				fi
+				make
+				if [ $? -ne 0 ];then
+					printerror "making Spine, you will need to use cmd.php..."
+				fi
+				sudo make install
+				if [ $? -ne 0 ];then
+					printerror "installing Spine, you will need to use cmd.php..."
+				fi
+				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
+				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
+				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
+				cd
+				rm -rf cacti-spine-$prod_version
+			fi
+}
+
+printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
 
 printwarn "Updating $os_name, this may take a while..."
 if [[ $os_dist == "raspbian" ]]; then
@@ -146,27 +192,45 @@ else
 fi
 
 printwarn "Installing prerequisites, this may take a while too..."
-if [[ $os_dist == "raspbian" ]]; then
-	sudo apt -y -qq install autoconf dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong installing prerequisites, exiting..."
-		exit 1
-	else
-		printinfo "Enabling webserver and mysql server..."
-		sudo systemctl start apache2 && sudo systemctl enable apache2 && sudo systemctl start mariadb && sudo systemctl enable mariadb
-	fi
-elif [[ $os_dist == "centos" ]]; then
-	curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
-	sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-	sudo yum install -y -q httpd php php-mysql MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong installing prerequisites, exiting..."
-		exit 1
-	else
-		printinfo "Enabling webserver and mysql server..."
-		sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
-	fi
-fi
+case $os_name in 
+	Raspbian)
+		sudo apt -y -qq install autoconf dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong installing prerequisites, exiting..."
+			exit 1
+		else
+			printinfo "Enabling webserver and mysql server..."
+			sudo systemctl start apache2 && sudo systemctl enable apache2 && sudo systemctl start mariadb && sudo systemctl enable mariadb
+		fi
+	;;
+	CentOS7)
+		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
+		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong installing prerequisites, exiting..."
+			exit 1
+		else
+			printinfo "Enabling webserver and mysql server..."
+			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
+		fi	
+	;;
+	CentOS8)
+		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
+		printinfo "Setting up packages"
+		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong installing prerequisites, exiting..."
+			exit 1
+		else
+			printinfo "Enabling webserver and mysql server..."
+			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
+			printinfo "Setting up help2man"
+			sudo dnf --enablerepo=PowerTools install -y help2man
+		fi	
+	;;
+esac
 
 if [[ $os_dist == "raspbian" ]]; then
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
@@ -209,8 +273,10 @@ func_dbask () {
 		else
 		printinfo "Imported Cacti db. The default username/password is admin and admin."
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
+		printwarn "This script sets up 1m polling. When finishing install in the Web UI, be sure to select 1m polling and 1m cron"
 		fi
 	elif [ "$db" = "2" ]; then
+		printinfo
 		printinfo "Importing Kevin's tweaked db..."
 		curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/mysql.cacti_clean.sql | sudo mysql cacti
 		if [ $? -ne 0 ];then
@@ -313,14 +379,13 @@ else
 	mv /var/www/html/cacti/include/config.php.dist /var/www/html/cacti/include/config.php
 	sudo sed -i 's/cactiuser/cacti/g' /var/www/html/cacti/include/config.php
 	if [[ $1 == "dev" ]]; then
-		echo ""	
+		printinfo	
 	else
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$prod_version&write=0 )
 		touch ~/.install
-		echo ""
+		printinfo
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install-$os_dist&write=0 )
-		echo ""
-		echo ""
+		printinfo
 	fi
 fi
 
@@ -398,26 +463,8 @@ sudo systemctl restart $webserver
 }
 update-php
 
-printinfo "Setting up Spine..."
-# spine
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-			if [ $? -ne 0 ];then
-				printerror "downloading Spine, exiting..."
-				exit 1
-			else
-				tar xzf cacti-spine-$prod_version.tar.gz
-				rm cacti-spine-$prod_version.tar.gz
-				cd cacti-spine-$prod_version
-				./bootstrap
-				./configure
-				make
-				sudo make install
-				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
-				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
-				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-				cd
-				rm -rf cacti-spine-$prod_version
-			fi
+installSpine
+
 printinfo "Setting up Plugins..."
 # plugins
 cd /var/www/html/cacti/plugins
@@ -445,7 +492,7 @@ func_smokeask () {
         if [ "$smokeinstall" = "y" ]; then
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/install-smokeping.sh)
 	elif [ "$smokeinstall" = "n" ]; then
-		echo ""
+		printinfo
 		printinfo "Thanks for considering, going back..."
 	else
 		printwarn "Not a valid selection, please try again..."
@@ -453,29 +500,15 @@ func_smokeask () {
 	fi
 }
 
-case $os_dist in
-	raspbian)
-		printinfo "If you want to install SmokePing check my install script at https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping"
-		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
-	;;
-	*)
-		func_smokeask
-		printinfo "Checking for Cacti updates..."
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-cacti.sh)
-	;;
-esac
-
-printinfo "Cacti v$prod_version insatlled, all Done!"
-
 func_reboot () {
 	echo -e "\033[32m"
 	read -n 1 -p "You must reboot to complete Cacti setup. Reboot now? y/n: " rebootnow
         if [ "$rebootnow" = "y" ]; then
-	echo ""
+	printinfo
 	printwarn "Rebooting, see you soon!"
 	sudo reboot
 	elif [ "$rebootnow" = "n" ]; then
-		echo ""
+		printinfo
 		printwarn "Don't forget to reboot or your graphs will not display propery. exiting..."
 		exit 1
 	else
@@ -483,4 +516,26 @@ func_reboot () {
 		func_reboot
 	fi
 }
+
+case $os_name in
+	Raspbian)
+		printinfo "If you want to install SmokePing check my install script at https://raw.githubusercontent.com/KnoAll/cacti-template/master/install/smokeping"
+		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
+	;;
+	CentOS8)
+		func_smokeask
+		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
+	;;
+	*)
+		func_smokeask
+		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
+	;;
+esac
+
+printinfo "Cacti v$prod_version insatlled, all Done!"
+
+
 func_reboot
