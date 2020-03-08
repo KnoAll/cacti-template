@@ -184,7 +184,7 @@ case $os_name in
 		printinfo "Setting up help2man"
 		sudo dnf --enablerepo=PowerTools install -y help2man
 		printinfo "Setting up packages"
-		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml
+		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
 			exit 1
@@ -426,6 +426,7 @@ sudo systemctl restart $webserver
 }
 update-php
 
+installSpine() {
 printinfo "Setting up Spine..."
 # spine
 wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
@@ -434,18 +435,40 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 				exit 1
 			else
 				tar xzf cacti-spine-$prod_version.tar.gz
+				if [ $? -ne 0 ];then
+					printerror "unpacking Spine, exiting..."
+					exit 1
+				fi
 				rm cacti-spine-$prod_version.tar.gz
 				cd cacti-spine-$prod_version
 				./bootstrap
+				if [ $? -ne 0 ];then
+					printerror "bootstrapping Spine, exiting..."
+					exit 1
+				fi
 				./configure
+				if [ $? -ne 0 ];then
+					printerror "configuring Spine, exiting..."
+					exit 1
+				fi
 				make
+				if [ $? -ne 0 ];then
+					printerror "making Spine, exiting..."
+					exit 1
+				fi
 				sudo make install
+				if [ $? -ne 0 ];then
+					printerror "installing Spine, exiting..."
+					exit 1
+				fi
 				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
 				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
 				cd
 				rm -rf cacti-spine-$prod_version
 			fi
+}
+
 printinfo "Setting up Plugins..."
 # plugins
 cd /var/www/html/cacti/plugins
