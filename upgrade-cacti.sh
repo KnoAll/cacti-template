@@ -17,6 +17,9 @@ printwarn() {
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
+printNotices() {
+	notices=$(curl -s http://kevinnoall.com/notices.txt) && printinfo "$notices" && printinfo
+}
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
@@ -175,12 +178,13 @@ if version_ge $cactiver $upgrade_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
 		printinfo
-		notices=$(curl -s http://kevinnoall.com/notices.txt) && printinfo "$notices" && printinfo
+		printNotices
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
                 exit 0
         else
+		printNotices
 		upgradeAsk
         fi
 else
