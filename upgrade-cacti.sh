@@ -162,6 +162,7 @@ if version_ge $cactiver $upgrade_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
 		printinfo
+		notices=$(curl -s http://kevinnoall.com/notices.txt) && printinfo "$notices" && printinfo
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
