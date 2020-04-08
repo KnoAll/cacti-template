@@ -157,6 +157,19 @@ function upgrade-plugins() {
 		fi
 }
 
+upgradeAsk () {
+	printwarn 
+	read -p "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version? y/N: " upAsk
+	case "$upAsk" in
+	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
+	;;
+	* ) 
+		printwarn "OK, maybe next time, exiting now..."
+		exit 1
+	;;
+	esac
+}
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
@@ -168,7 +181,7 @@ if version_ge $cactiver $upgrade_version; then
 		printinfo "All done!"
                 exit 0
         else
-		printinfo "Found compatible Cacti v$cactiver install, upgrading to v$prod_version..."
+		upgradeAsk
         fi
 else
 	printerror "Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
