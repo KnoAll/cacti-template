@@ -372,6 +372,8 @@ else
 	mv cacti/include/config.php.dist cacti/include/config.php
 	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
 fi
+#4-9-2020: fix for cookie domains in 1.2.11. can be removed after fix is confirmed.
+sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' /var/www/html/cacti/include/config.php
 }
 
 function update-permissions () {
