@@ -44,6 +44,7 @@ upgrade_version=1.1.6
 prod_version=1.2.11
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+config_path=/var/www/html/cacti/include/config.php
 if [[ -z $cactiver ]];then
 	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
@@ -63,7 +64,7 @@ else
 	branch=master
 fi
 
-# get latest version of cacti-upgrade
+# get latest version of cacti-upgrade script
 if grep -q v1.2.8 cacti-upgrade.sh; then
 	printinfo ""
 else
@@ -106,6 +107,19 @@ fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+
+#check to make sure the cacti db username and pw have not been changed
+config-pwcheck () {
+	grep -q -w "\$database_username = 'cacti'" $config_path
+	if [ $? -ne 0 ];then
+	# failed if, do some regex to grab the username and place in variable
+	else
+	grep -q -w "\$database_password = 'cacti'" $config_path	
+		if [ $? -ne 0 ];then
+			# failed if, do some regex to grab the password and place in variable
+		fi
+	fi
+}
 
 function check-smokeping () {
 	test -e /opt/smokeping/bin/smokeping
@@ -364,16 +378,15 @@ printinfo
 
 function update-config () {
 printinfo "Updating cacti config..."
-cd /var/www/html/
-if [ -f  cacti/include/config.php ];
+if [ -f  $config_path ];
 then
-	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' $config_path
 else
-	mv cacti/include/config.php.dist cacti/include/config.php
-	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
+	mv cacti/include/config.php.dist $config_path
+	sed -i 's/cactiuser/cacti/g' $config_path
 fi
 #4-9-2020: fix for cookie domains in 1.2.11. can be removed after fix is confirmed.
-sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' /var/www/html/cacti/include/config.php
+sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' $config_path
 }
 
 function update-permissions () {
