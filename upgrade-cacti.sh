@@ -108,19 +108,6 @@ fi
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
-#check to make sure the cacti db username and pw have not been changed
-config-pwcheck () {
-	grep -q -w "\$database_username = 'cacti'" $config_path
-	if [ $? -ne 0 ];then
-	# failed if, do some regex to grab the username and place in variable
-	else
-	grep -q -w "\$database_password = 'cacti'" $config_path	
-		if [ $? -ne 0 ];then
-			# failed if, do some regex to grab the password and place in variable
-		fi
-	fi
-}
-
 function check-smokeping () {
 	test -e /opt/smokeping/bin/smokeping
 	if [ $? -ne 0 ];then
@@ -364,6 +351,7 @@ else
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
+			cp cacti_$cactiver/include/config.php cacti/include/
 		fi
 	fi
 fi
@@ -371,7 +359,7 @@ cp -a cacti_$cactiver/rra/* cacti/rra/
 cp -a cacti_$cactiver/scripts/* cacti/scripts/
 cp -a cacti_$cactiver/resource/* cacti/resource/
 cp -a cacti_$cactiver/plugins/* cacti/plugins/
-update-config
+#update-config
 update-permissions
 printinfo
 }
