@@ -199,7 +199,7 @@ backup-data
 unpack-check
 drop-restore
 replace-rra
-if [ -f  $restoreFolder/$config_path ]; then
+if [ -f  $restoreFolder/config.php ]; then
 	restore-config	
 fi
 #fix-permissions
