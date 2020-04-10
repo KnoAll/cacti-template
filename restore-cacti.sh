@@ -52,9 +52,6 @@ check-cacti() {
 
 }
 
-
-# TODO: get file from param - list files for selection?
-#backupfile=backup_cacti-1.2.3.tar.gz
 selectBackup() {
 		printinfo "The following Cacti Backup archives were found; select one:"
 
@@ -158,7 +155,6 @@ unpack-check() {
 	esac
 }
 
-# TODO: drop/restore mysql cacti db
 drop-restore () {
 	printinfo "Restoring Cacti DB..."
 	gunzip $restoreFolder/mysql.cacti_*.sql.gz
@@ -174,12 +170,15 @@ drop-restore () {
 	fi
 }
 
-
-# TODO: dump exiting rra and move backup rra
 replace-rra () {
 	printinfo "Restoring RRA data..."
 	rm -rf /var/www/html/cacti/rra
 	mv $restoreFolder/rra /var/www/html/cacti/
+}
+
+restore-config () {
+	printinfo "Restoring Config..."
+	mv $restoreFolder/config.php /var/www/html/cacti/
 }
 
 # Check file permissions
@@ -200,6 +199,9 @@ backup-data
 unpack-check
 drop-restore
 replace-rra
+if [ -f  $restoreFolder/$config_path ]; then
+	restore-config	
+fi
 #fix-permissions
 cleanup-after
 
