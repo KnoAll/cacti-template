@@ -44,6 +44,7 @@ upgrade_version=1.1.6
 prod_version=1.2.10
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+config_path=/var/www/html/cacti/include/config.php
 if [[ -z $cactiver ]];then
 	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
@@ -63,7 +64,7 @@ else
 	branch=master
 fi
 
-# get latest version of cacti-upgrade
+# get latest version of cacti-upgrade script
 if grep -q v1.2.8 cacti-upgrade.sh; then
 	printinfo ""
 else
@@ -193,7 +194,7 @@ else
 fi
 
 printinfo "Welcome to Kevin's Cacti Template upgrade script!"
-sudo printinfo
+sudo echo
 
 function update-php () {
 if version_ge $prod_version 1.2.0; then
@@ -350,6 +351,7 @@ else
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
+			cp cacti_$cactiver/include/config.php cacti/include/
 		fi
 	fi
 fi
@@ -357,21 +359,22 @@ cp -a cacti_$cactiver/rra/* cacti/rra/
 cp -a cacti_$cactiver/scripts/* cacti/scripts/
 cp -a cacti_$cactiver/resource/* cacti/resource/
 cp -a cacti_$cactiver/plugins/* cacti/plugins/
-update-config
+#update-config
 update-permissions
 printinfo
 }
 
 function update-config () {
 printinfo "Updating cacti config..."
-cd /var/www/html/
-if [ -f  cacti/include/config.php ];
+if [ -f  $config_path ];
 then
-	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
+	sed -i 's/cactiuser/cacti/g' $config_path
 else
-	mv cacti/include/config.php.dist cacti/include/config.php
-	sed -i 's/cactiuser/cacti/g' cacti/include/config.php
+	mv cacti/include/config.php.dist $config_path
+	sed -i 's/cactiuser/cacti/g' $config_path
 fi
+#4-9-2020: fix for cookie domains in 1.2.11. can be removed after fix is confirmed.
+sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' $config_path
 }
 
 function update-permissions () {
