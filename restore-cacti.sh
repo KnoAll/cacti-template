@@ -178,7 +178,7 @@ replace-rra () {
 
 restore-config () {
 	printinfo "Restoring Config..."
-	mv $restoreFolder/config.php /var/www/html/cacti/
+	mv $restoreFolder/config.php /var/www/html/cacti/include/
 }
 
 # Check file permissions
