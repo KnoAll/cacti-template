@@ -138,7 +138,7 @@ else
 				printwarn "OK, no Smokeping today!"
 			;;
 		esac
-
+	else
 		# smokeping enabled
 		printinfo "Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
 		read -n 1 -p "y/N: " smokeoff
