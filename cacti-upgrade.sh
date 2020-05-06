@@ -87,9 +87,9 @@ case $1 in
 	;;
 	--help | --h | --H | help )
 		printinfo "Switches available in this script:"
-		printinfo "--backup-data"
-		printinfo "--fix-permissions"
-		printinfo "--restore-data"
+		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
+		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
+		printinfo "--restore-data	Restore Cacti from previous backup"
 	;;
 	*)
 		welcomeMessage
