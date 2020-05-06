@@ -135,8 +135,7 @@ else
 				sudo systemctl start smokeping.service
 			;;
 			* ) 
-				printwarn "OK, no Smokeping today, bye!"
-				exit 1
+				printwarn "OK, no Smokeping today!"
 			;;
 		esac
 
@@ -151,7 +150,6 @@ else
 			;;
 			* ) 
 				printinfo "OK, leaving Smokeping enabled, you should check it out!"
-				exit 1
 			;;
 		esac
 	fi
