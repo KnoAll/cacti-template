@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
 scriptver=v1.2.12
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -83,9 +85,11 @@ case $1 in
 		branch=dev
 		welcomeLooper $2
 	;;
-	--help)
-		printinfo "--backup-data
-				--fix-permissions"
+	--help | --h | --H | help )
+		printinfo "Switches available in this script:"
+		printinfo "--backup-data"
+		printinfo "--fix-permissions"
+		printinfo "--restore-data"
 	;;
 	*)
 		welcomeMessage
