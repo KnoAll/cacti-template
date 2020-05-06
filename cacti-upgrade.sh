@@ -83,6 +83,10 @@ case $1 in
 		branch=dev
 		welcomeLooper $2
 	;;
+	--help)
+		printinfo "--backup-data
+				--fix-permissions"
+	;;
 	*)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-cacti.sh) $1 $2
