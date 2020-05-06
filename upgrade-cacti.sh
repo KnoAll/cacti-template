@@ -127,25 +127,33 @@ else
 	if [ $? -ne 0 ];then
 		# smokeping not enabled
 		printinfo "Smokeping service is disabled, do you wish to enable?"
-		read -n 1 -p "y/n: " smokeon
-        		if [ "$smokeon" = "y" ]; then
+		read -n 1 -p "y/N: " smokeon
+		case "$smokeon" in
+			y | Y | yes | YES| Yes ) 
 				printinfo "Enabling Smokeping service..."
 				sudo systemctl enable smokeping.service
 				sudo systemctl start smokeping.service
-			else
-				printinfo "OK, no Smokeping today, bye!"
-			fi
-	else
+			;;
+			* ) 
+				printwarn "OK, no Smokeping today, bye!"
+				exit 1
+			;;
+		esac
+
 		# smokeping enabled
 		printinfo "Smokeping service is enabled and running at http://localhost/smokeping/smokeping.cgi, do you wish to disable?"
-		read -n 1 -p "y/n: " smokeoff
-			if [ "$smokeoff" = "y" ]; then
+		read -n 1 -p "y/N: " smokeoff
+		case "$smokeoff" in
+			y | Y | yes | YES| Yes ) 
 				printinfo "Disabling Smokeping service..."
 				sudo systemctl disable smokeping.service
 				sudo systemctl stop smokeping.service
-			else
+			;;
+			* ) 
 				printinfo "OK, leaving Smokeping enabled, you should check it out!"
-			fi
+				exit 1
+			;;
+		esac
 	fi
 fi	
 }
