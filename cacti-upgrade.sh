@@ -1,5 +1,7 @@
 #!/bin/bash
-scriptver=v1.2.8
+
+#  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
+scriptver=v1.2.12
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -82,6 +84,12 @@ case $1 in
 		printwarn "Switching to DEV branch"
 		branch=dev
 		welcomeLooper $2
+	;;
+	--help | --h | --H | help | -? | --? )
+		printinfo "Switches available in this script:"
+		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
+		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
+		printinfo "--restore-data	Restore Cacti from previous backup"
 	;;
 	*)
 		welcomeMessage
