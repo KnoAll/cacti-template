@@ -85,7 +85,7 @@ case $1 in
 		branch=dev
 		welcomeLooper $2
 	;;
-	--help | --h | --H | help )
+	--help | --h | --H | help | -? | --? )
 		printinfo "Switches available in this script:"
 		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
 		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
