@@ -46,11 +46,12 @@ else
   exit 1
 fi
 
-
-
+#installed php version
+php_ver=PHP v$( php -r 'echo PHP_VERSION;' )
 #set upgrade version
+
 php_version=php73
-php_description="PHP v7.3.x"
+php_description="v7.3.x"
 
 upgradeAsk () {
 	#check version of PHP installed
@@ -68,7 +69,7 @@ upgradeAsk () {
 		;;
 		esac
 	else
-		printinfo "Installed PHP version >= $php_description, nothing to do."
+		printinfo "Installed PHP $php_ver >= current stalble $php_description."
 		exit 0
 	fi
 }
