@@ -16,6 +16,22 @@ printwarn() {
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
+case $(whoami) in
+        root)
+		printerror "You ran me as root! Do not run me as root!"
+		exit 1
+		;;
+        pi)
+		printerror "You ran me as pi user! Do not run me as pi!"
+		exit 1
+                ;;
+        cacti)
+                ;;
+        *)
+		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
+		exit 1
+                ;;
+esac
 
 if which yum >/dev/null; then
 	pkg_mgr=yum
