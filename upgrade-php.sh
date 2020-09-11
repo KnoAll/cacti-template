@@ -80,7 +80,6 @@ fi
 #installed php version
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 #set upgrade version
-
 php_version=php73
 php_description="v7.3.x"
 
@@ -112,8 +111,7 @@ upgradePHP() {
 	printinfo "Setting up repo"
 	sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi && sudo yum install -y -q yum-utils &&	printinfo "Enabling new $php_description" && sudo yum-config-manager --enable remi-$php_version && sudo yum -y -q update && printinfo "PHP upgraded to $php_ver"
 }
+
 upgradeAsk
-
-
 
 exit 0
