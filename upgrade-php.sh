@@ -2,6 +2,11 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+tan=$(tput setaf 3)
+reset=$(tput sgr0)
+
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
 }
