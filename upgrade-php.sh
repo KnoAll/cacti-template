@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/php-upgrade.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 
 sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
