@@ -16,34 +16,61 @@ printwarn() {
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
-case $(whoami) in
-        root)
-		printerror "You ran me as root! Do not run me as root!"
-		exit 1
-		;;
-        pi)
-		printerror "You ran me as pi user! Do not run me as pi!"
-		exit 1
-                ;;
-        cacti)
-                ;;
-        *)
-		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
-		exit 1
-                ;;
-esac
 
-if which yum >/dev/null; then
-	pkg_mgr=yum
-	os_dist=centos
-elif which apt >/dev/null; then
+if [[ `whoami` == "root" ]]; then
+    printerror "You ran me as root! Do not run me as root!"
+    exit 1
+elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
   exit 1
-	pkg_mgr=apt
-	os_dist=raspbian
-else
-  printerror "You seem to be on something other than CentOS, cannot proceed..."
+	if [[ `whoami` != "pi" ]]; then
+		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
+		exit 1
+	else
+		os_dist=raspbian
+		os_name=Raspbian
+		webserver=apache2
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
+	fi
+elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
+  printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
   exit 1
+	if [[ `whoami` != "pi" ]]; then
+		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
+		exit 1
+	else
+		os_dist=raspbian
+		os_name=Raspbian
+		webserver=apache2
+		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
+	fi
+elif grep -q "CentOS Linux 7" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=centos
+		os_name=CentOS7
+		webserver=httpd
+		pkg_mgr=yum
+		os_dist=centos
+		remi=remi-release-7.rpm
+	fi
+elif grep -q "CentOS Linux 8" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=centos
+		os_name=CentOS8
+		webserver=httpd
+		pkg_mgr=yum
+		os_dist=centos
+		remi=remi-release-8.rpm
+	fi	
+else
+	printerror "We don't appear to be on a supported OS. Exiting..."
+	exit 1
 fi
 
 #installed php version
@@ -79,7 +106,7 @@ upgradeAsk () {
 
 upgradePHP() {
 	printinfo "Setting up repo"
-	sudo yum install -y -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+	sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
 	sudo yum install -y -q yum-utils
 	printinfo "Enabling new $php_description"
 	sudo yum-config-manager --enable remi-$php_version
