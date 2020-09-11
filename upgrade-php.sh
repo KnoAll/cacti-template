@@ -61,12 +61,13 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgradephp-$php_ver&write=0 )
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgradephp&write=0 )
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$php_ver&write=0 )
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
 		upgradePHP
 		;;
 		* ) 
 			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
+			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
 			exit 1
 		;;
 		esac
