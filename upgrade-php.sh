@@ -65,6 +65,9 @@ upgradeAsk () {
 			exit 1
 		;;
 		esac
+	else
+		#nothing to do
+		exit 0
 	fi
 }
 upgradeAsk
