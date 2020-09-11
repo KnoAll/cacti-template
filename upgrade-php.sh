@@ -60,6 +60,7 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
+		upgradePHP
 		;;
 		* ) 
 			printwarn "OK, maybe next time..."
@@ -72,14 +73,15 @@ upgradeAsk () {
 		exit 0
 	fi
 }
+
+upgradePHP() {
+	printinfo "Setting up repo"
+	sudo yum install -y -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+	sudo yum install -y -q yum-utils
+	printinfo "Enabling new $php_description"
+	sudo yum-config-manager --enable remi-$php_version
+	sudo yum -y -q update
+}
 upgradeAsk
-
-sudo yum install -y -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-
-sudo yum install -y -q yum-utils
-
-sudo yum-config-manager --enable remi-$php_version
-
-sudo yum -y -q update
 
 exit 0
