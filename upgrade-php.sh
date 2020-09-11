@@ -110,7 +110,7 @@ upgradeAsk () {
 
 upgradePHP() {
 	printinfo "Setting up repo"
-	sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi && sudo yum install -y -q yum-utils &&	printinfo "Enabling new $php_description" && sudo yum-config-manager --enable remi-$php_version && sudo yum -y -q update && printinfo "PHP upgraded to $php_ver
+	sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi && sudo yum install -y -q yum-utils &&	printinfo "Enabling new $php_description" && sudo yum-config-manager --enable remi-$php_version && sudo yum -y -q update && printinfo "PHP upgraded to $php_ver"
 }
 upgradeAsk
 
