@@ -46,6 +46,8 @@ else
   exit 1
 fi
 
+version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
 #set upgrade version
 php_version=php73
 
@@ -63,12 +65,12 @@ upgradeAsk () {
 }
 upgradeAsk
 
-sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+sudo yum install -y -q http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
-sudo yum install -y yum-utils
+sudo yum install -y -q yum-utils
 
 sudo yum-config-manager --enable remi-$php_version
 
-sudo yum -y update
+sudo yum -y -q update
 
 exit 0
