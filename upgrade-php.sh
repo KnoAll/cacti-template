@@ -46,22 +46,26 @@ else
   exit 1
 fi
 
-version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
 
 #set upgrade version
 php_version=php73
 
 upgradeAsk () {
 	printwarn 
-	read -p "Do you want to upgrade your PHP install to $php_version? y/N: " upAsk
-	case "$upAsk" in
-	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-	;;
-	* ) 
-		printwarn "OK, maybe next time..."
-		exit 1
-	;;
-	esac
+	#check version of PHP installed
+	php -r 'exit((int)version_compare(PHP_VERSION, "7.3.0", "<"));'
+	if [ $? -ne 0 ];then
+		read -p "Do you want to upgrade your PHP install to $php_version? y/N: " upAsk
+		case "$upAsk" in
+		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
+		;;
+		* ) 
+			printwarn "OK, maybe next time..."
+			exit 1
+		;;
+		esac
+	fi
 }
 upgradeAsk
 
