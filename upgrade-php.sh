@@ -17,6 +17,8 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+printinfo "Checking for PHP upgrade..."
+printinfo
 if [[ `whoami` == "root" ]]; then
     printerror "You ran me as root! Do not run me as root!"
     exit 1
