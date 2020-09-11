@@ -68,8 +68,7 @@ upgradeAsk () {
 		;;
 		esac
 	else
-		#nothing to do
-		printwarn
+		printinfo "Installed PHP version >= $php_description, nothing to do."
 		exit 0
 	fi
 }
