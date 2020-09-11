@@ -61,6 +61,7 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgradephp-$php_ver&write=0 )
 		upgradePHP
 		;;
 		* ) 
