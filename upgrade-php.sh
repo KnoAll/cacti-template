@@ -47,7 +47,7 @@ else
 fi
 
 #installed php version
-php_ver=PHP v$( php -r 'echo PHP_VERSION;' )
+php_ver=v$( php -r 'echo PHP_VERSION;' )
 #set upgrade version
 
 php_version=php73
