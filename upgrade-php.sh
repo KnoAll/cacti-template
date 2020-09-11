@@ -64,7 +64,7 @@ upgradeAsk () {
 		upgradePHP
 		;;
 		* ) 
-			printwarn "OK, maybe next time..."
+			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
 			exit 1
 		;;
 		esac
