@@ -102,7 +102,7 @@ upgradeAsk () {
 		;;
 		esac
 	else
-		printinfo "Installed PHP $php_ver >= current stalble $php_description."
+		printinfo "Installed PHP $php_ver >= current stable $php_description."
 		exit 0
 	fi
 }
