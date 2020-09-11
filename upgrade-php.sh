@@ -51,7 +51,7 @@ php_version=php73
 
 upgradeAsk () {
 	printwarn 
-	read -p "Do you want to upgrade your PHP install to v$php_version? y/N: " upAsk
+	read -p "Do you want to upgrade your PHP install to $php_version? y/N: " upAsk
 	case "$upAsk" in
 	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 	;;
