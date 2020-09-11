@@ -50,13 +50,13 @@ fi
 
 #set upgrade version
 php_version=php73
+php_description="PHP v7.3.x"
 
 upgradeAsk () {
-	printwarn 
 	#check version of PHP installed
 	php -r 'exit((int)version_compare(PHP_VERSION, "7.3.0", "<"));'
 	if [ $? -ne 0 ];then
-		read -p "Do you want to upgrade your PHP install to $php_version? y/N: " upAsk
+		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 		;;
