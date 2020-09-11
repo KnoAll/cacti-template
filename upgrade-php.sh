@@ -57,6 +57,8 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		remi=remi-release-7.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
+  printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
+  exit 1
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		exit 1
