@@ -6,7 +6,7 @@ sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
 sudo yum install -y yum-utils
 
-sudo yum-config-manager --enable remi-php74
+sudo yum-config-manager --enable remi-php73
 
 sudo yum -y update && sudo yum -y upgrade
 
