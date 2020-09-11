@@ -56,6 +56,7 @@ upgradeAsk () {
 	#check version of PHP installed
 	php -r 'exit((int)version_compare(PHP_VERSION, "7.3.0", "<"));'
 	if [ $? -ne 0 ];then
+		printinfo
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
@@ -67,6 +68,7 @@ upgradeAsk () {
 		esac
 	else
 		#nothing to do
+		printwarn
 		exit 0
 	fi
 }
