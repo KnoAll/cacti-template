@@ -79,6 +79,7 @@ fi
 
 #installed php version
 php_ver=v$( php -r 'echo PHP_VERSION;' )
+smphp_ver=$(echo $php_ver | cut -c-4)
 #set upgrade version
 php_version=php73
 php_description="v7.3.x"
@@ -91,7 +92,7 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$php_ver&write=0 )
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
 		upgradePHP
 		;;
