@@ -180,6 +180,9 @@ upgradeAsk () {
 	esac
 }
 
+#check for PHP version upgrade
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh)
+
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
                 printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
