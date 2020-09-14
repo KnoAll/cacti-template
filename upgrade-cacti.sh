@@ -168,16 +168,23 @@ function upgrade-plugins() {
 }
 
 upgradeAsk () {
-	printwarn 
-	read -p "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version? y/N: " upAsk
-	case "$upAsk" in
-	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-	;;
-	* ) 
-		printwarn "OK, maybe next time, exiting now..."
-		exit 1
-	;;
-	esac
+	printInfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
+	read -p "y/N: " upAsk
+	upAsk=${upAsk:-N}
+		case "$upAsk" in
+		y | Y | yes | YES| Yes ) 
+			printinfo "Ok, let's go!"
+		;;
+		n | N | no | NO | No )
+			printwarn "OK, maybe next time, exiting now..."
+			exit 1
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			upgradeAsk
+		;;
+		esac
 }
 
 
