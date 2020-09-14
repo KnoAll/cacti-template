@@ -451,7 +451,7 @@ function compress-delete () {
 		* ) 
 			printwarn "You have entered an invallid selection!"
 			printinfo "Please try again!"
-			clear
+			compress-delete
 		;;
 	esac
 }
