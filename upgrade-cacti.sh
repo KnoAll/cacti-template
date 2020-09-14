@@ -431,25 +431,29 @@ rm -rf *spine*
 }
 
 function compress-delete () {
-	printinfo "Do you want to archive the original cacti directory?"
+	printinfo "Do you want to archive the original Cacti directory?"
 	read -n 1 -p "y/n: " cleanup
-        if [ "$cleanup" = "y" ]; then
-		printinfo
-		printinfo "Creating compressed archive..."
-		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
-		if [ $? -ne 0 ];then
-			printwarn "Archive creation failed."
-		else
-			rm -rf /var/www/html/cacti_$cactiver
-			printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
-		fi
-        elif [ "$cleanup" = "n" ]; then
-		printinfo
-        else
-		printwarn "You have entered an invallid selection!"
-		printinfo "Please try again!"
-            clear
-	fi
+	case "$cleanup" in
+		y | Y | yes | YES | Yes ) 
+			printinfo
+			printinfo "Creating compressed archive..."
+			tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
+			if [ $? -ne 0 ];then
+				printwarn "Archive creation failed."
+			else
+				rm -rf /var/www/html/cacti_$cactiver
+				printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
+			fi
+		;;
+		n | N | no | NO | No )
+			printinfo
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			clear
+		;;
+	esac
 }
 
 function update-cactidir () {
