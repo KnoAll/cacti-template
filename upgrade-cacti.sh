@@ -168,7 +168,7 @@ function upgrade-plugins() {
 }
 
 upgradeAsk () {
-	printInfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
+	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
 	read -p "y/N: " upAsk
 	upAsk=${upAsk:-N}
 		case "$upAsk" in
