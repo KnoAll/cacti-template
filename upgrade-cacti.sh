@@ -195,7 +195,7 @@ if version_ge $cactiver $upgrade_version; then
 		printinfo
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
@@ -203,7 +203,7 @@ if version_ge $cactiver $upgrade_version; then
         else
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		upgradeAsk
         fi
 else
