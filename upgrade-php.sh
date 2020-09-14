@@ -126,4 +126,6 @@ upgradePHP() {
 
 upgradeAsk
 
+printinfo
+
 exit 0
