@@ -180,8 +180,6 @@ upgradeAsk () {
 	esac
 }
 
-#check for PHP version upgrade
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh)
 
 if version_ge $cactiver $upgrade_version; then
         if version_ge $cactiver $prod_version; then
@@ -189,12 +187,16 @@ if version_ge $cactiver $upgrade_version; then
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
 		printinfo
 		printNotices
+		#check for PHP version upgrade
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
                 exit 0
         else
 		printNotices
+		#check for PHP version upgrade
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 		upgradeAsk
         fi
 else
