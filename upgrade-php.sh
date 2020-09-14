@@ -17,6 +17,16 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
+	param1=$1
+	param2=$2
+	branch=dev
+	printwarn "Now on DEV PHP branch."
+else
+	printinfo
+	branch=master
+fi
+
 printinfo "Checking for PHP upgrade..."
 printinfo
 if [[ `whoami` == "root" ]]; then
@@ -99,9 +109,12 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
-		upgradePHP
+			if [[ $param1 == "dev" ]]; then
+			else
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
+			fi
+			upgradePHP
 		;;
 		* ) 
 			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
