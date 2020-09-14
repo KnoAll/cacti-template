@@ -24,6 +24,7 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
@@ -36,9 +37,11 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=raspbian
@@ -49,6 +52,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=centos
@@ -60,9 +64,11 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=centos
@@ -74,6 +80,7 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
+	printinfo
 	exit 1
 fi
 
