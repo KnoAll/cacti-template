@@ -45,4 +45,6 @@ sudo find /var/www/html -type d -exec chmod g+s {} +
 touch /var/www/html/cacti/log/cacti.log
 chmod g+w /var/www/html/cacti/log/cacti.log
 
+printinfo
+
 exit
