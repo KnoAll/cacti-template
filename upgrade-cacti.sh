@@ -432,7 +432,7 @@ rm -rf *spine*
 
 function compress-delete () {
 	printinfo "Do you want to archive the original Cacti directory?"
-	read -n 1 -p "y/n: " cleanup
+	read -n 3 -p "y/n: " cleanup
 	case "$cleanup" in
 		y | Y | yes | YES | Yes ) 
 			printinfo
