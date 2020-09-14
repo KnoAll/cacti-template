@@ -110,6 +110,7 @@ upgradeAsk () {
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 			if [[ $param1 == "dev" ]]; then
+				printinfo
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
