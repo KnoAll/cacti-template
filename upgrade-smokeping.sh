@@ -172,7 +172,7 @@ function update-permissions () {
 
 function compress-delete () {
 	printinfo "Do you want to archive the original Smokeping directory?"
-	read -n 1 -p "Y/n: " cleanup
+	read -p "Y/n: " cleanup
 	cleanup=${cleanup:-Y}
 	case "$cleanup" in
 	y | Y | yes | YES| Yes ) 
@@ -203,5 +203,5 @@ upgrade-fping
 upgrade-smokeping
 update-permissions
 compress-delete
-printerror "Smokeping upgraded to v$prod_version! Proceed to the web interface..."
+printinfo "Smokeping upgraded to v$prod_version! Proceed to the web interface..."
 exit 0
