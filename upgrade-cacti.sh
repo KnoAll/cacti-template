@@ -157,14 +157,24 @@ fi
 }
 
 function upgrade-plugins() {
-	printinfo "Would you like to check your cacti plugins for updates?"
-	read -n 1 -p "y/n: " plugup
-        	if [ "$plugup" = "y" ]; then
+	printinfo "Would you like to check your Cacti plugins for updates?"
+	read -p "y/n: " plugup
+	plugup=${plugup:-N}
+	case "$plugup" in
+		y | Y | yes | YES| Yes ) 
 			printinfo
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
-		else
+		;;
+		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
-		fi
+			exit 1
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			upgrade-plugins
+		;;
+	esac
 }
 
 upgradeAsk () {
