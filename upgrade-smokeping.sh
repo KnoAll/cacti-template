@@ -173,7 +173,7 @@ function update-permissions () {
 function compress-delete () {
 	printinfo "Do you want to archive the original Smokeping directory?"
 	read -n 1 -p "Y/n: " cleanup
-	plugup=${cleanup:-Y}
+	cleanup=${cleanup:-Y}
 	case "$cleanup" in
 	y | Y | yes | YES| Yes ) 
 		printinfo
