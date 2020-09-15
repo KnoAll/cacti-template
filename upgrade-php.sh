@@ -19,7 +19,6 @@ printerror() {
 
 if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	param1=$1
-	printerror "param1 is $param1"
 	param2=$2
 	branch=dev
 	printwarn "Now on DEV PHP branch."
