@@ -57,7 +57,7 @@ if version_ge $smokever $upgrade_version; then
         else
 			printinfo "Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
 			read -p "Y/n: " smokeup1
-			plugup=${smokeup1:-Y}
+			smokeup1=${smokeup1:-Y}
 			case "$smokeup1" in
 			y | Y | yes | YES| Yes ) 
 				printinfo
