@@ -111,7 +111,7 @@ upgradeAsk () {
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 			if [[ $param1 == "dev" ]]; then
-				printinfo $param1
+				printwarn $param1
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
@@ -120,7 +120,11 @@ upgradeAsk () {
 		;;
 		* ) 
 			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
+			if [[ $param1 == "dev" ]]; then
+				printwarn $param1
+			else
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
+			fi
 			exit 1
 		;;
 		esac
