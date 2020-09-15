@@ -49,24 +49,35 @@ fi
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
+function checkVer () {
 if version_ge $smokever $upgrade_version; then
         if version_ge $smokever $prod_version; then
                 printinfo "Smokeping v$smokever is up to date with production v$prod_version, nothing to do, exiting!"
                 exit 0
         else
 			printinfo "Installed Smokeping v$smokever is compatible with minimum required, do you wish to upgrade to v$prod_version?"
-			read -n 1 -p "y/n: " smokeup1
-       		 		if [ "$smokeup1" = "y" ]; then
-					printinfo
-				else
-					printinfo "OK, no Smokeping thing, bye!"
-					exit
-				fi
+			read -p "Y/n: " smokeup1
+			plugup=${smokeup1:-Y}
+			case "$smokeup1" in
+			y | Y | yes | YES| Yes ) 
+				printinfo
+			;;
+			n | N | no | NO | No )
+				printinfo "OK, no Smokeping thing, bye!"
+				exit 1
+			;;
+			* )
+				printerror "You have entered an invallid selection!"
+				printinfo "Please try again!"
+				checkVer
+			;;
+			esac
         fi
 else
 	printwarn "Smokeping v$smokever is less than upgrade version v$upgrade_version cannot install, exiting..."
 	exit 1
 fi
+}
 
 printinfo "Welcome to Kevin's Smokeping upgrade script!"
 sudo printinfo
@@ -161,8 +172,10 @@ sudo find /opt -type d -exec chmod g+s {} +
 
 function compress-delete () {
 	printinfo "Do you want to archive the original Smokeping directory?"
-	read -n 1 -p "y/n: " cleanup
-        if [ "$cleanup" = "y" ]; then
+	read -n 1 -p "Y/n: " cleanup
+	plugup=${cleanup:-Y}
+	case "$cleanup" in
+	y | Y | yes | YES| Yes ) 
 		printinfo
 		printinfo "Creating compressed archive..."
 		tar -pczf ~/backup_smokeping-$smokever.tar.gz -C /opt smokeping_$smokever
@@ -172,15 +185,19 @@ function compress-delete () {
 			rm -rf /opt/smokeping_$smokever
 			printinfo "Archive created in home directory ~/backup_smokeping-$smokever.tar.gz..."		
 		fi
-        elif [ "$cleanup" = "n" ]; then
+	;;
+	n | N | no | NO | No )
 		printinfo
-        else
-		printerror "You have entered an invallid selection!"
+	;;
+	* )
+		printwarn "You have entered an invallid selection!"
 		printinfo "Please try again!"
-            	clear
-	fi
+		compress-delete
+	;;
+	esac
 }
 
+checkVer
 update-permissions
 upgrade-fping
 upgrade-smokeping
