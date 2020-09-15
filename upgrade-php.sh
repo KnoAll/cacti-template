@@ -17,6 +17,16 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
+	param1=$1
+	param2=$2
+	branch=dev
+	printwarn "Now on DEV PHP branch."
+else
+	printinfo
+	branch=master
+fi
+
 printinfo "Checking for PHP upgrade..."
 printinfo
 if [[ `whoami` == "root" ]]; then
@@ -24,6 +34,7 @@ if [[ `whoami` == "root" ]]; then
     exit 1
 elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
@@ -36,9 +47,11 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=raspbian
@@ -49,6 +62,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=centos
@@ -60,9 +74,11 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
+  printinfo
   exit 1
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
 		exit 1
 	else
 		os_dist=centos
@@ -74,6 +90,7 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
+	printinfo
 	exit 1
 fi
 
@@ -92,13 +109,21 @@ upgradeAsk () {
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
-		upgradePHP
+			if [[ $param1 == "dev" ]]; then
+				printwarn $param1
+			else
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
+			fi
+			upgradePHP
 		;;
 		* ) 
 			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
+			if [[ $param1 == "dev" ]]; then
+				printwarn $param1
+			else
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
+			fi
 			exit 1
 		;;
 		esac

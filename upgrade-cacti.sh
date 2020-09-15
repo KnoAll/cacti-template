@@ -157,27 +157,44 @@ fi
 }
 
 function upgrade-plugins() {
-	printinfo "Would you like to check your cacti plugins for updates?"
-	read -n 1 -p "y/n: " plugup
-        	if [ "$plugup" = "y" ]; then
+	printinfo "Would you like to check your Cacti plugins for updates?"
+	read -p "Y/n: " plugup
+	plugup=${plugup:-Y}
+	case "$plugup" in
+		y | Y | yes | YES| Yes ) 
 			printinfo
 			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
-		else
+		;;
+		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
-		fi
+			exit 1
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			upgrade-plugins
+		;;
+	esac
 }
 
 upgradeAsk () {
-	printwarn 
-	read -p "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version? y/N: " upAsk
-	case "$upAsk" in
-	y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
-	;;
-	* ) 
-		printwarn "OK, maybe next time, exiting now..."
-		exit 1
-	;;
-	esac
+	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
+	read -p "y/N: " upAsk
+	upAsk=${upAsk:-N}
+		case "$upAsk" in
+		y | Y | yes | YES| Yes ) 
+			printinfo "Ok, let's go!"
+		;;
+		n | N | no | NO | No )
+			printwarn "OK, maybe next time, exiting now..."
+			exit 1
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			upgradeAsk
+		;;
+		esac
 }
 
 
@@ -188,7 +205,7 @@ if version_ge $cactiver $upgrade_version; then
 		printinfo
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
@@ -196,7 +213,7 @@ if version_ge $cactiver $upgrade_version; then
         else
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		upgradeAsk
         fi
 else
@@ -431,25 +448,30 @@ rm -rf *spine*
 }
 
 function compress-delete () {
-	printinfo "Do you want to archive the original cacti directory?"
-	read -n 1 -p "y/n: " cleanup
-        if [ "$cleanup" = "y" ]; then
-		printinfo
-		printinfo "Creating compressed archive..."
-		tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
-		if [ $? -ne 0 ];then
-			printwarn "Archive creation failed."
-		else
-			rm -rf /var/www/html/cacti_$cactiver
-			printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
-		fi
-        elif [ "$cleanup" = "n" ]; then
-		printinfo
-        else
-		printwarn "You have entered an invallid selection!"
-		printinfo "Please try again!"
-            clear
-	fi
+	printinfo "Do you want to archive the original Cacti directory?"
+	read -n 3 -p "Y/n: " cleanup
+	cleanup=${cleanup:-Y}
+	case "$cleanup" in
+		y | Y | yes | YES | Yes ) 
+			printinfo
+			printinfo "Creating compressed archive..."
+			tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
+			if [ $? -ne 0 ];then
+				printwarn "Archive creation failed."
+			else
+				rm -rf /var/www/html/cacti_$cactiver
+				printinfo "Archive created in home directory ~/backup_cacti-$cactiver.tar.gz..."
+			fi
+		;;
+		n | N | no | NO | No )
+			printinfo
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			compress-delete
+		;;
+	esac
 }
 
 function update-cactidir () {
