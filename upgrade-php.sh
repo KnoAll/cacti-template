@@ -19,6 +19,7 @@ printerror() {
 
 if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	param1=$1
+	printerror "param1 is $param1"
 	param2=$2
 	branch=dev
 	printwarn "Now on DEV PHP branch."
@@ -110,7 +111,7 @@ upgradeAsk () {
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 			if [[ $param1 == "dev" ]]; then
-				printinfo
+				printinfo $param1
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
