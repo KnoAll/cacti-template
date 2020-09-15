@@ -158,8 +158,8 @@ fi
 
 function upgrade-plugins() {
 	printinfo "Would you like to check your Cacti plugins for updates?"
-	read -p "y/n: " plugup
-	plugup=${plugup:-N}
+	read -p "Y/n: " plugup
+	plugup=${plugup:-Y}
 	case "$plugup" in
 		y | Y | yes | YES| Yes ) 
 			printinfo
@@ -449,7 +449,8 @@ rm -rf *spine*
 
 function compress-delete () {
 	printinfo "Do you want to archive the original Cacti directory?"
-	read -n 3 -p "y/n: " cleanup
+	read -n 3 -p "Y/n: " cleanup
+	cleanup=${cleanup:-Y}
 	case "$cleanup" in
 		y | Y | yes | YES | Yes ) 
 			printinfo
