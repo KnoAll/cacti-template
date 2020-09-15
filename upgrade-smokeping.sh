@@ -80,7 +80,7 @@ fi
 }
 
 printinfo "Welcome to Kevin's Smokeping upgrade script!"
-sudo printinfo
+sudo echo
 
 function upgrade-fping () {
                 printinfo "Checking fping version..."
