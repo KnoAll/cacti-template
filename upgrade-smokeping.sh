@@ -83,91 +83,91 @@ printinfo "Welcome to Kevin's Smokeping upgrade script!"
 sudo echo
 
 function upgrade-fping () {
-                printinfo "Checking fping version..."
-fping -4 -v > /dev/null 2>&1
-if [ $? -ne 0 ];then
-	printinfo "Upgrading fping..."
-	cd
-	git clone https://github.com/schweikert/fping.git
-	cd fping/
-	git checkout master
-	./autogen.sh
-	./configure --prefix=/usr --enable-ipv4 --enable-ipv6
-	sudo make
-	sudo make install
-	sudo chmod +s /usr/sbin/fping
-	cd
-	rm -rf fping
-else
-	printinfo "fping version OK, moving on..."
-fi
+	printinfo "Checking fping version..."
+	fping -4 -v > /dev/null 2>&1
+	if [ $? -ne 0 ];then
+		printinfo "Upgrading fping..."
+		cd
+		git clone https://github.com/schweikert/fping.git
+		cd fping/
+		git checkout master
+		./autogen.sh
+		./configure --prefix=/usr --enable-ipv4 --enable-ipv6
+		sudo make
+		sudo make install
+		sudo chmod +s /usr/sbin/fping
+		cd
+		rm -rf fping
+	else
+		printinfo "fping version OK, moving on..."
+	fi
 }
 
 function upgrade-smokeping () {
-printinfo "Beginning Smokeping upgrade..."
-printinfo "Updating CentOS packages..."
-cd
-sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build
-if [ $? -ne 0 ];then
-                printerror "CentOS update error cannot install, exiting..."
-		exit 1
-else
-	printinfo "Getting Smokeping..."
+	printinfo "Beginning Smokeping upgrade..."
+	printinfo "Updating CentOS packages..."
 	cd
-	wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+	sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build
 	if [ $? -ne 0 ];then
-                printerror "Smokeping download error cannot install, exiting..."
-		exit 1
+			printerror "CentOS update error cannot install, exiting..."
+			exit 1
 	else
-	tar -xzf smokeping-$web_version.tar.gz
+		printinfo "Getting Smokeping..."
+		cd
+		wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
-                	printerror "Smokeping unpack error cannot install, exiting..."
+			printerror "Smokeping download error cannot install, exiting..."
 			exit 1
 		else
-			printinfo "Setting up Smokeping..."
-			sudo systemctl stop smokeping.service
-			sudo mv /opt/smokeping /opt/smokeping_$smokever
-			rm smokeping-$web_version.tar.gz
-			cd smokeping-$web_version
-			./configure --prefix=/opt/smokeping
-			make install -s
-			cd
-			rm -rf smokeping-$web_version
-			mkdir /opt/smokeping/var
-			mkdir /opt/smokeping/htdocs/cache
-			cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
-			update-config
-			cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
-			cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
-			update-permissions
-			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-			printinfo "Restarting services..."
-			sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
-			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
-			printinfo
+		tar -xzf smokeping-$web_version.tar.gz
+			if [ $? -ne 0 ];then
+				printerror "Smokeping unpack error cannot install, exiting..."
+				exit 1
+			else
+				printinfo "Setting up Smokeping..."
+				sudo systemctl stop smokeping.service
+				sudo mv /opt/smokeping /opt/smokeping_$smokever
+				rm smokeping-$web_version.tar.gz
+				cd smokeping-$web_version
+				./configure --prefix=/opt/smokeping
+				make install -s
+				cd
+				rm -rf smokeping-$web_version
+				mkdir /opt/smokeping/var
+				mkdir /opt/smokeping/htdocs/cache
+				cp /opt/smokeping_$smokever/etc/config /opt/smokeping/etc/
+				update-config
+				cp -R /opt/smokeping_$smokever/data /opt/smokeping/data
+				cp -a /opt/smokeping_$smokever/etc/smokeping_secrets.dist /opt/smokeping/etc/
+				update-permissions
+				chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
+				printinfo "Restarting services..."
+				sudo systemctl start smokeping.service && sudo systemctl restart httpd.service
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-$smokever-$prod_version&write=0 )
+				printinfo
+			fi
 		fi
 	fi
-fi
 }
 
 function update-config () {
-printinfo "Updating Smokeping config..."
-if [ -f  /opt/smokeping/etc/config ];
-then
-	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
-fi
+	printinfo "Updating Smokeping config..."
+	if [ -f  /opt/smokeping/etc/config ];
+	then
+		 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
+	fi
 }
 
 
 function update-permissions () {
-printinfo "Fixing file permissions..."
-sudo chown -R cacti /opt
-sudo chgrp -R apache /opt
-sudo find /opt -type d -exec chmod g+rwx {} +
-sudo find /opt -type f -exec chmod g+rw {} +
-sudo find /opt -type d -exec chmod u+rwx {} +
-sudo find /opt -type f -exec chmod u+rw {} +
-sudo find /opt -type d -exec chmod g+s {} +
+	printinfo "Fixing file permissions..."
+	sudo chown -R cacti /opt
+	sudo chgrp -R apache /opt
+	sudo find /opt -type d -exec chmod g+rwx {} +
+	sudo find /opt -type f -exec chmod g+rw {} +
+	sudo find /opt -type d -exec chmod u+rwx {} +
+	sudo find /opt -type f -exec chmod u+rw {} +
+	sudo find /opt -type d -exec chmod g+s {} +
 }
 
 function compress-delete () {
