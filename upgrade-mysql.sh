@@ -135,7 +135,8 @@ upgradeAsk () {
 }
 
 upgradeMYSQL() {
-		printinfo "Setting up repo"
+		printinfo "Setting up MariaDB repo"
+		sudo yum -y -q update
 		cd /etc/yum.repos.d
 		sudo mv MariaDB.repo MariaDB.repo.$shmysql_ver
 		sudo wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/MariaDB.repo
@@ -151,8 +152,9 @@ upgradeMYSQL() {
 		sudo systemctl enable mariadb
 		sudo systemctl start mariadb
 		sudo mysql_upgrade --silent -u root -pcacti
+		sudo yum -y -q update
 			if [ $? -ne 0 ];then
-				printwarn "ERROR upgrading MariaDB version."
+				printerror "ERROR upgrading MariaDB version."
 			else
 				mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
 				printinfo "MariaDB upgraded to $mysql_ver"
