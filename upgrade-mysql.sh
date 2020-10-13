@@ -142,7 +142,7 @@ upgradeMYSQL() {
 		printinfo "Enabling new $mysql_description"
 		sudo systemctl stop mariadb
 		sudo yum remove -y -q MariaDB-server
-		sudo yum install -y -q mariadb-server
+		sudo yum install -y -q MariaDB-server
 		sudo sed -i 's/innodb_additional_mem_pool/#innodb_additional_mem_pool/g' /etc/my.cnf
 		sudo systemctl enable mariadb
 		sudo systemctl start mariadb
