@@ -113,7 +113,7 @@ upgradeAsk () {
 			if [[ $param1 == "dev" ]]; then
 				printwarn $param1
 			else
-				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql_$smphp_ver&write=0 )
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql_$shmysql_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql&write=0 )
 			fi
 			upgradeMYSQL
