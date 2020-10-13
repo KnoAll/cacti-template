@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-mysql.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-mysql.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -138,7 +138,7 @@ upgradeMYSQL() {
 		printinfo "Setting up repo"
 		cd /etc/yum.repos.d
 		sudo mv MariaDB.repo MariaDB.repo.$shmysql_ver
-		sudo wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/MariaDB.repo
+		sudo wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/MariaDB.repo
 		printinfo "Enabling new $mysql_description"
 		sudo systemctl stop mariadb
 		sudo yum remove -y -q MariaDB-server
