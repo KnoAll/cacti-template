@@ -141,12 +141,12 @@ upgradeMYSQL() {
 		sudo wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/MariaDB.repo
 		printinfo "Enabling new $mysql_description"
 		sudo systemctl stop mariadb
-		sudo yum remove -y -q MariaDB-server
-		sudo yum install -y -q MariaDB-server
+		sudo yum remove -y -q MariaDB-server MariaDB-shared MariaDB-client MariaDB-common MariaDB-devel
+		sudo yum install -y -q MariaDB-server MariaDB-shared MariaDB-client MariaDB-common MariaDB-devel
 		sudo sed -i 's/innodb_additional_mem_pool/#innodb_additional_mem_pool/g' /etc/my.cnf
 		sudo systemctl enable mariadb
 		sudo systemctl start mariadb
-		sudo mysql_upgrade -u root -pcacti
+		sudo mysql_upgrade --silent -u root -pcacti
 			if [ $? -ne 0 ];then
 				printwarn "ERROR upgrading MariaDB version."
 			else
