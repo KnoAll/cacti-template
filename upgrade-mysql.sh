@@ -138,7 +138,7 @@ upgradeMYSQL() {
 		printinfo "Setting up repo"
 		cd /etc/yum.repos.d
 		sudo mv MariaDB.repo MariaDB.repo.$shmysql_ver
-		sudo wget -q -P https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/MariaDB.repo
+		sudo wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/MariaDB.repo
 		printinfo "Enabling new $mysql_description"
 		sudo systemctl stop mariadb
 		sudo yum remove -y -q MariaDB-server
