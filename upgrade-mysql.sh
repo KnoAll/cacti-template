@@ -101,12 +101,13 @@ shmysql_ver=$(echo $mysql_ver | cut -c-4)
 mysql_version=10.5
 mysql_description="v10.5.x"
 
+function version { echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'; }
+
 upgradeAsk () {
 	#check version of MYSQL installed
-	php -r 'exit((int)version_compare(PHP_VERSION, "7.3.0", "<"));'
-	if [ $? -ne 0 ];then
+	if [ "$(version "$mysql_version")" -gt "$(version "$shmysql_ver")" ]; then
 		printinfo
-		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
+		read -p "Do you want to upgrade your MariaDB install to $mysql_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 			if [[ $param1 == "dev" ]]; then
@@ -115,36 +116,41 @@ upgradeAsk () {
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql_$smphp_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql&write=0 )
 			fi
-			upgradePHP
+			upgradeMYSQL
 		;;
 		* ) 
-			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
+			printwarn "OK, please consider upgrading, old versions of MariaDB are not updated and may contain known security and stability issues."
 			if [[ $param1 == "dev" ]]; then
 				printwarn $param1
 			else
-				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-mysql&write=0 )
 			fi
 			exit 1
 		;;
 		esac
 	else
-		printinfo "Installed PHP $php_ver >= current stable $php_description."
+		printinfo "Installed MariaDB $mysql_ver >= current stable $mysql_description."
 		exit 0
 	fi
 }
 
-upgradePHP() {
+upgradeMYSQL() {
 		printinfo "Setting up repo"
-		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo yum install -y -q yum-utils
-		printinfo "Enabling new $php_description"
-		sudo yum-config-manager --enable remi-$php_version
-		sudo yum -y -q update
+		cd /etc/yum.repos.d
+		sudo mv MariaDB.repo MariaDB.repo.$shmysql_ver
+		sudo wget https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/MariaDB.repo
+		printinfo "Enabling new $mysql_description"
+		sudo systemctl stop mariadb
+		sudo yum remove -y MariaDB-server
+		sudo yum -y install mariadb-server
+		sudo systemctl enable mariadb
+		sudo systemctl start mariadb
+		sudo mysql_upgrade -u root -pcacti
 			if [ $? -ne 0 ];then
-				printwarn "ERROR upgrading PHP version."
+				printwarn "ERROR upgrading MariaDB version."
 			else
-				php_ver=v$( php -r 'echo PHP_VERSION;' )
-				printinfo "PHP upgraded to $php_ver"
+				mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
+				printinfo "MariaDB upgraded to $mysql_ver"
 			fi
 
 }
