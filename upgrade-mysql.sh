@@ -107,7 +107,7 @@ upgradeAsk () {
 	#check version of MYSQL installed
 	if [ "$(version "$mysql_version")" -gt "$(version "$shmysql_ver")" ]; then
 		printinfo
-		read -p "You are running MariaDB v$mysql_ver. Do you want to upgrade your MariaDB install to $mysql_description? y/N: " upAsk
+		read -p "You are running MariaDB v$shmysql_ver.x. Do you want to upgrade your MariaDB install to $mysql_description? y/N: " upAsk
 		case "$upAsk" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 			if [[ $param1 == "dev" ]]; then
