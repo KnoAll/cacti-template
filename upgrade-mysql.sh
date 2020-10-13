@@ -96,9 +96,9 @@ fi
 
 #installed MYSQL version
 mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
-shmysql_ver=$(echo $mysql_ver | cut -c-7)
+shmysql_ver=$(echo $mysql_ver | cut -c-4)
 #set upgrade version
-mysql_version=
+mysql_version=10.5
 mysql_description="v10.5.x"
 
 upgradeAsk () {
