@@ -102,7 +102,7 @@ mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
 		exit 1
 	fi
 
-upgrade_version=1.2.14
+upgrade_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
 cacti_ver=$( cat /var/www/html/cacti/include/cacti_version )
 shmysql_ver=$(echo $mysql_ver | cut -c-4)
 #set upgrade version
