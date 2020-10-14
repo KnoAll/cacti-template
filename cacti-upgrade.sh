@@ -81,11 +81,11 @@ case $1 in
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/restore-cacti.sh) $1 $2
 	;;
 	--upgrade-mysql)
-		welcomeLooper
+		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-mysql.sh) $1 $2
 	;;
 	--upgrade-php)
-		welcomeLooper
+		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $1 $2
 
 	;;
