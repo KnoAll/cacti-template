@@ -101,12 +101,25 @@ mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql-error&write=0 )
 		exit 1
 	fi
+
+upgrade_version=1.2.14
+cacti_ver=$( cat /var/www/html/cacti/include/cacti_version )
 shmysql_ver=$(echo $mysql_ver | cut -c-4)
 #set upgrade version
 mysql_version=10.5
 mysql_description="v10.5.x"
 
 function version { echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'; }
+
+checkCacti() {
+	if [ "$(version "$upgrade_version")" -gt "$(version "$cacti_ver")" ]; then
+		printinfo
+	else
+		printinfo "Installed Cacti v$cacti_ver <= current stable $mysql_description. Cannot upgrade MariaDB."
+		exit 1
+	fi
+}
+}
 
 upgradeAsk () {
 	#check version of MYSQL installed
