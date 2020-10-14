@@ -134,6 +134,7 @@ upgradeAsk () {
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql_$shmysql_ver&write=0 )
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql&write=0 )
 			fi
+			backupMYSQL
 			upgradeMYSQL
 		;;
 		* ) 
@@ -149,6 +150,20 @@ upgradeAsk () {
 	else
 		printinfo "Installed MariaDB $mysql_ver >= current stable $mysql_description. Nothing to do."
 		exit 0
+	fi
+}
+
+backupMYSQL() {
+	printinfo "Backing up MariaDB server and databases. File will be saved in home directory."
+	sudo yum install -y -q MariaDB-backup
+	cd
+	sudo mariabackup --backup --user=root --password=cacti --stream=xbstream | gzip > MariaBak_$(date +\%Y\%m\%d).gz
+	if [ $? -ne 0 ];then
+		printerror "ERROR backing up MariaDB, cannot continue."
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql-error&write=0 )
+		exit 1
+	else
+		printinfo "MariaDB successfully backed up."
 	fi
 }
 
