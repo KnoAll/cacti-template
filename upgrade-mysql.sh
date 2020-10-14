@@ -98,6 +98,7 @@ fi
 mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
 	if [ $? -ne 0 ];then
 		printerror "ERROR determining MariaDB version, cannot continue."
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-mysql-error&write=0 )
 		exit 1
 	fi
 shmysql_ver=$(echo $mysql_ver | cut -c-4)
