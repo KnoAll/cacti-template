@@ -112,7 +112,7 @@ mysql_description="v10.5.x"
 function version { echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'; }
 
 checkCacti() {
-	if [ "$(version "$upgrade_version")" -gt "$(version "$cacti_ver")" ]; then
+	if [ "$(version "$cacti_ver")" -gt "$(version "$upgrade_version")" ]; then
 		printinfo
 	else
 		printerror "Installed Cacti v$cacti_ver <= current stable $mysql_description, you must upgrade Cacti. Cannot upgrade MariaDB."
