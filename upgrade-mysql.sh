@@ -152,6 +152,7 @@ upgradeMYSQL() {
 		sudo systemctl enable mariadb
 		sudo systemctl start mariadb
 		sudo mysql_upgrade --silent -u root -pcacti
+		sudo systemctl restart httpd
 		sudo yum -y -q update
 			if [ $? -ne 0 ];then
 				printerror "ERROR upgrading MariaDB version."
