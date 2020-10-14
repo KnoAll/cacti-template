@@ -180,7 +180,7 @@ upgradeMYSQL() {
 		sudo systemctl stop mariadb
 		sudo sed -i 's/innodb_additional_mem_pool/#innodb_additional_mem_pool/g' /etc/my.cnf
 		sudo yum remove -y -q MariaDB-server MariaDB-shared MariaDB-client MariaDB-common MariaDB-devel
-		sudo yum install -y -q MariaDB-server MariaDB-shared MariaDB-client MariaDB-common MariaDB-devel net-snmp php-mysql
+		sudo yum install -y -q MariaDB-server MariaDB-shared MariaDB-client MariaDB-common MariaDB-devel MariaDB-backup net-snmp php-mysql
 		sudo cp /etc/snmp/snmpd.conf.rpmsave /etc/snmp/snmpd.conf
 		sudo cp /etc/my.cnf.rpmsave /etc/my.cnf
 		sudo systemctl enable snmpd
