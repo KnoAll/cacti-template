@@ -115,7 +115,7 @@ checkCacti() {
 	if [ "$(version "$upgrade_version")" -gt "$(version "$cacti_ver")" ]; then
 		printinfo
 	else
-		printinfo "Installed Cacti v$cacti_ver <= current stable $mysql_description. Cannot upgrade MariaDB."
+		printerror "Installed Cacti v$cacti_ver <= current stable $mysql_description, you must upgrade Cacti. Cannot upgrade MariaDB."
 		exit 1
 	fi
 }
