@@ -65,7 +65,7 @@ else
 fi
 
 # get latest version of cacti-upgrade script
-if grep -q v1.2.8 cacti-upgrade.sh; then
+if grep -q v1.2.14 cacti-upgrade.sh; then
 	printinfo ""
 else
 	printinfo "Upgrading cacti.upgrade.sh"
