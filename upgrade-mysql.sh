@@ -164,7 +164,10 @@ backupMYSQL() {
 		exit 1
 	else
 		printinfo "MariaDB successfully backed up."
+		printinfo
 	fi
+	# To decompress backup use:
+	# gunzip -c <backup file>.gz | mbstream -x
 }
 
 upgradeMYSQL() {
