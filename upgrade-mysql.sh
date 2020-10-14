@@ -119,7 +119,6 @@ checkCacti() {
 		exit 1
 	fi
 }
-}
 
 upgradeAsk () {
 	#check version of MYSQL installed
@@ -181,6 +180,7 @@ upgradeMYSQL() {
 
 }
 
+checkCacti
 upgradeAsk
 
 printinfo
