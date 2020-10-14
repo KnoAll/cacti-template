@@ -27,7 +27,7 @@ else
 	branch=master
 fi
 
-printinfo "Checking for MYSQL upgrade..."
+printinfo "Checking for MariaDB upgrade..."
 printinfo
 if [[ `whoami` == "root" ]]; then
     printerror "You ran me as root! Do not run me as root!"
