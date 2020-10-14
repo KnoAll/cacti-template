@@ -154,7 +154,7 @@ upgradeAsk () {
 }
 
 backupMYSQL() {
-	printinfo "Backing up MariaDB server and databases. File will be saved in home directory."
+	printinfo "Backing up MariaDB server and databases. File will be saved in home directory as MariaBak_$(date +\%Y\%m\%d).gz."
 	sudo yum install -y -q MariaDB-backup
 	cd
 	sudo mariabackup --backup --user=root --password=cacti --stream=xbstream | gzip > MariaBak_$(date +\%Y\%m\%d).gz
