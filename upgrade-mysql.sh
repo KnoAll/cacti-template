@@ -96,6 +96,10 @@ fi
 
 #installed MYSQL version
 mysql_ver=$( mysql -u root -pcacti -N -B -e "select version();" )
+	if [ $? -ne 0 ];then
+		printerror "ERROR determining MariaDB version, cannot continue."
+		exit 1
+	fi
 shmysql_ver=$(echo $mysql_ver | cut -c-4)
 #set upgrade version
 mysql_version=10.5
