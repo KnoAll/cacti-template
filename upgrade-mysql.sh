@@ -109,6 +109,7 @@ shmysql_ver=$(echo $mysql_ver | cut -c-4)
 mysql_version=10.5
 mysql_description="v10.5.x"
 
+function version { echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'; }
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 checkCacti() {
