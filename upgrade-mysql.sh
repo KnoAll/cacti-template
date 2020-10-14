@@ -134,7 +134,7 @@ upgradeAsk () {
 		;;
 		esac
 	else
-		printinfo "Installed MariaDB $mysql_ver >= current stable $mysql_description."
+		printinfo "Installed MariaDB $mysql_ver >= current stable $mysql_description. Nothing to do."
 		exit 0
 	fi
 }
