@@ -65,10 +65,10 @@ else
 fi
 
 # get latest version of cacti-upgrade script
-if grep -q v1.2.8 cacti-upgrade.sh; then
-	printinfo ""
+if grep -q v1.2.14 cacti-upgrade.sh; then
+	printinfo
 else
-	printinfo "Upgrading cacti.upgrade.sh"
+	printinfo "Upgrading cacti-upgrade.sh"
 	rm cacti-upgrade.sh
 	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
 	chmod +x cacti-upgrade.sh

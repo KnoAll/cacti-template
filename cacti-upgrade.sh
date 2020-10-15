@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
-scriptver=v1.2.12
+scriptver=v1.2.14
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -80,16 +80,27 @@ case $1 in
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/restore-cacti.sh) $1 $2
 	;;
+	--upgrade-mysql)
+		welcomeMessage
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-mysql.sh) $1 $2
+	;;
+	--upgrade-php)
+		welcomeMessage
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $1 $2
+
+	;;
 	--switch-dev)
 		printwarn "Switching to DEV branch"
 		branch=dev
 		welcomeLooper $2
 	;;
-	--help | --h | --H | help | -? | --? )
+	--help | --h | --H | -h | help | -? | --? )
 		printinfo "Switches available in this script:"
 		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
 		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
 		printinfo "--restore-data	Restore Cacti from previous backup"
+		printinfo "--upgrade-mysql	Upgrade MYSQL/MariaDB on the server"
+		printinfo "--upgrade-php	Upgrade PHP on the server"
 	;;
 	*)
 		welcomeMessage
