@@ -27,6 +27,13 @@ else
 	branch=master
 fi
 
+#installed php version
+php_ver=v$( php -r 'echo PHP_VERSION;' )
+smphp_ver=$(echo $php_ver | cut -c-4)
+#set upgrade version
+php_version=php73
+php_description="v7.3.x"
+
 printinfo "Checking for PHP upgrade..."
 printinfo
 if [[ `whoami` == "root" ]]; then
@@ -73,7 +80,7 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		remi=remi-release-7.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
-  printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
+  #printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
   printinfo
  # exit 1
 	if [[ `whoami` != "cacti" ]]; then
@@ -87,19 +94,13 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		pkg_mgr=yum
 		os_dist=centos
 		remi=remi-release-8.rpm
+		php_version=remi-7.3
 	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	printinfo
 	exit 1
 fi
-
-#installed php version
-php_ver=v$( php -r 'echo PHP_VERSION;' )
-smphp_ver=$(echo $php_ver | cut -c-4)
-#set upgrade version
-php_version=php73
-php_description="v7.3.x"
 
 upgradeAsk () {
 	#check version of PHP installed
@@ -141,7 +142,7 @@ upgradePHP() {
 		case "$os_name" in
 			CentOS8 )
 				sudo dnf -y -q module reset php
-				sudo dnf module -y -q enable php:remi-7.3
+				sudo dnf module -y -q enable php:$php_version
 				sudo dnf -y -q install php
 				if [ $? -ne 0 ];then
 					printwarn "ERROR upgrading PHP version."
