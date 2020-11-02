@@ -75,11 +75,11 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
   printinfo
-  exit 1
+ # exit 1
 	if [[ `whoami` != "cacti" ]]; then
-		#printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		printinfo
-		#exit 1
+		exit 1
 	else
 		os_dist=centos
 		os_name=CentOS8
