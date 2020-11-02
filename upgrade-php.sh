@@ -138,14 +138,30 @@ upgradePHP() {
 		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
 		sudo yum install -y -q yum-utils
 		printinfo "Enabling new $php_description"
-		sudo yum-config-manager --enable remi-$php_version
-		sudo yum -y -q update
-			if [ $? -ne 0 ];then
-				printwarn "ERROR upgrading PHP version."
-			else
-				php_ver=v$( php -r 'echo PHP_VERSION;' )
-				printinfo "PHP upgraded to $php_ver"
-			fi
+		case "$os_name" in
+			CentOS8 )
+				sudo dnf -y -q module reset php
+				sudo dnf module -y -q enable php:remi-7.3
+				sudo dnf -y -q install php
+				if [ $? -ne 0 ];then
+					printwarn "ERROR upgrading PHP version."
+				else
+					php_ver=v$( php -r 'echo PHP_VERSION;' )
+					printinfo "PHP upgraded to $php_ver"
+				fi
+			;;
+			* )
+				sudo yum-config-manager --enable remi-$php_version
+				sudo yum -y -q update
+				if [ $? -ne 0 ];then
+					printwarn "ERROR upgrading PHP version."
+				else
+					php_ver=v$( php -r 'echo PHP_VERSION;' )
+					printinfo "PHP upgraded to $php_ver"
+				fi
+			;;
+		esac
+
 
 }
 
