@@ -74,7 +74,8 @@ else
 	chmod +x cacti-upgrade.sh
 fi
 
-file="~/template"
+cd ~
+file="template"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
@@ -84,7 +85,7 @@ else
 	printinfo
 fi
 
-file="~/.install"
+file=".install"
 if [ -e "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-$cactiver&write=0 )
