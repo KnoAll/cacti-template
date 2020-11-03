@@ -78,7 +78,7 @@ cd ~
 file="template"
 if [ -e "$file" ]
 then
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-template&write=0 )
 	printinfo
 	rm $file
 else
@@ -88,7 +88,7 @@ fi
 file=".install"
 if [ -e "$file" ]
 then
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-$cactiver&write=0 )
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install&write=0 )
 	printinfo
 	rm $file
 else
