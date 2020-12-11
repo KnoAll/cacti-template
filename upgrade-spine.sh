@@ -89,30 +89,6 @@ upgradeAsk () {
 		esac
 }
 
-
-if version_ge $cactiver $upgrade_version; then
-        if version_ge $cactiver $prod_version; then
-                printinfo "Cacti v$cactiver is up to date with production v$prod_version, nothing to do!"
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=$cactiver-current&write=0 )
-		printinfo
-		printNotices
-		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
-		upgrade-plugins
-		check-smokeping
-		printinfo "All done!"
-                exit 0
-        else
-		printNotices
-		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
-		upgradeAsk
-        fi
-else
-	printerror "Cacti v$cactiver is less than upgrade version v$upgrade_version cannot install, exiting..."
-	exit 1
-fi
-
 function upgrade-spine () {
 printinfo "Upgrading spine..."
 cd
