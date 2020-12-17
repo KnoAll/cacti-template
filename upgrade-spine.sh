@@ -100,7 +100,7 @@ function upgrade-spine () {
 }
 
 if version_ge $cactiver $spinever; then
-	if version_le $cactiver $spinever; then
+	if version_lt $cactiver $spinever; then
 	upgrade-spine
 	if [ $? -ne 0 ];then
 		printerror "Spine install error, exiting. You will need to manually upgrade Spine."
