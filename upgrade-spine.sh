@@ -112,5 +112,5 @@ if version_lt $cactiver $spinever; then
 	fi
 	printwarn "Spine already equal"
 else
-	printwarn "Spine already LT"
+	printwarn "Spine $spinever already LT $cactiver"
 fi
