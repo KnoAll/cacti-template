@@ -37,19 +37,24 @@ case $(whoami) in
                 ;;
 esac
 
-prod_version=$1
-
+#get the version of cacti that is installed
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+
+#check that spine is installed, if so get the version
+test -f /usr/local/spine/bin/spine
+	if [ $? -ne 0 ];then
+		printerror "Spine does not appear to be installed, exiting."
+		exit 1
+	else
+		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+	fi
+
 
 if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	param1=$1
 	param2=$2
 	branch=dev
 	printwarn "Now on DEV branch."
-	if [[ $2 == "develop" ]]; then
-		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-		printwarn "Switching to DEVELOP version v$prod_version via git..."
-	fi
 else
 	printinfo
 	branch=master
@@ -127,10 +132,12 @@ cd
 rm -rf *spine*
 }
 
-upgrade-spine $2
+if version_ge $cactiver $spinever; then
+upgrade-spine
   if [ $? -ne 0 ];then
     printerror "Spine install error, exiting. You will need to manually upgrade Spine."
     exit 1
   fi
 printinfo "Spine Upgraded"
 exit 0
+fi
