@@ -110,7 +110,7 @@ if version_lt $cactiver $spinever; then
 		printinfo "Spine Upgraded to v$spinever"
 		exit 0
 	fi
-	printwarn "Spine already equal"
+	printwarn "Spine $spinever already equal $cactiver"
 else
 	printwarn "Spine $spinever already LT $cactiver"
 fi
