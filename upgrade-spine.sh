@@ -39,7 +39,7 @@ esac
 
 prod_version=$1
 
-config_path=/var/www/html/cacti/include/config.php
+cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
 if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
 	param1=$1
@@ -70,7 +70,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 upgradeAsk () {
-	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
+	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$cactiver?"
 	read -p "y/N: " upAsk
 	upAsk=${upAsk:-N}
 		case "$upAsk" in
