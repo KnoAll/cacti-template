@@ -100,10 +100,11 @@ function upgrade-spine () {
 
 if version_ge $cactiver $spinever; then
 	upgrade-spine
-	  if [ $? -ne 0 ];then
-	    printerror "Spine install error, exiting. You will need to manually upgrade Spine."
-	    exit 1
-	  fi
-	printinfo "Spine Upgraded"
+	if [ $? -ne 0 ];then
+		printerror "Spine install error, exiting. You will need to manually upgrade Spine."
+		exit 1
+	fi
+	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+	printinfo "Spine Upgraded to v$spinever"
 	exit 0
 fi
