@@ -59,6 +59,7 @@ else
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function upgrade-spine () {
 	printwarn "Upgrading Spine from v$spinever to v$cactiver..."
@@ -99,6 +100,7 @@ function upgrade-spine () {
 }
 
 if version_ge $cactiver $spinever; then
+	if version_le $cactiver $spinever; then
 	upgrade-spine
 	if [ $? -ne 0 ];then
 		printerror "Spine install error, exiting. You will need to manually upgrade Spine."
@@ -107,4 +109,6 @@ if version_ge $cactiver $spinever; then
 	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 	printinfo "Spine Upgraded to v$spinever"
 	exit 0
+	fi
+	printwarn "Spine already equal"
 fi
