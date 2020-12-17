@@ -99,7 +99,7 @@ function upgrade-spine () {
 	rm -rf *spine*
 }
 
-if version_ge $cactiver $spinever; then
+if version_lt $cactiver $spinever; then
 	if version_lt $cactiver $spinever; then
 	upgrade-spine
 	if [ $? -ne 0 ];then
@@ -111,4 +111,6 @@ if version_ge $cactiver $spinever; then
 	exit 0
 	fi
 	printwarn "Spine already equal"
+else
+	printwarn "Spine already LT"
 fi
