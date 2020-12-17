@@ -95,7 +95,7 @@ upgradeAsk () {
 }
 
 function upgrade-spine () {
-printinfo "Upgrading spine..."
+printwarn "Upgrading Spine from v$spinever to v$cactiver..."
 cd
 if [[ $1 == "develop" ]]; then
 	printinfo "Cloning from Git..."
