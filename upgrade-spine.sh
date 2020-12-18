@@ -83,17 +83,17 @@ function upgrade-spine () {
 		fi
 	fi
 	if [[ $pkg_mgr == "yum" ]]; then
-		sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+		sudo -S $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 	else
-		sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
+		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 	fi
 	./bootstrap
 	./configure
 	make 
-	sudo make install
+	sudo -S make install
 	cd /usr/local/spine/bin
-	sudo chown root:root spine
-	sudo chmod +s spine
+	sudo -S chown root:root spine
+	sudo -S chmod +s spine
 	printinfo
 	cd
 	rm -rf *spine*
