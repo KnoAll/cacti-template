@@ -42,6 +42,7 @@ backupData() {
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
+		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
 		echo $cactiver > cacti_$cactiver/.cacti-backup
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
 		rm -rf cacti_$cactiver
