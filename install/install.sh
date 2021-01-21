@@ -227,7 +227,7 @@ case $os_name in
 			printinfo "Enabling webserver and mysql server..."
 			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
 			printinfo "Setting up help2man"
-			sudo dnf --enablerepo=PowerTools install -y help2man || sudo dnf --enablerepo=powertools install -y help2man
+			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
 esac
