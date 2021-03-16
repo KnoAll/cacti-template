@@ -177,7 +177,7 @@ function upgrade-plugins() {
 	esac
 }
 
-upgradeAsk () {
+function upgradeAsk () {
 	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
 	read -p "y/N: " upAsk
 	upAsk=${upAsk:-N}
@@ -349,6 +349,25 @@ fi
 
 function check-prerequisites () {
 	printinfo
+}
+
+function cron () {
+	case $1 in
+		e )
+			printinfo "Enabling cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -l
+		;;
+		d )
+			printinfo "Disabling cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -l
+		;;
+		* ) 
+			printwarn "You have entered an invallid selection!"
+			printinfo "Please try again!"
+			compress-delete
+		;;
+		
+	esac
 }
 
 function upgrade-cacti () {
