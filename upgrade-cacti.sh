@@ -353,12 +353,12 @@ function check-prerequisites () {
 
 function cron () {
 	case $1 in
-		e )
-			printinfo "Enabling cronjob"
+		enable )
+			printwarn "Enabling cronjob"
 			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -l
 		;;
-		d )
-			printinfo "Disabling cronjob"
+		disable )
+			printwarn "Disabling cronjob"
 			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -l
 		;;
 		* ) 
@@ -510,7 +510,9 @@ fi
 check-permissions
 backup-db
 update-cactidir
+cron disable
 upgrade-cacti $2
+cron enable
 update-php
 update-mysqld
 upgrade-spine $2
