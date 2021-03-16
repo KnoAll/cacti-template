@@ -168,7 +168,6 @@ function upgrade-plugins() {
 		;;
 		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
-			exit 1
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"
@@ -178,7 +177,7 @@ function upgrade-plugins() {
 	esac
 }
 
-upgradeAsk () {
+function upgradeAsk () {
 	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
 	read -p "y/N: " upAsk
 	upAsk=${upAsk:-N}
@@ -352,6 +351,23 @@ function check-prerequisites () {
 	printinfo
 }
 
+# Function to disable the Cacti poller during the upgrade so that the poller does not try running while something is being updated.
+function cron () {
+	case $1 in
+		disable )
+			printwarn "Disabling Cacti cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -
+		;;
+		enable )
+			printwarn "Enabling Cacti cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -
+				if [ $? -ne 0 ];then
+					printerror "Re-Enabling cronjob failed, please check crontab -e"
+				fi
+		;;
+	esac
+}
+
 function upgrade-cacti () {
 printinfo "Beginning Cacti upgrade..."
 cd /var/www/html/
@@ -432,7 +448,7 @@ else
 	fi
 fi
 if [[ $pkg_mgr == "yum" ]]; then
-	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 fi
@@ -490,6 +506,7 @@ fi
 
 #upgrade-git
 check-permissions
+cron disable
 backup-db
 update-cactidir
 upgrade-cacti $2
@@ -497,6 +514,7 @@ update-php
 update-mysqld
 upgrade-spine $2
 compress-delete
+cron enable
 if [[ $1 == "dev" ]]; then
 	printinfo
 else
