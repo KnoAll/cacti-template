@@ -167,7 +167,6 @@ function upgrade-plugins() {
 		;;
 		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
-			exit 1
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"
