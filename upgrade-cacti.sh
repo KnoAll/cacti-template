@@ -355,11 +355,11 @@ function cron () {
 	case $1 in
 		enable )
 			printwarn "Enabling cronjob"
-			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -l
+			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -
 		;;
 		disable )
 			printwarn "Disabling cronjob"
-			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -l
+			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"
