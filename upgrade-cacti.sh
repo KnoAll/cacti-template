@@ -350,25 +350,20 @@ function check-prerequisites () {
 	printinfo
 }
 
+# Function to disable the Cacti poller during the upgrade so that the poller does not try running while something is being updated.
 function cron () {
 	case $1 in
-		enable )
-			printwarn "Enabling cronjob"
-			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -
-		;;
 		disable )
-			printwarn "Disabling cronjob"
+			printwarn "Disabling Cacti cronjob"
 			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -
+		;;
+		enable )
+			printwarn "Enabling Cacti cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -
 				if [ $? -ne 0 ];then
 					printerror "Re-Enabling cronjob failed, please check crontab -e"
 				fi
 		;;
-		* ) 
-			printwarn "You have entered an invallid selection!"
-			printinfo "Please try again!"
-			compress-delete
-		;;
-		
 	esac
 }
 
@@ -510,15 +505,15 @@ fi
 
 #upgrade-git
 check-permissions
+cron disable
 backup-db
 update-cactidir
-cron disable
 upgrade-cacti $2
-cron enable
 update-php
 update-mysqld
 upgrade-spine $2
 compress-delete
+cron enable
 if [[ $1 == "dev" ]]; then
 	printinfo
 else
