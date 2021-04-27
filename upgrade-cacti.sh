@@ -404,6 +404,7 @@ cp -a cacti_$cactiver/rra/* cacti/rra/
 cp -a cacti_$cactiver/scripts/* cacti/scripts/
 cp -a cacti_$cactiver/resource/* cacti/resource/
 cp -a cacti_$cactiver/plugins/* cacti/plugins/
+rsync -a -q --ignore-existing cacti_$cactiver/themes cacti/include/themes/
 #update-config
 update-permissions
 printinfo
