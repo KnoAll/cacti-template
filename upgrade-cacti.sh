@@ -41,7 +41,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.16
+prod_version=1.2.17
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -400,10 +400,12 @@ else
 		fi
 	fi
 fi
-cp -a cacti_$cactiver/rra/* cacti/rra/
-cp -a cacti_$cactiver/scripts/* cacti/scripts/
-cp -a cacti_$cactiver/resource/* cacti/resource/
-cp -a cacti_$cactiver/plugins/* cacti/plugins/
+printinfo "Restoring data"
+rsync -raq --ignore-existing cacti_$cactiver/rra cacti
+rsync -raq --ignore-existing cacti_$cactiver/scripts cacti
+rsync -raq --ignore-existing cacti_$cactiver/resource cacti
+rsync -raq --ignore-existing cacti_$cactiver/plugins cacti
+rsync -raq --ignore-existing cacti_$cactiver/include/themes cacti/include
 #update-config
 update-permissions
 printinfo
