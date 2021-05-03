@@ -515,8 +515,11 @@ upgrade-cacti $2
 update-php
 update-mysqld
 upgrade-spine $2
-compress-delete
 cron enable
+upgrade-plugins
+update-permissions
+compress-delete
+
 if [[ $1 == "dev" ]]; then
 	printinfo
 else
@@ -525,9 +528,9 @@ else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
 	printinfo	
 fi
-upgrade-plugins
+
 check-smokeping
-update-permissions
+
 
 printinfo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 printinfo "For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
