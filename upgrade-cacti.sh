@@ -401,11 +401,11 @@ else
 	fi
 fi
 printinfo "Restoring data"
-rsync -raq --ignore-existing cacti_$cactiver/rra cacti/rra
-rsync -raq --ignore-existing cacti_$cactiver/scripts cacti/scripts
-rsync -raq --ignore-existing cacti_$cactiver/resource cacti/resource
-rsync -raq --ignore-existing cacti_$cactiver/plugins cacti/plugins
-rsync -raq --ignore-existing cacti_1.2.8/include/themes cacti/include/themes
+rsync -raq --ignore-existing cacti_$cactiver/rra cacti
+rsync -raq --ignore-existing cacti_$cactiver/scripts cacti
+rsync -raq --ignore-existing cacti_$cactiver/resource cacti
+rsync -raq --ignore-existing cacti_$cactiver/plugins cacti
+rsync -raq --ignore-existing cacti_$cactiver/include/themes cacti/include
 #update-config
 update-permissions
 printinfo
