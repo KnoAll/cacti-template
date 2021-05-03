@@ -400,10 +400,11 @@ else
 		fi
 	fi
 fi
-cp -a cacti_$cactiver/rra/* cacti/rra/
-cp -a cacti_$cactiver/scripts/* cacti/scripts/
-cp -a cacti_$cactiver/resource/* cacti/resource/
-cp -a cacti_$cactiver/plugins/* cacti/plugins/
+printinfo "Restoring data"
+rsync -a -q --ignore-existing cacti_$cactiver/rra/* cacti/rra/
+rsync -a -q --ignore-existing cacti_$cactiver/scripts/* cacti/scripts/
+rsync -a -q --ignore-existing cacti_$cactiver/resource/* cacti/resource/
+rsync -a -q --ignore-existing cacti_$cactiver/plugins/* cacti/plugins/
 rsync -a -q --ignore-existing cacti_$cactiver/include/themes cacti/include/themes/
 #update-config
 update-permissions
