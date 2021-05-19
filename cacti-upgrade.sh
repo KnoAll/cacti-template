@@ -33,39 +33,12 @@ esac
 welcomeMessage() {
   echo -n "${tan}"
   cat << "EOF"
-	
-          .;lddxxxdddool.               
-          ,dokO0OOOkkxo:;'.             
-          ,ox0OOOkkkkkxo:co'            
-          'coOOkOOkkOkxdl;:c.           
-          .,cdOkkkkkkkxdoc;o:           
-           .:cxOkkkxxxxdol;;o,          
-     .'''.  ,lokkxkxdxxdol:,l;          
-  'c;cxxdc;;:lcdkxxxdxxdol:,c;.'';,;c,  
-.,cdxkOkkdll:cloxxxxdxxddlc,:ooo:::;;;;,
-cldO00OOkxo:;dolxxxxdddddlc,:oc:ccc:;,,c
-ooO0OOOkxdo:.dkldxxxdddddl:,:dl:ccc:;,',
-cx0OOOOkdol,'kklddxdoddool:'cdc:c:::;,''
-oOOOOOOkdo;'cOdcddddoodool:,;::cc:::;,'.
-okOOOkkkdl,,locoxdddoodool:;::cc::;:;'.'
-lxkOOkkkdl:;lolddddolooool:;:cc:::;;,..c
-ldxkkkkkxdoooodddoooloooll:;::::;;''.,ox
-lodxxkkxxxdddddddooollolll:;,,,,',;cdxc.
-ddoloodddddodooddooolllllc:;'',,;:;',.  
-.clloc:;::;;:::loooolllllc:;.,.         
-   .'...;;,,;oolollllcllcc:,.:,         
-             ,ololllcclccc:,'c;         
-            .:ccolllcccccc;,';'         
-            ckclolllcccccc;,.'.         
-           .cl:llcclccccc:;,.'l,        
-           ;o:cllcccc:cc::;,,'c,        
-           '::cllcccc:::::;,,',:.       
-            ':cclc:cc:::::;,,''l;       
-            ':ccc::cc:::;:;,,,',:.      
-           ':;ccc:::c:::;:;,''.'xc      
-           'c:::c::::;;:;:,''..,o,      
-            :kl:;;,;;,,,'''''::'        
-            'cdko:,,;,'''';lkd.         
+  ______                 _ 
+ / _____)           _   (_)
+| /      ____  ____| |_  _ 
+| |     / _  |/ ___|  _)| |
+| \____( ( | ( (___| |__| |
+ \______\_||_|\____)\___|_|
 
 EOF
   echo -n "${reset}"
