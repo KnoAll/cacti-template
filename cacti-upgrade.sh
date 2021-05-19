@@ -33,23 +33,6 @@ esac
 welcomeMessage() {
   echo -n "${tan}"
   cat << "EOF"
-
-        CCCCCCCCCCCCC                                              tttt            iiii
-     CCC::::::::::::C                                           ttt:::t           i::::i
-   CC:::::::::::::::C                                           t:::::t            iiii
-  C:::::CCCCCCCC::::C                                           t:::::t
-C:::::C       CCCCCC  aaaaaaaaaaaaa      ccccccccccccccccttttttt:::::ttttttt    iiiiiii
-C:::::C                a::::::::::::a   cc:::::::::::::::ct:::::::::::::::::t    i:::::i
-C:::::C                aaaaaaaaa:::::a c:::::::::::::::::ct:::::::::::::::::t     i::::i
-C:::::C                         a::::ac:::::::cccccc:::::ctttttt:::::::tttttt     i::::i
-C:::::C                  aaaaaaa:::::ac::::::c     ccccccc      t:::::t           i::::i
-C:::::C                aa::::::::::::ac:::::c                   t:::::t           i::::i
-C:::::C               a::::aaaa::::::ac:::::c                   t:::::t           i::::i
-C:::::C       CCCCCCa::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt i::::i
-  C:::::CCCCCCCC::::Ca::::a    a:::::ac:::::::cccccc:::::c      t::::::tttt:::::ti::::::i
-   CC:::::::::::::::Ca:::::aaaa::::::a c:::::::::::::::::c      tt::::::::::::::ti::::::i
-     CCC::::::::::::C a::::::::::aa:::a cc:::::::::::::::c        tt:::::::::::tti::::::i
-        CCCCCCCCCCCCC  aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  iiiiiiii
 	
           .;lddxxxdddool.               
           ,dokO0OOOkkxo:;'.             
