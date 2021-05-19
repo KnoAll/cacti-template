@@ -50,7 +50,39 @@ C:::::C       CCCCCCa::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt
    CC:::::::::::::::Ca:::::aaaa::::::a c:::::::::::::::::c      tt::::::::::::::ti::::::i
      CCC::::::::::::C a::::::::::aa:::a cc:::::::::::::::c        tt:::::::::::tti::::::i
         CCCCCCCCCCCCC  aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  iiiiiiii
-
+	
+          .;lddxxxdddool.               
+          ,dokO0OOOkkxo:;'.             
+          ,ox0OOOkkkkkxo:co'            
+          'coOOkOOkkOkxdl;:c.           
+          .,cdOkkkkkkkxdoc;o:           
+           .:cxOkkkxxxxdol;;o,          
+     .'''.  ,lokkxkxdxxdol:,l;          
+  'c;cxxdc;;:lcdkxxxdxxdol:,c;.'';,;c,  
+.,cdxkOkkdll:cloxxxxdxxddlc,:ooo:::;;;;,
+cldO00OOkxo:;dolxxxxdddddlc,:oc:ccc:;,,c
+ooO0OOOkxdo:.dkldxxxdddddl:,:dl:ccc:;,',
+cx0OOOOkdol,'kklddxdoddool:'cdc:c:::;,''
+oOOOOOOkdo;'cOdcddddoodool:,;::cc:::;,'.
+okOOOkkkdl,,locoxdddoodool:;::cc::;:;'.'
+lxkOOkkkdl:;lolddddolooool:;:cc:::;;,..c
+ldxkkkkkxdoooodddoooloooll:;::::;;''.,ox
+lodxxkkxxxdddddddooollolll:;,,,,',;cdxc.
+ddoloodddddodooddooolllllc:;'',,;:;',.  
+.clloc:;::;;:::loooolllllc:;.,.         
+   .'...;;,,;oolollllcllcc:,.:,         
+             ,ololllcclccc:,'c;         
+            .:ccolllcccccc;,';'         
+            ckclolllcccccc;,.'.         
+           .cl:llcclccccc:;,.'l,        
+           ;o:cllcccc:cc::;,,'c,        
+           '::cllcccc:::::;,,',:.       
+            ':cclc:cc:::::;,,''l;       
+            ':ccc::cc:::;:;,,,',:.      
+           ':;ccc:::c:::;:;,''.'xc      
+           'c:::c::::;;:;:,''..,o,      
+            :kl:;;,;;,,,'''''::'        
+            'cdko:,,;,'''';lkd.         
 
 EOF
   echo -n "${reset}"
@@ -87,8 +119,10 @@ case $1 in
 	--upgrade-php)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $1 $2
-
 	;;
+	--upgrade-spine)
+		welcomeMessage
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
 	--switch-dev)
 		printwarn "Switching to DEV branch"
 		branch=dev
@@ -99,8 +133,9 @@ case $1 in
 		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
 		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
 		printinfo "--restore-data	Restore Cacti from previous backup"
-		printinfo "--upgrade-mysql	Upgrade MYSQL/MariaDB on the server"
+		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"
 		printinfo "--upgrade-php	Upgrade PHP on the server"
+		printinfo "--upgrade-spine	Upgrade Spine on the server"
 	;;
 	*)
 		welcomeMessage
