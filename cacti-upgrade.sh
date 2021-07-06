@@ -48,6 +48,13 @@ EOF
 
 branch=master
 
+function upgradeScript () {
+	printinfo "Upgrading cacti-upgrade.sh"
+	rm cacti-upgrade.sh
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/cacti-upgrade.sh
+	chmod +x cacti-upgrade.sh
+}
+
 welcomeLooper() {
 case $1 in
 	dev)
@@ -76,6 +83,9 @@ case $1 in
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $1 $2
 	;;
+	--upgrade-script)
+		upgradeScript
+	;;
 	--upgrade-spine)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
@@ -92,6 +102,7 @@ case $1 in
 		printinfo "--restore-data	Restore Cacti from previous backup"
 		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"
 		printinfo "--upgrade-php	Upgrade PHP on the server"
+		printinfo "--upgrade-script	Upgrade script file on the server"
 		printinfo "--upgrade-spine	Upgrade Spine on the server"
 	;;
 	*)
