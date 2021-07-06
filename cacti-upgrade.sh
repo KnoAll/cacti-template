@@ -85,6 +85,7 @@ case $1 in
 	;;
 	--upgrade-script)
 		upgradeScript
+	;;
 	--upgrade-spine)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
