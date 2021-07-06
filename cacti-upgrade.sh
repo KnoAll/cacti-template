@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
-scriptver=v1.2.14
+scriptver=v1.2.17
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -33,24 +33,12 @@ esac
 welcomeMessage() {
   echo -n "${tan}"
   cat << "EOF"
-
-        CCCCCCCCCCCCC                                              tttt            iiii
-     CCC::::::::::::C                                           ttt:::t           i::::i
-   CC:::::::::::::::C                                           t:::::t            iiii
-  C:::::CCCCCCCC::::C                                           t:::::t
-C:::::C       CCCCCC  aaaaaaaaaaaaa      ccccccccccccccccttttttt:::::ttttttt    iiiiiii
-C:::::C                a::::::::::::a   cc:::::::::::::::ct:::::::::::::::::t    i:::::i
-C:::::C                aaaaaaaaa:::::a c:::::::::::::::::ct:::::::::::::::::t     i::::i
-C:::::C                         a::::ac:::::::cccccc:::::ctttttt:::::::tttttt     i::::i
-C:::::C                  aaaaaaa:::::ac::::::c     ccccccc      t:::::t           i::::i
-C:::::C                aa::::::::::::ac:::::c                   t:::::t           i::::i
-C:::::C               a::::aaaa::::::ac:::::c                   t:::::t           i::::i
-C:::::C       CCCCCCa::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt i::::i
-  C:::::CCCCCCCC::::Ca::::a    a:::::ac:::::::cccccc:::::c      t::::::tttt:::::ti::::::i
-   CC:::::::::::::::Ca:::::aaaa::::::a c:::::::::::::::::c      tt::::::::::::::ti::::::i
-     CCC::::::::::::C a::::::::::aa:::a cc:::::::::::::::c        tt:::::::::::tti::::::i
-        CCCCCCCCCCCCC  aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  iiiiiiii
-
+  ______                 _ 
+ / _____)           _   (_)
+| /      ____  ____| |_  _ 
+| |     / _  |/ ___|  _)| |
+| \____( ( | ( (___| |__| |
+ \______\_||_|\____)\___|_|
 
 EOF
   echo -n "${reset}"
@@ -87,7 +75,10 @@ case $1 in
 	--upgrade-php)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $1 $2
-
+	;;
+	--upgrade-spine)
+		welcomeMessage
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
 	;;
 	--switch-dev)
 		printwarn "Switching to DEV branch"
@@ -99,8 +90,9 @@ case $1 in
 		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
 		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
 		printinfo "--restore-data	Restore Cacti from previous backup"
-		printinfo "--upgrade-mysql	Upgrade MYSQL/MariaDB on the server"
+		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"
 		printinfo "--upgrade-php	Upgrade PHP on the server"
+		printinfo "--upgrade-spine	Upgrade Spine on the server"
 	;;
 	*)
 		welcomeMessage

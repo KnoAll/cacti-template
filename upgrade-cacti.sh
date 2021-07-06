@@ -41,7 +41,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.17
+prod_version=1.2.18
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -515,8 +515,11 @@ upgrade-cacti $2
 update-php
 update-mysqld
 upgrade-spine $2
-compress-delete
 cron enable
+upgrade-plugins
+update-permissions
+compress-delete
+
 if [[ $1 == "dev" ]]; then
 	printinfo
 else
@@ -525,9 +528,9 @@ else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
 	printinfo	
 fi
-upgrade-plugins
+
 check-smokeping
-update-permissions
+
 
 printinfo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 printinfo "For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
