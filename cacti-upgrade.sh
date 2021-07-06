@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
-scriptver=v1.2.17
+scriptver=v1.2.18
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
