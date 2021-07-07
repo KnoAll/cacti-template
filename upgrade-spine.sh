@@ -111,7 +111,8 @@ case "$1" in
 			pick-version
 		else
 			printerror PARAMETER
-			pick-version $2
+			cactiver=$2
+			upgrade-spine
 		fi
 	;;
 	* ) 
