@@ -112,4 +112,4 @@ case $1 in
 esac
 }
 
-welcomeLooper $1 $2
+welcomeLooper $1 $2 $3
