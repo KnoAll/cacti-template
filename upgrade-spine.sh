@@ -107,10 +107,8 @@ function pick-version() {
 case "$1" in
 	--pick-version)
 		if [ -z "$2" ]; then
-			printerror NO-PARAMETER
 			pick-version
 		else
-			printerror PARAMETER
 			cactiver=$2
 			upgrade-spine
 		fi
