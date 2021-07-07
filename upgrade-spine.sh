@@ -106,7 +106,13 @@ function pick-version() {
 
 case "$1" in
 	--pick-version)
-		pick-version
+		if [ -z "$2" ]; then
+			printerror NO-PARAMETER
+			pick-version
+		else
+			printerror PARAMETER
+			pick-version $2
+		fi
 	;;
 	* ) 
 		if version_lt $spinever $cactiver ; then
