@@ -99,16 +99,34 @@ function upgrade-spine () {
 	rm -rf *spine*
 }
 
-if version_lt $spinever $cactiver ; then
-	upgrade-spine
-		if [ $? -ne 0 ];then
-			printerror "Spine install error, exiting. You will need to manually upgrade Spine."
-			exit 1
+function pick-version() {
+		read -p "What version of Spine do you want to install? " cactiver
+		upgrade-spine
+}
+
+case "$1" in
+	--pick-version)
+		if [ -z "$2" ]; then
+			pick-version
+		else
+			cactiver=$2
+			upgrade-spine
 		fi
-	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-	printinfo "Spine Upgraded to v$spinever"
-	exit 0
-else
-	printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
-	exit 0
-fi
+	;;
+	* ) 
+		if version_lt $spinever $cactiver ; then
+		upgrade-spine
+			if [ $? -ne 0 ];then
+				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
+				exit 1
+			fi
+		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+		printinfo "Spine Upgraded to v$spinever"
+		exit 0
+		else
+			printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
+			exit 0
+		fi
+	;;
+esac
+

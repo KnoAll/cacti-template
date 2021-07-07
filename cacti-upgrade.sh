@@ -88,7 +88,7 @@ case $1 in
 	;;
 	--upgrade-spine)
 		welcomeMessage
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 $3
 	;;
 	--switch-dev)
 		printwarn "Switching to DEV branch"
