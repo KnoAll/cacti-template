@@ -113,6 +113,11 @@ case "$1" in
 			upgrade-spine
 		fi
 	;;
+	--help | --h | --H | -h | help | -? | --? )
+		printinfo "Switches available in this script:"
+		printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
+		printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
+	;;
 	* ) 
 		if version_lt $spinever $cactiver ; then
 		upgrade-spine
