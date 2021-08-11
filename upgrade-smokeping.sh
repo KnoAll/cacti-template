@@ -37,8 +37,8 @@ esac
 
 # get the Smokeping version
 upgrade_version=2.006011
-prod_version=2.007003
-web_version=2.7.3
+prod_version=2.008000
+web_version=2.8.0
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
