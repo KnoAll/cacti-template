@@ -114,7 +114,8 @@ function upgrade-smokeping () {
 	else
 		printinfo "Getting Smokeping..."
 		cd
-		wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+		#wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+		wget -q https://github.com/oetiker/SmokePing/releases/download/$web_version/smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
 			printerror "Smokeping download error cannot install, exiting..."
 			exit 1
