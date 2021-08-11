@@ -86,6 +86,10 @@ case $1 in
 	--upgrade-script)
 		upgradeScript
 	;;
+	--upgrade-smokeping)
+		welcomeMessage
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $1 $2 $3
+	;;	
 	--upgrade-spine)
 		welcomeMessage
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 $3
@@ -103,6 +107,7 @@ case $1 in
 		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"
 		printinfo "--upgrade-php	Upgrade PHP on the server"
 		printinfo "--upgrade-script	Upgrade script file on the server"
+		printinfo "--upgrade-smokeping	Upgrade SmokePing version"		
 		printinfo "--upgrade-spine	Upgrade Spine on the server"
 	;;
 	*)
