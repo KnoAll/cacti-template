@@ -186,7 +186,8 @@ function upgradeAsk () {
 			printinfo "Ok, let's go!"
 		;;
 		n | N | no | NO | No )
-			printwarn "OK, maybe next time, exiting now..."
+			printwarn "OK, maybe next time..."
+			check-smokeping
 			exit 1
 		;;
 		* ) 
