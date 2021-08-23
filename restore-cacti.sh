@@ -179,7 +179,7 @@ replace-rra () {
 restore-config () {
 	printinfo "Restoring Config..."
 	mv $restoreFolder/config.php /var/www/html/cacti/include/
-	mv $restoreFolder/spine.conf /usr/local/spine/etc/
+	sudo mv $restoreFolder/spine.conf /usr/local/spine/etc/
 }
 
 # Check file permissions
