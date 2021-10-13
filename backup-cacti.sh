@@ -38,7 +38,10 @@ esac
 # error handling
 exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
+		if [ $rc -ne 0 ]; then
 		printerror "Command [$lc] exited with code [$rc]"
+		exit 1
+		fi
 }
 trap exit_trap EXIT
 set -e
