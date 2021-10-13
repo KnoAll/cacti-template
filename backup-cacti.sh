@@ -40,6 +40,8 @@ exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
 		if [ $rc -ne 0 ]; then
 		printerror "Command [$lc] exited with code [$rc]"
+		# cleanup temp files
+		rm -rf cacti_$cactiver
 		exit 1
 		fi
 }
