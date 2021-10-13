@@ -53,25 +53,25 @@ backupData() {
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
-		exit_on_error $? !!
+		exit_on_error $?
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
-		exit_on_error $? !!
+		exit_on_error $?
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
-		exit_on_error $? !!
+		exit_on_error $?
 		rsync -raq /var/www/html/cacti/scripts ~/cacti_$cactiver/
-		exit_on_error $? !!
+		exit_on_error $?
 		rsync -raq /var/www/html/cacti/include/themes ~/cacti_$cactiver/
-		exit_on_error $? !!
+		exit_on_error $?
 		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
-		exit_on_error $? !!
+		exit_on_error $?
 		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
-		exit_on_error $? !!
+		exit_on_error $?
 		echo $cactiver > cacti_$cactiver/.cacti-backup
-		exit_on_error $? !!
+		exit_on_error $?
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
-		exit_on_error $? !!
+		exit_on_error $?
 		rm -rf cacti_$cactiver
-		exit_on_error $? !!
+		exit_on_error $?
 }
 
 backupData
