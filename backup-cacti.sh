@@ -1,5 +1,5 @@
 #!/bin/bash
-
+trap 'echo "$BASH_COMMAND"' DEBUG
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
 
 green=$(tput setaf 2)
