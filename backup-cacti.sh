@@ -12,7 +12,7 @@ exit_trap() {
 }
 trap exit_trap EXIT
 #Only uncomment for debugging
-trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+#trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
 
 
 green=$(tput setaf 2)
