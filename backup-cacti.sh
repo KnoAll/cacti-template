@@ -10,9 +10,10 @@ exit_trap() {
 		rm -rf cacti_$cactiver
 		fi
 }
-#Only uncomment for debugging
-trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
 trap exit_trap EXIT
+#Only uncomment for debugging
+#trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
+
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
