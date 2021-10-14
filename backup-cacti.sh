@@ -1,6 +1,7 @@
 #!/bin/bash
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
 # error handling
+set -eE
 exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
 		if [ $rc -ne 0 ]; then
@@ -12,7 +13,6 @@ exit_trap() {
 #Only uncomment for debugging
 trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
 trap exit_trap EXIT
-set -eE
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
