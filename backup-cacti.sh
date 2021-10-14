@@ -12,7 +12,7 @@ exit_trap() {
 #Only uncomment for debugging
 trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
 trap exit_trap EXIT
-set -e
+set -eE
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
