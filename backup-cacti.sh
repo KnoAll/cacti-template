@@ -1,6 +1,18 @@
 #!/bin/bash
-trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
+# error handling
+exit_trap() {
+		local lc="$BASH_COMMAND" rc=$?
+		if [ $rc -ne 0 ]; then
+		printerror "Command [$lc] exited with code [$rc]"
+		# cleanup temp files
+		rm -rf cacti_$cactiver
+		fi
+}
+#Only uncomment for debugging
+trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
+trap exit_trap EXIT
+set -e
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -34,18 +46,6 @@ case $(whoami) in
 		exit 1
                 ;;
 esac
-
-# error handling
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] exited with code [$rc]"
-		# cleanup temp files
-		rm -rf cacti_$cactiver
-		fi
-}
-trap exit_trap EXIT
-set -e
 
 backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
