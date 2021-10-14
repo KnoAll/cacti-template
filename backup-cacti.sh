@@ -1,5 +1,5 @@
 #!/bin/bash
-trap 'echo "$BASH_COMMAND"' DEBUG
+trap 'echo cmd: "$BASH_COMMAND" code: $?' DEBUG
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
 
 green=$(tput setaf 2)
@@ -42,7 +42,6 @@ exit_trap() {
 		printerror "Command [$lc] exited with code [$rc]"
 		# cleanup temp files
 		rm -rf cacti_$cactiver
-		exit 1
 		fi
 }
 trap exit_trap EXIT
