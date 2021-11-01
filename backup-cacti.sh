@@ -1,5 +1,6 @@
 #!/bin/bash
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
+
 # error handling
 set -eE
 exit_trap() {
@@ -11,9 +12,6 @@ exit_trap() {
 		fi
 }
 trap exit_trap EXIT
-#Only uncomment for debugging
-#trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -47,6 +45,20 @@ case $(whoami) in
 		exit 1
                 ;;
 esac
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+        *) break
+    esac
+    shift
+done
 
 backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
