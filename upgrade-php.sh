@@ -141,7 +141,7 @@ if version_ge $cactiver $upgrade_version; then
 	printinfo
 else
 	printerror "Cacti v$cactiver is less than required upgrade version v$upgrade_version cannot upgrade php, exiting..."
-	exit 1
+	exit
 fi
 
 upgradeAsk () {
