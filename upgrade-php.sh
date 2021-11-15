@@ -25,8 +25,6 @@ exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
 		if [ $rc -ne 0 ]; then
 		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		# cleanup temp files
-		rm -rf cacti_$cactiver
 		fi
 }
 trap exit_trap EXIT
