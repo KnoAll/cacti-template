@@ -57,6 +57,10 @@ else
 	branch=master
 fi
 
+#installed cacti version
+cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+#minimum version for php
+upgrade_version=1.2.19
 #installed php version
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
@@ -129,6 +133,14 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	printinfo
+	exit 1
+fi
+
+if version_ge $cactiver $upgrade_version; then
+	#php version meets minimum required
+	printinfo
+else
+	printerror "Cacti v$cactiver is less than required upgrade version v$upgrade_version cannot upgrade php, exiting..."
 	exit 1
 fi
 
