@@ -2,6 +2,36 @@
 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+	php|-php|--php)
+	branch="php"
+        ;;
+        *) break
+    esac
+    shift
+done
+
+# error handling
+set -eE
+exit_trap() {
+		local lc="$BASH_COMMAND" rc=$?
+		if [ $rc -ne 0 ]; then
+		printerror "Command [$lc] on $LINENO exited with code [$rc]"
+		# cleanup temp files
+		rm -rf cacti_$cactiver
+		fi
+}
+trap exit_trap EXIT
+
+
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -31,8 +61,8 @@ fi
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
 #set upgrade version
-php_version=php73
-php_description="v7.3.x"
+php_version=php74
+php_description="v7.4.x"
 
 printinfo "Checking for PHP upgrade..."
 printinfo
@@ -94,7 +124,7 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		pkg_mgr=yum
 		os_dist=centos
 		remi=remi-release-8.rpm
-		php_version=remi-7.3
+		php_version=remi-7.4
 	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
@@ -104,7 +134,7 @@ fi
 
 upgradeAsk () {
 	#check version of PHP installed
-	php -r 'exit((int)version_compare(PHP_VERSION, "7.3.0", "<"));'
+	php -r 'exit((int)version_compare(PHP_VERSION, "7.4.0", "<"));'
 	if [ $? -ne 0 ];then
 		printinfo
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
