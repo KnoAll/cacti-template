@@ -105,7 +105,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.9
+prod_version=1.2.14
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	printerror "Cacti is already installed, cannot proceed..."
@@ -227,7 +227,7 @@ case $os_name in
 			printinfo "Enabling webserver and mysql server..."
 			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
 			printinfo "Setting up help2man"
-			sudo dnf --enablerepo=PowerTools install -y help2man
+			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
 esac

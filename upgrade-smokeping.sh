@@ -37,8 +37,8 @@ esac
 
 # get the Smokeping version
 upgrade_version=2.006011
-prod_version=2.007003
-web_version=2.7.3
+prod_version=2.008002
+web_version=2.8.2
 dev_version=
 smokever=$( /opt/smokeping/bin/smokeping --version )
 if [ $? -ne 0 ];then
@@ -114,7 +114,8 @@ function upgrade-smokeping () {
 	else
 		printinfo "Getting Smokeping..."
 		cd
-		wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+		#wget -q https://oss.oetiker.ch/smokeping/pub/smokeping-$web_version.tar.gz
+		wget -q https://github.com/oetiker/SmokePing/releases/download/$web_version/smokeping-$web_version.tar.gz
 		if [ $? -ne 0 ];then
 			printerror "Smokeping download error cannot install, exiting..."
 			exit 1

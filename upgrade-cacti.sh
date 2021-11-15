@@ -41,7 +41,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.14
+prod_version=1.2.19
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -65,7 +65,7 @@ else
 fi
 
 # get latest version of cacti-upgrade script
-if grep -q v1.2.14 cacti-upgrade.sh; then
+if grep -q v1.2.18 cacti-upgrade.sh; then
 	printinfo
 else
 	printinfo "Upgrading cacti-upgrade.sh"
@@ -74,20 +74,21 @@ else
 	chmod +x cacti-upgrade.sh
 fi
 
-file="~/template"
+cd ~
+file="template"
 if [ -e "$file" ]
 then
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=template-$cactiver&write=0 )
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-template&write=0 )
 	printinfo
 	rm $file
 else
 	printinfo
 fi
 
-file="~/.install"
+file=".install"
 if [ -e "$file" ]
 then
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=install-$cactiver&write=0 )
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install&write=0 )
 	printinfo
 	rm $file
 else
@@ -167,7 +168,6 @@ function upgrade-plugins() {
 		;;
 		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
-			exit 1
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"
@@ -177,7 +177,7 @@ function upgrade-plugins() {
 	esac
 }
 
-upgradeAsk () {
+function upgradeAsk () {
 	printinfo "Found compatible Cacti v$cactiver installed, do you want to upgrade to v$prod_version?"
 	read -p "y/N: " upAsk
 	upAsk=${upAsk:-N}
@@ -186,7 +186,8 @@ upgradeAsk () {
 			printinfo "Ok, let's go!"
 		;;
 		n | N | no | NO | No )
-			printwarn "OK, maybe next time, exiting now..."
+			printwarn "OK, maybe next time..."
+			check-smokeping
 			exit 1
 		;;
 		* ) 
@@ -351,6 +352,23 @@ function check-prerequisites () {
 	printinfo
 }
 
+# Function to disable the Cacti poller during the upgrade so that the poller does not try running while something is being updated.
+function cron () {
+	case $1 in
+		disable )
+			printwarn "Disabling Cacti cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^/#/' | crontab -
+		;;
+		enable )
+			printwarn "Enabling Cacti cronjob"
+			crontab -l | sed '/\/cacti\/poller\.php/s/^#//' | crontab -
+				if [ $? -ne 0 ];then
+					printerror "Re-Enabling cronjob failed, please check crontab -e"
+				fi
+		;;
+	esac
+}
+
 function upgrade-cacti () {
 printinfo "Beginning Cacti upgrade..."
 cd /var/www/html/
@@ -383,10 +401,12 @@ else
 		fi
 	fi
 fi
-cp -a cacti_$cactiver/rra/* cacti/rra/
-cp -a cacti_$cactiver/scripts/* cacti/scripts/
-cp -a cacti_$cactiver/resource/* cacti/resource/
-cp -a cacti_$cactiver/plugins/* cacti/plugins/
+printinfo "Restoring data"
+rsync -raq --ignore-existing cacti_$cactiver/rra cacti
+rsync -raq --ignore-existing cacti_$cactiver/scripts cacti
+rsync -raq --ignore-existing cacti_$cactiver/resource cacti
+rsync -raq --ignore-existing cacti_$cactiver/plugins cacti
+rsync -raq --ignore-existing cacti_$cactiver/include/themes cacti/include
 #update-config
 update-permissions
 printinfo
@@ -431,7 +451,7 @@ else
 	fi
 fi
 if [[ $pkg_mgr == "yum" ]]; then
-	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel
+	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 fi
@@ -489,13 +509,18 @@ fi
 
 #upgrade-git
 check-permissions
+cron disable
 backup-db
 update-cactidir
 upgrade-cacti $2
 update-php
 update-mysqld
 upgrade-spine $2
+cron enable
+upgrade-plugins
+update-permissions
 compress-delete
+
 if [[ $1 == "dev" ]]; then
 	printinfo
 else
@@ -504,9 +529,9 @@ else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
 	printinfo	
 fi
-upgrade-plugins
+
 check-smokeping
-update-permissions
+
 
 printinfo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 printinfo "For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "

@@ -12,6 +12,21 @@ printinfo() {
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+        *) break
+    esac
+    shift
+done
+
 if which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then

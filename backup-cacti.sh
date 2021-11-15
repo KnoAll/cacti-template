@@ -1,6 +1,17 @@
 #!/bin/bash
-
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
+
+# error handling
+set -eE
+exit_trap() {
+		local lc="$BASH_COMMAND" rc=$?
+		if [ $rc -ne 0 ]; then
+		printerror "Command [$lc] on $LINENO exited with code [$rc]"
+		# cleanup temp files
+		rm -rf cacti_$cactiver
+		fi
+}
+trap exit_trap EXIT
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -35,13 +46,31 @@ case $(whoami) in
                 ;;
 esac
 
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+        *) break
+    esac
+    shift
+done
+
 backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
+		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
+		rsync -raq /var/www/html/cacti/scripts ~/cacti_$cactiver/
+		rsync -raq /var/www/html/cacti/include/themes ~/cacti_$cactiver/
 		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
+		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
 		echo $cactiver > cacti_$cactiver/.cacti-backup
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
 		rm -rf cacti_$cactiver
