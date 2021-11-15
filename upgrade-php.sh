@@ -58,7 +58,7 @@ fi
 #installed cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 #minimum version for php
-upgrade_version=1.2.19
+upgrade_version=1.2.18
 #installed php version
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
