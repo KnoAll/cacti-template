@@ -20,7 +20,7 @@ while :; do
 done
 
 # error handling
-set -eE
+#set -eE
 exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
 		if [ $rc -ne 0 ]; then
