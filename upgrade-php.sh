@@ -150,7 +150,7 @@ upgradeAsk () {
 				printwarn $param1
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php_$smphp_ver-$php_version&write=0 )
-				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php-$php_version&write=0 )
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-php&write=0 )
 			fi
 			upgradePHP
 		;;
