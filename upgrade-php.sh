@@ -130,7 +130,7 @@ if version_ge $cactiver $upgrade_version; then
 	#php version meets minimum required
 	printinfo
 else
-	printerror "Cacti v$cactiver is less than required upgrade version v$upgrade_version cannot upgrade php, exiting..."
+	printerror "Cacti v$cactiver is less than required v$upgrade_version to upgrade PHP, run again after Cacti upgrade."
 	exit
 fi
 
