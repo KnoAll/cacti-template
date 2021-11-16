@@ -60,11 +60,11 @@ printinfo "Checking for PHP upgrade..."
 printinfo
 if [[ `whoami` == "root" ]]; then
     printerror "You ran me as root! Do not run me as root!"
-    exit 1
+    exit
 elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
   printinfo
-  exit 1
+  exit
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
 		exit 1
@@ -77,7 +77,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
   printerror "Sorry, Raspbian not supported for PHP upgrade yet, cannot proceed..."
   printinfo
-  exit 1
+  exit
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
 		printinfo
@@ -92,7 +92,7 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		printinfo
-		exit 1
+		exit
 	else
 		os_dist=centos
 		os_name=CentOS7
@@ -104,11 +104,11 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   #printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
   printinfo
- # exit 1
+ # exit
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		printinfo
-		exit 1
+		exit
 	else
 		os_dist=centos
 		os_name=CentOS8
@@ -121,7 +121,7 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	printinfo
-	exit 1
+	exit
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
@@ -157,7 +157,7 @@ upgradeAsk () {
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
 			fi
-			exit 1
+			exit
 		;;
 		esac
 	else
