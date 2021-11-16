@@ -45,16 +45,6 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
-if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
-	param1=$1
-	param2=$2
-	branch=dev
-	printwarn "Now on DEV PHP branch."
-else
-	printinfo
-	branch=master
-fi
-
 #installed cacti version
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 #minimum version for php
