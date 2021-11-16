@@ -128,17 +128,19 @@ if version_ge $cactiver $upgrade_version; then
 	#set upgrade version
 	php_version=php74
 	php_description="v7.4.x"
-	#exit
+	php_num=7.4.0
+
 
 else
 	#set upgrade version
 	php_version=php73
 	php_description="v7.3.x"
+	php_num=7.3.0
 fi
 
 upgradeAsk () {
 	#check version of PHP installed
-	php -r 'exit((int)version_compare(PHP_VERSION, "7.4.0", "<"));'
+	php -r 'exit((int)version_compare(PHP_VERSION, "$php_num", "<"));'
 	if [ $? -ne 0 ];then
 		printinfo
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
