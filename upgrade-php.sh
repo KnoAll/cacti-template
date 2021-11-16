@@ -124,15 +124,16 @@ fi
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
-	#set upgrade version
-	php_version=php73
-	php_description="v7.3.x"
-else
-	printerror "Cacti v$cactiver is less than required v$upgrade_version to upgrade PHP, run again after Cacti upgrade."
+	#printerror "Cacti v$cactiver is less than required v$upgrade_version to upgrade PHP, run again after Cacti upgrade."
 	#set upgrade version
 	php_version=php74
 	php_description="v7.4.x"
 	#exit
+
+else
+	#set upgrade version
+	php_version=php73
+	php_description="v7.3.x"
 fi
 
 upgradeAsk () {
