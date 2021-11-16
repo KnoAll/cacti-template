@@ -140,7 +140,7 @@ fi
 
 upgradeAsk () {
 	#check version of PHP installed
-	php -r 'exit((int)version_compare(PHP_VERSION, "$php_num", "<"));'
+	php -r 'exit((int)version_compare(PHP_VERSION, '$php_num', "<"));'
 	if [ $? -ne 0 ];then
 		printinfo
 		read -p "Do you want to upgrade your PHP install to $php_description? y/N: " upAsk
