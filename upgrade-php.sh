@@ -128,14 +128,14 @@ if version_ge $cactiver $upgrade_version; then
 	#set upgrade version
 	php_version=php74
 	php_description="v7.4.x"
-	php_num=7.4.0
+	php_num=7.4
 
 
 else
 	#set upgrade version
 	php_version=php73
 	php_description="v7.3.x"
-	php_num=7.3.0
+	php_num=7.3
 fi
 
 upgradeAsk () {
