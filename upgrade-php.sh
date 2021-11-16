@@ -189,6 +189,7 @@ upgradePHP() {
 				if [ $? -ne 0 ];then
 					printwarn "ERROR upgrading PHP version."
 				else
+					sudo systemctl restart httpd
 					php_ver=v$( php -r 'echo PHP_VERSION;' )
 					printinfo "PHP upgraded to $php_ver"
 				fi
