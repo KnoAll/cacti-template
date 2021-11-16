@@ -181,7 +181,7 @@ upgradePHP() {
 				sudo dnf module -y -q enable php:$php_version
 				sudo dnf -y -q install php
 				if [ $? -ne 0 ];then
-					printwarn "ERROR upgrading PHP version."
+					printerror "ERROR upgrading PHP version."
 				else
 					php_ver=v$( php -r 'echo PHP_VERSION;' )
 					printinfo "PHP upgraded to $php_ver"
@@ -191,8 +191,9 @@ upgradePHP() {
 				sudo yum-config-manager --enable remi-$php_version
 				sudo yum -y -q update
 				if [ $? -ne 0 ];then
-					printwarn "ERROR upgrading PHP version."
+					printerror "ERROR upgrading PHP version."
 				else
+					printwarn "Restarting webserver..."
 					sudo systemctl restart httpd
 					php_ver=v$( php -r 'echo PHP_VERSION;' )
 					printinfo "PHP upgraded to $php_ver"
