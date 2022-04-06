@@ -147,7 +147,7 @@ phpMinimum() {
 		y | Y | yes | YES| Yes ) 
 			printinfo "Ok, if you change your mind, come back and try again."
 			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-minimum-php&write=0 )
-			exit 1
+			exit 747
 		;;
 		* ) 
 			upgradeAsk
