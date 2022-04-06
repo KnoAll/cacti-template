@@ -140,9 +140,8 @@ fi
 
 phpMinimum() {
 	if version_ge $smphp_ver $php_minimum; then
-		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2"
-		printwarn "Cacti can still be upgraded, but not by this script."
-		read -p "Do you want to cancel upgrading PHP? y/N: " minAsk
+		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2. Cacti can still be upgraded, but not by this script."
+		read -p "Are you sure want to cancel upgrading PHP? y/N: " minAsk
 		case "$minAsk" in
 		y | Y | yes | YES| Yes ) 
 			printinfo "Ok, if you change your mind, come back and try again."
