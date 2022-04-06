@@ -207,6 +207,15 @@ if version_ge $cactiver $upgrade_version; then
 		printNotices
 		#check for PHP version upgrade
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
+		case "$?" in
+		747 )
+			printerror "PHP is not at minimum version, cannot proceed"
+			exit 1
+		;;
+		* )
+			printinfo "PHP seems to be at minimum version, proceeding"
+		;;
+		esac
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
