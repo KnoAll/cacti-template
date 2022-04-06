@@ -216,7 +216,6 @@ if version_ge $cactiver $upgrade_version; then
 		#check for PHP version upgrade
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		phpStatus=$?
-		printerror "phpstatus is $phpStatus"
 		case "$phpStatus" in
 		167 )
 			printerror "PHP is not at minimum version, cannot proceed. To automatically upgrade Cacti please upgrade PHP to v7.2 or higher. Exiting."
