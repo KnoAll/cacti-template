@@ -173,7 +173,7 @@ upgradeAsk () {
 upgradePHP() {
 		printinfo "Setting up repo"
 		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo yum install -y -q yum-utils
+		sudo yum install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
 			CentOS8 )
