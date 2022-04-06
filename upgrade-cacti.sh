@@ -217,7 +217,7 @@ if version_ge $cactiver $upgrade_version; then
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		phpStatus=$?
 		printerror "phpstatus is $phpStatus"
-		case "phpStatus" in
+		case "$phpStatus" in
 		167 )
 			printerror "PHP is not at minimum version, cannot proceed"
 			exit 1
