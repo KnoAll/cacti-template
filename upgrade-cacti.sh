@@ -207,6 +207,14 @@ if version_ge $cactiver $upgrade_version; then
 		printNotices
 		#check for PHP version upgrade
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
+		upgrade-plugins
+		check-smokeping
+		printinfo "All done!"
+                exit 0
+        else
+		printNotices
+		#check for PHP version upgrade
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		phpStatus=$?
 		printerror "phpstatus is $phpStatus"
 		case "phpStatus" in
@@ -218,14 +226,6 @@ if version_ge $cactiver $upgrade_version; then
 			printinfo "PHP seems to be at minimum version, proceeding"
 		;;
 		esac
-		upgrade-plugins
-		check-smokeping
-		printinfo "All done!"
-                exit 0
-        else
-		printNotices
-		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
 		upgradeAsk
         fi
 else
