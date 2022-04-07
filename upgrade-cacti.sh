@@ -41,7 +41,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.19
+prod_version=1.2.20
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -215,6 +215,16 @@ if version_ge $cactiver $upgrade_version; then
 		printNotices
 		#check for PHP version upgrade
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
+		phpStatus=$?
+		case "$phpStatus" in
+		167 )
+			printerror "PHP is not at minimum version, cannot proceed. To automatically upgrade Cacti please upgrade PHP to v7.2 or higher. Exiting."
+			exit 1
+		;;
+		* )
+			printinfo "PHP seems to be at minimum version, proceeding"
+		;;
+		esac
 		upgradeAsk
         fi
 else
@@ -409,6 +419,7 @@ rsync -raq --ignore-existing cacti_$cactiver/plugins cacti
 rsync -raq --ignore-existing cacti_$cactiver/include/themes cacti/include
 #update-config
 update-permissions
+sudo systemctl restart $webserver
 printinfo
 }
 

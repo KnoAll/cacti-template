@@ -61,5 +61,5 @@ touch /var/www/html/cacti/log/cacti.log
 chmod g+w /var/www/html/cacti/log/cacti.log
 
 printinfo
-
+sudo systemctl restart httpd
 exit

@@ -52,6 +52,7 @@ upgrade_version=1.2.18
 #installed php version
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
+php_minimum=7.2
 
 printinfo "Checking for PHP upgrade..."
 printinfo
@@ -124,19 +125,35 @@ fi
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
-	#printerror "Cacti v$cactiver is less than required v$upgrade_version to upgrade PHP, run again after Cacti upgrade."
+	# cacti must be at least v1.2.18 to go to php7.4
 	#set upgrade version
 	php_version=php74
 	php_description="v7.4.x"
 	php_num=7.4
-
-
 else
+	# php7.3 for =< v1.2.17
 	#set upgrade version
 	php_version=php73
 	php_description="v7.3.x"
 	php_num=7.3
 fi
+
+phpMinimum() {
+	if version_ge $smphp_ver $php_minimum; then
+		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2. Cacti can still be upgraded, but not by this script."
+		read -p "Are you sure want to cancel upgrading PHP? y/N: " minAsk
+		case "$minAsk" in
+		y | Y | yes | YES| Yes ) 
+			printinfo "Ok, if you change your mind, come back and try again."
+			counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-minimum-php&write=0 )
+			exit 167
+		;;
+		* ) 
+			upgradeAsk
+		;;
+		esac
+	fi
+}
 
 upgradeAsk () {
 	#check version of PHP installed
@@ -155,13 +172,13 @@ upgradeAsk () {
 			upgradePHP
 		;;
 		* ) 
-			printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
+			#printwarn "OK, please consider upgrading, old versions of PHP are not updated and may contain known security and stability issues."
 			if [[ $param1 == "dev" ]]; then
 				printwarn $param1
 			else
 				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=decline-upgrade-php&write=0 )
 			fi
-			exit
+			phpMinimum
 		;;
 		esac
 	else
@@ -173,7 +190,7 @@ upgradeAsk () {
 upgradePHP() {
 		printinfo "Setting up repo"
 		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo yum install -y -q yum-utils
+		sudo yum install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
 			CentOS8 )
