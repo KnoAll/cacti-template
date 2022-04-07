@@ -419,7 +419,7 @@ rsync -raq --ignore-existing cacti_$cactiver/plugins cacti
 rsync -raq --ignore-existing cacti_$cactiver/include/themes cacti/include
 #update-config
 update-permissions
-sudo systemctl restart $webserver.service
+sudo systemctl restart $webserver
 printinfo
 }
 
