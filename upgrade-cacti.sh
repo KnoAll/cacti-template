@@ -462,6 +462,7 @@ else
 	fi
 fi
 if [[ $pkg_mgr == "yum" ]]; then
+	printwarn "DEBUG doing yum install"
 	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel php-intl
 	sudo systemctl restart httpd
 else
