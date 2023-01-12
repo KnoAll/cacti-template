@@ -403,7 +403,8 @@ else
 			printerror "Cacti unpack error cannot install, exiting..."
 			exit 1
 		else
-			sudo $pkg_mgr install -y -q php-gmp sendmail
+			sudo $pkg_mgr install -y -q php-gmp sendmail php-intl
+			sudo systemctl restart httpd
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
@@ -462,9 +463,7 @@ else
 	fi
 fi
 if [[ $pkg_mgr == "yum" ]]; then
-	printwarn "DEBUG doing yum install"
 	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel php-intl
-	sudo systemctl restart httpd
 else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 fi
