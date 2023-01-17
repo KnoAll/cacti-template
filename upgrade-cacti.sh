@@ -41,7 +41,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.22
+prod_version=1.2.23
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -403,7 +403,8 @@ else
 			printerror "Cacti unpack error cannot install, exiting..."
 			exit 1
 		else
-			sudo $pkg_mgr install -y -q php-gmp sendmail
+			sudo $pkg_mgr install -y -q php-gmp sendmail php-intl
+			sudo systemctl restart httpd
 			mv cacti/ cacti_$cactiver/
 			rm $prod_version.tar.gz
 			mv cacti-release-$prod_version cacti
@@ -462,7 +463,7 @@ else
 	fi
 fi
 if [[ $pkg_mgr == "yum" ]]; then
-	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+	sudo $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel php-intl
 else
 	sudo $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 fi
