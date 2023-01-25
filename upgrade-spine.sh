@@ -83,14 +83,30 @@ function upgrade-spine () {
 		fi
 	fi
 	if [[ $pkg_mgr == "yum" ]]; then
-		sudo -S $pgk_mgr install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 	else
 		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 	fi
 	./bootstrap
+		if [ $? -ne 0 ];then
+			printerror "Spine bootstrap error, exiting. You will need to manually upgrade Spine."
+			exit 1
+		fi
 	./configure
+		if [ $? -ne 0 ];then
+			printerror "Spine configure error, exiting. You will need to manually upgrade Spine."
+			exit 1
+		fi	
 	make 
+		if [ $? -ne 0 ];then
+			printerror "Spine make error, exiting. You will need to manually upgrade Spine."
+			exit 1
+		fi
 	sudo -S make install
+		if [ $? -ne 0 ];then
+			printerror "Spine make install error, exiting. You will need to manually upgrade Spine."
+			exit 1
+		fi
 	cd /usr/local/spine/bin
 	sudo -S chown root:root spine
 	sudo -S chmod +s spine
