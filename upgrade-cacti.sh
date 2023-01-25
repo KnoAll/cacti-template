@@ -527,7 +527,8 @@ update-cactidir
 upgrade-cacti $2
 update-php
 update-mysqld
-upgrade-spine $2
+# upgrade-spine $2
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2
 cron enable
 upgrade-plugins
 update-permissions
