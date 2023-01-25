@@ -83,7 +83,7 @@ function upgrade-spine () {
 		fi
 	fi
 	if [[ $pkg_mgr == "yum" ]]; then
-		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+		printerror # sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 	else
 		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 	fi
