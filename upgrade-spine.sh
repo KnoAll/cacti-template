@@ -112,6 +112,7 @@ case "$1" in
 			cactiver=$2
 			upgrade-spine
 		fi
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
 	;;
 	--help | --h | --H | -h | help | -? | --? )
 		printinfo "Switches available in this script:"
