@@ -254,7 +254,7 @@ case $os_name in
 	CentOS8)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-		printinfo "Setting up packages, this may take a while too..."
+		printwarn "Setting up packages, this may take a while too..."
 		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
@@ -268,7 +268,7 @@ case $os_name in
 	;;
 	AlmaLinux)
 		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
-		printinfo "Setting up packages, this may take a while too..."
+		printwarn "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
 		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 			if [ $? -ne 0 ];then
@@ -314,48 +314,48 @@ esac
 #		fi
 #	fi
 #fi
-case ($os_dist) in 
+case $os_dist in 
 	raspbian)
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
 	sudo adduser cacti 
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong setting up Cacti user, exiting..."
-		exit 1
-	else
-		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong adding Cacti user groups, exiting..."
+			printerror "Something went wrong setting up Cacti user, exiting..."
 			exit 1
+		else
+			sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user groups, exiting..."
+				exit 1
+			fi
 		fi
-	fi
 	;;
 	centos)
 	printinfo "Checking Cacti user groups..."
 	groups | grep -q wheel
-	if [ $? -ne 0 ];then
-		printerror "Cacti is not in the suoders group, cannot proceed..."
-		exit 1
-	else
-		sudo usermod -a -G apache cacti
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+			printerror "Cacti is not in the suoders group, cannot proceed..."
 			exit 1
+		else
+			sudo usermod -a -G apache cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user to apache group, exiting..."
+				exit 1
+			fi
 		fi
-	fi
 	;;
 	almalinux)
 	printinfo "Checking Cacti user groups..."
 	groups | grep -q wheel
-	if [ $? -ne 0 ];then
-		printerror "Cacti is not in the suoders group, cannot proceed..."
-		exit 1
-	else
-		sudo usermod -a -G apache cacti
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+			printerror "Cacti is not in the suoders group, cannot proceed..."
 			exit 1
+		else
+			sudo usermod -a -G apache cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user to apache group, exiting..."
+				exit 1
+			fi
 		fi
-	fi
 	;;
 esac
 
@@ -440,7 +440,7 @@ printinfo "Updating mysql for Cacti v1.2.x"
 #	dbserver=mariadb
 #fi
 
-case ($os_dist) in 
+case $os_dist in 
 	raspbian)
 		mycnf_path=/etc/mysql/my.cnf
 	;;
