@@ -266,6 +266,23 @@ case $os_name in
 			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
+	AlmaLinux)
+		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
+		printinfo "Setting up packages"
+		sudo dnf update
+		sudo dnf install -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
+			if [ $? -ne 0 ];then
+			printerror "Something went wrong installing prerequisites, exiting..."
+			exit 1
+		else
+			printinfo "Enabling webserver and mysql server..."
+			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
+			printinfo "Setting up help2man"
+			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
+			sudo mysql_secure_installation
+			sudo dnf install -y php-fpm php-mysqlnd php-gd php-cli php-curl php-mbstring php-bcmath php-zip php-opcache php-xml php-json php-intl
+		fi
+	;;
 esac
 
 if [[ $os_dist == "raspbian" ]]; then
