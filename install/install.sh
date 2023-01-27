@@ -254,7 +254,7 @@ case $os_name in
 	CentOS8)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-		printinfo "Setting up packages"
+		printinfo "Setting up packages, this may take a while too..."
 		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
@@ -268,24 +268,54 @@ case $os_name in
 	;;
 	AlmaLinux)
 		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
-		printinfo "Setting up packages"
+		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
 		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 			if [ $? -ne 0 ];then
-			printerror "Something went wrong installing prerequisites, exiting..."
+			printerror "Something went wrong installing packages, exiting..."
 			exit 1
 		else
 			printinfo "Enabling webserver and mysql server..."
 			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
-			printinfo "Setting up help2man"
+			#printinfo "Setting up help2man"
 			# sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
+			printinfo "Securing MariaDB server, please follow prompts..."
 			sudo mysql_secure_installation
+			printinfo "Setting up php..."
 			sudo dnf install -q -y php-fpm php-mysqlnd php-gd php-cli php-curl php-mbstring php-bcmath php-zip php-opcache php-xml php-json php-intl
 		fi
 	;;
 esac
 
-if [[ $os_dist == "raspbian" ]]; then
+#if [[ $os_dist == "raspbian" ]]; then
+#	printinfo "Setting up Cacti user, get ready to enter a password!!"
+#	sudo adduser cacti 
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong setting up Cacti user, exiting..."
+#		exit 1
+#	else
+#		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+#		if [ $? -ne 0 ];then
+#			printerror "Something went wrong adding Cacti user groups, exiting..."
+#			exit 1
+#		fi
+#	fi
+#elif [[ $os_dist == "centos" ]]; then
+#	printinfo "Checking Cacti user groups..."
+#	groups | grep -q wheel
+#	if [ $? -ne 0 ];then
+#		printerror "Cacti is not in the suoders group, cannot proceed..."
+#		exit 1
+#	else
+#		sudo usermod -a -G apache cacti
+#		if [ $? -ne 0 ];then
+#			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+#			exit 1
+#		fi
+#	fi
+#fi
+case ($os_dist) in 
+	raspbian)
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
 	sudo adduser cacti 
 	if [ $? -ne 0 ];then
@@ -298,7 +328,8 @@ if [[ $os_dist == "raspbian" ]]; then
 			exit 1
 		fi
 	fi
-elif [[ $os_dist == "centos" ]]; then
+	;;
+	centos)
 	printinfo "Checking Cacti user groups..."
 	groups | grep -q wheel
 	if [ $? -ne 0 ];then
@@ -311,7 +342,22 @@ elif [[ $os_dist == "centos" ]]; then
 			exit 1
 		fi
 	fi
-fi
+	;;
+	almalinux)
+	printinfo "Checking Cacti user groups..."
+	groups | grep -q wheel
+	if [ $? -ne 0 ];then
+		printerror "Cacti is not in the suoders group, cannot proceed..."
+		exit 1
+	else
+		sudo usermod -a -G apache cacti
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+			exit 1
+		fi
+	fi
+	;;
+esac
 
 func_dbask () {
           printinfo "Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
