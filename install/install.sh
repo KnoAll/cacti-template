@@ -386,13 +386,26 @@ elif [[ $os_dist == "centos" ]]; then
 fi
 
 printinfo "Updating mysql for Cacti v1.2.x"
-if [[ $os_dist == "raspbian" ]]; then
-	mycnf_path=/etc/mysql/my.cnf
-	dbserver=mysql
-elif [[ $os_dist == "centos" ]]; then
-	mycnf_path=/etc/my.cnf
-	dbserver=mariadb
-fi
+#if [[ $os_dist == "raspbian" ]]; then
+#	mycnf_path=/etc/mysql/my.cnf
+#	dbserver=mysql
+#elif [[ $os_dist == "centos" ]]; then
+#	mycnf_path=/etc/my.cnf
+#	dbserver=mariadb
+#fi
+
+case ($os_dist) in 
+	raspbian)
+		mycnf_path=/etc/mysql/my.cnf
+	;;
+	centos)
+		mycnf_path=/etc/my.cnf
+	;;
+	almalinux)
+		mycnf_path=/etc/my.cnf
+	;;
+esac
+
 grep -q -w "mysqld" $mycnf_path
 if [ $? -ne 0 ];then
 	#Fugly but works for now...
