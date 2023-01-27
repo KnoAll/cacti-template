@@ -42,13 +42,6 @@ EOF
   echo
 }
 
-errorTrap() {
-		if [ $? -ne 0 ];then
-			printerror "Something went wrong updating Raspbian, exiting..."
-		exit 1
-		fi
-}
-
 welcomeMessage
 
 if [[ `whoami` == "root" ]]; then
