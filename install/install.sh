@@ -66,13 +66,13 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		webserver=apache2
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
-elif grep -q "CentOS Linux 7" /etc/os-release; then
+elif grep -q "AlmaLinux" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
 		exit 1
 	else
-		os_dist=centos
-		os_name=CentOS7
+		os_dist=almalinux
+		os_name=AlmaLinux
 		webserver=httpd
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
@@ -83,7 +83,16 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		os_dist=centos
 		os_name=CentOS8
 		webserver=httpd
-	fi	
+	fi
+elif grep -q "CentOS Linux 7" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=centos
+		os_name=CentOS7
+		webserver=httpd
+	fi
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	exit 1
