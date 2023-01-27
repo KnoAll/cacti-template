@@ -443,12 +443,15 @@ printinfo "Updating mysql for Cacti v1.2.x"
 case $os_dist in 
 	raspbian)
 		mycnf_path=/etc/mysql/my.cnf
+		dbserver=mysql
 	;;
 	centos)
 		mycnf_path=/etc/my.cnf
+		dbserver=mysql
 	;;
 	almalinux)
 		mycnf_path=/etc/my.cnf
+		dbserver=mysql
 	;;
 esac
 
