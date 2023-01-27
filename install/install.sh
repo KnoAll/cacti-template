@@ -183,7 +183,7 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 
 printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
 
-printwarn "Updating $os_name, this may take a while..."
+printinfo "Updating $os_name, this may take a while..."
 #if [[ $os_dist == "raspbian" ]]; then
 #	sudo yum -y -q update; sudo yum -y -q upgrade
 #	if [ $? -ne 0 ];then
@@ -227,7 +227,7 @@ case $os_dist in
 		exit 1
 	;;
 esac
-printwarn "Installing prerequisites, this may take a while too..."
+printinfo "Installing prerequisites, this may take a while too..."
 case $os_name in 
 	Raspbian)
 		sudo apt -y -qq install autoconf dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
@@ -254,7 +254,7 @@ case $os_name in
 	CentOS8)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-		printwarn "Setting up packages, this may take a while too..."
+		printinfo "Setting up packages, this may take a while too..."
 		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
@@ -268,7 +268,7 @@ case $os_name in
 	;;
 	AlmaLinux)
 		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
-		printwarn "Setting up packages, this may take a while too..."
+		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
 		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 			if [ $? -ne 0 ];then
