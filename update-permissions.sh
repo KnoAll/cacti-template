@@ -33,6 +33,7 @@ elif which apt >/dev/null; then
 	pkg_mgr=apt
 elif which dnf >/dev/null; then
 	pkg_mgr=dnf
+	printinfo pkgmgrDNF
 else
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
