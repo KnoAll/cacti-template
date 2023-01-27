@@ -267,7 +267,6 @@ case $os_name in
 		fi	
 	;;
 	AlmaLinux)
-		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
 		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
 		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
@@ -518,6 +517,24 @@ elif [[ $os_dist == "centos" ]]; then
 	sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
 	sudo systemctl restart firewalld
 fi
+case $os_dist in 
+	raspbian)
+		phpini_path=/etc/php/$verphp/apache2/php.ini
+		phpcliini_path=/etc/php/$verphp/cli/php.ini
+	;;
+	centos)
+		phpini_path=/etc/php.ini
+		printinfo "Allowing http/s access through firewall..."
+		sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
+		sudo systemctl restart firewalld
+	;;
+	almalinux)
+		phpini_path=/etc/php.ini
+		printinfo "Allowing http/s access through firewall..."
+		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
+		#sudo systemctl restart firewalld
+	;;
+esac
 grep -q -w "memory_limit = 128M" $phpini_path
 	if [ $? -ne 0 ];then
 		grep -q -w "memory_limit = 400M" $phpini_path
