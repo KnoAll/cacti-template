@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh) dev
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/alma/install/install.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -41,6 +41,14 @@ EOF
   echo "Welcome to the Kevin's Cacti script!"
   echo
 }
+
+errorTrap() {
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating Raspbian, exiting..."
+		exit 1
+		fi
+}
+
 welcomeMessage
 
 if [[ `whoami` == "root" ]]; then
@@ -183,23 +191,49 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
 
 printwarn "Updating $os_name, this may take a while..."
-if [[ $os_dist == "raspbian" ]]; then
-	sudo apt -y -qq update; sudo apt -y -qq upgrade
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong updating Raspbian, exiting..."
+#if [[ $os_dist == "raspbian" ]]; then
+#	sudo yum -y -q update; sudo yum -y -q upgrade
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong updating Raspbian, exiting..."
+#		exit 1
+#	fi
+#elif [[ $os_dist == "centos" ]]; then
+#	sudo yum -y -q update; sudo yum -y -q upgrade
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong updating CentOS, exiting..."
+#		exit 1
+#	fi
+#else
+#    printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
+#    exit 1
+#fi
+case $os_dist in
+	almalinux)
+		sudo yum -y -q update; sudo yum -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating Raspbian, exiting..."
+			exit 1
+		fi
+	;;
+	centos)
+		sudo yum -y -q update; sudo yum -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating Raspbian, exiting..."
+			exit 1
+		fi
+	;;
+	raspbian)
+		sudo yum -y -q update; sudo yum -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating Raspbian, exiting..."
 		exit 1
-	fi
-elif [[ $os_dist == "centos" ]]; then
-	sudo yum -y -q update; sudo yum -y -q upgrade
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong updating CentOS, exiting..."
+		fi
+	;;
+	*)
+		printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
 		exit 1
-	fi
-else
-    printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
-    exit 1
-fi
-
+	;;
+esac
 printwarn "Installing prerequisites, this may take a while too..."
 case $os_name in 
 	Raspbian)
