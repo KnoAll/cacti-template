@@ -267,6 +267,7 @@ case $os_name in
 		fi	
 	;;
 	AlmaLinux)
+		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
 		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
 		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
@@ -588,12 +589,6 @@ else
 	'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpini_path'
 	'sudo sed -i 's/;date.timezone =/date.timezone="Your\/Zone"/g' $phpcliini_path'
 	"
-fi
-
-printinfo "Updating SELINUX to permissive"
-sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
-if [ $? -ne 1 ];then
-	printerror "Updating SELINUX failed, Cacti page may not load..."
 fi
 
 printinfo "Updating Apache Settings for Cacti 1.2.x"
