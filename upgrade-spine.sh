@@ -96,6 +96,7 @@ function upgrade-spine () {
 		wget -q https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
 		if [ $? -ne 0 ];then
 				printerror "Spine download error cannot install, exiting. You will need to manually upgrade Spine."
+				rm -rf *spine*
 				exit 1
 		else
 			tar -xzf cacti-spine-*.tar.gz
