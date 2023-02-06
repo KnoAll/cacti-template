@@ -72,7 +72,7 @@ while :; do
 		checkSpine
         ;;
 	install)
-		spinever=1.2.22
+		spinever=1.2.21
 	;;
         *) break
     esac
