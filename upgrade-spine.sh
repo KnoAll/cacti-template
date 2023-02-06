@@ -40,21 +40,18 @@ cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
 #determine the os pkg version
 if which dnf >/dev/null; then
-		pkg_mgr=dnf
-		os_dist=almalinux
-printerror pkgDNF
-	elif which apt >/dev/null; then
-		pkg_mgr=apt
-		os_dist=raspbian
-printerror pkgAPT
-	elif which yum >/dev/null; then
-		pkg_mgr=yum
-		os_dist=centos
-printerror pkgYUM
-	else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
-	fi
+	pkg_mgr=dnf
+	os_dist=almalinux
+elif which apt >/dev/null; then
+	pkg_mgr=apt
+	os_dist=raspbian
+elif which yum >/dev/null; then
+	pkg_mgr=yum
+	os_dist=centos
+else
+	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+	exit 1
+fi
 
 function checkSpine() {
 	#check that spine is installed, if so get the version
@@ -119,21 +116,13 @@ function upgrade-spine () {
 		;;
 		dnf)
 			printinfo "Setting up dnf dependencies"
-			sudo dnf --enablerepo=crb install mysql-devel help2man		
+			sudo dnf --enablerepo=crb install -y -q mysql-devel help2man		
 		;;
 		apt)
 			printinfo "Setting up apt dependencies"
 			sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf		
 		;;
 	esac
-	
-#	if [[ $pkg_mgr == "yum" ]]; then
-#		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
-#	elif [[ $pkg_mgr == "dnf" ]]; then
-#		 sudo dnf --enablerepo=crb install mysql-devel help2man
-#	else [[ $pkg_mgr == "yum" ]]; then
-#		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
-#	fi
 
 	./bootstrap
 		if [ $? -ne 0 ];then
