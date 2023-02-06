@@ -188,6 +188,11 @@ case "$1" in
 			fi
 		if install_spine=1;then
 			copyConfig
+			if [ $? -ne 0 ];then
+				printerror "Error updating config file, Spine will not be able to communicate with DB."
+			else
+				printinfo "Spine config file updated for DB connectivity
+			fi
 		fi
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
