@@ -186,7 +186,7 @@ case "$1" in
 				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
 				exit 1
 			fi
-		if install_spine=1;then
+		if $install_spine=1;then
 			copyConfig
 			if [ $? -ne 0 ];then
 				printerror "Error updating config file, Spine will not be able to communicate with DB."
