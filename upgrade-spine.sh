@@ -110,12 +110,15 @@ function upgrade-spine () {
 	
 	case $pkg_mgr in
 		yum)
+			printinfo "Setting up yum dependencies"
 			sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
 		;;
 		dnf)
-		 	sudo dnf --enablerepo=crb install mysql-devel help2man		
+			printinfo "Setting up dnf dependencies"
+			sudo dnf --enablerepo=crb install mysql-devel help2man		
 		;;
 		apt)
+			printinfo "Setting up apt dependencies"
 			sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf		
 		;;
 	esac
