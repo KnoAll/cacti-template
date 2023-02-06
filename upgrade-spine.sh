@@ -48,15 +48,15 @@ function checkSpine() {
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		fi
 
-	if which yum >/dev/null; then
-		pkg_mgr=yum
-		os_dist=centos
+	if which dnf >/dev/null; then
+		pkg_mgr=dnf
+		os_dist=almalinux
 	elif which apt >/dev/null; then
 		pkg_mgr=apt
 		os_dist=raspbian
-	elif which dnf >/dev/null; then
-		pkg_mgr=dnf
-		os_dist=almalinux
+	elif which yum >/dev/null; then
+		pkg_mgr=yum
+		os_dist=centos
 	else
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
