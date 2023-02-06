@@ -77,6 +77,7 @@ while :; do
         ;;
 	install)
 		spinever=1.2.21
+		install_spine=1
 	;;
         *) break
     esac
@@ -157,6 +158,12 @@ function pick-version() {
 		upgrade-spine
 }
 
+copyConfig() {
+	sudo cp /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
+	sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
+	
+}
+
 case "$1" in
 	--pick-version)
 		if [ -z "$2" ]; then
@@ -179,6 +186,9 @@ case "$1" in
 				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
 				exit 1
 			fi
+		if install_spine=1;then
+			copyConfig
+		fi
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
 		exit 0
