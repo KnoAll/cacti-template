@@ -54,6 +54,9 @@ function checkSpine() {
 	elif which apt >/dev/null; then
 		pkg_mgr=apt
 		os_dist=raspbian
+	elif which dnf >/dev/null; then
+		pkg_mgr=dnf
+		os_dist=almalinux
 	else
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
@@ -106,7 +109,9 @@ function upgrade-spine () {
 	fi
 	if [[ $pkg_mgr == "yum" ]]; then
 		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
-	else
+	elif [[ $pkg_mgr == "dnf" ]]; then
+		 sudo dnf --enablerepo=crb install mysql-devel help2man
+	else [[ $pkg_mgr == "yum" ]]; then
 		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
 	fi
 	./bootstrap
