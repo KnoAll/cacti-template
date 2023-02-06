@@ -38,25 +38,46 @@ esac
 #get the version of cacti that is installed
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
-#check that spine is installed, if so get the version
-test -f /usr/local/spine/bin/spine
-	if [ $? -ne 0 ];then
-		printerror "Spine does not appear to be installed, exiting."
-		exit 1
-	else
-		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-	fi
+function checkSpine() {
+	#check that spine is installed, if so get the version
+	test -f /usr/local/spine/bin/spine
+		if [ $? -ne 0 ];then
+			printerror "Spine does not appear to be installed, exiting."
+			exit 1
+		else
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+		fi
 
-if which yum >/dev/null; then
-	pkg_mgr=yum
-	os_dist=centos
-elif which apt >/dev/null; then
-	pkg_mgr=apt
-	os_dist=raspbian
-else
-	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-	exit 1
-fi
+	if which yum >/dev/null; then
+		pkg_mgr=yum
+		os_dist=centos
+	elif which apt >/dev/null; then
+		pkg_mgr=apt
+		os_dist=raspbian
+	else
+		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+		exit 1
+	fi
+}
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		checkSpine
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+		checkSpine
+        ;;
+	install)
+		spinever=1.2.22
+	;;
+        *) break
+    esac
+    shift
+done
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
