@@ -107,13 +107,27 @@ function upgrade-spine () {
 			cd cacti-spine-*
 		fi
 	fi
-	if [[ $pkg_mgr == "yum" ]]; then
-		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
-	elif [[ $pkg_mgr == "dnf" ]]; then
-		 sudo dnf --enablerepo=crb install mysql-devel help2man
-	else [[ $pkg_mgr == "yum" ]]; then
-		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
-	fi
+	
+	case $pkg_mgr in
+		yum)
+			sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+		;;
+		dnf)
+		 	sudo dnf --enablerepo=crb install mysql-devel help2man		
+		;;
+		apt)
+			sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf		
+		;;
+	esac
+	
+#	if [[ $pkg_mgr == "yum" ]]; then
+#		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+#	elif [[ $pkg_mgr == "dnf" ]]; then
+#		 sudo dnf --enablerepo=crb install mysql-devel help2man
+#	else [[ $pkg_mgr == "yum" ]]; then
+#		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
+#	fi
+
 	./bootstrap
 		if [ $? -ne 0 ];then
 			printerror "Spine bootstrap error, exiting. You will need to manually upgrade Spine."
