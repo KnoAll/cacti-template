@@ -181,7 +181,7 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 			fi
 }
 
-printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
+printinfo "Welcome to Kevin's Cacti install script!"
 
 printinfo "Updating $os_name, this may take a while..."
 #if [[ $os_dist == "raspbian" ]]; then
