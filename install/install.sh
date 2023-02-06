@@ -381,7 +381,7 @@ func_dbask () {
 			printerror "Something went wrong importing Cacti database, exiting..."
 			exit 1
 		else
-		printinfo "The default username/password is admin and Cactipw1! (including the exclamation)."
+		printwarn "The default username/password is admin and Cactipw1! (including the exclamation)."
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-kevin&write=0 )
 		fi
 	else
