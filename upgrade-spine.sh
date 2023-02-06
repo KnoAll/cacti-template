@@ -42,15 +42,15 @@ cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 if which dnf >/dev/null; then
 		pkg_mgr=dnf
 		os_dist=almalinux
-printerror dnf
+printerror pkgDNF
 	elif which apt >/dev/null; then
 		pkg_mgr=apt
 		os_dist=raspbian
-printerror dnf
+printerror pkgAPT
 	elif which yum >/dev/null; then
 		pkg_mgr=yum
 		os_dist=centos
-printerror dnf
+printerror pkgYUM
 	else
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
