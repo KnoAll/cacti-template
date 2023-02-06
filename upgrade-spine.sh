@@ -38,17 +38,8 @@ esac
 #get the version of cacti that is installed
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
-function checkSpine() {
-	#check that spine is installed, if so get the version
-	test -f /usr/local/spine/bin/spine
-		if [ $? -ne 0 ];then
-			printerror "Spine does not appear to be installed, exiting."
-			exit 1
-		else
-			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-		fi
-
-	if which dnf >/dev/null; then
+#determine the os pkg version
+if which dnf >/dev/null; then
 		pkg_mgr=dnf
 		os_dist=almalinux
 printerror dnf
@@ -64,6 +55,16 @@ printerror dnf
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
 	fi
+
+function checkSpine() {
+	#check that spine is installed, if so get the version
+	test -f /usr/local/spine/bin/spine
+		if [ $? -ne 0 ];then
+			printerror "Spine does not appear to be installed, exiting."
+			exit 1
+		else
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+		fi
 }
 
 #ingest options
