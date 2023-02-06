@@ -51,12 +51,15 @@ function checkSpine() {
 	if which dnf >/dev/null; then
 		pkg_mgr=dnf
 		os_dist=almalinux
+printerror dnf
 	elif which apt >/dev/null; then
 		pkg_mgr=apt
 		os_dist=raspbian
+printerror dnf
 	elif which yum >/dev/null; then
 		pkg_mgr=yum
 		os_dist=centos
+printerror dnf
 	else
 		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 		exit 1
