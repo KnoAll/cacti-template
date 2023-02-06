@@ -601,7 +601,8 @@ sudo systemctl restart $webserver
 }
 update-php
 
-installSpine
+#installSpine
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2
 
 printinfo "Setting up Plugins..."
 # plugins
