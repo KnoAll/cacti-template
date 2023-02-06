@@ -590,6 +590,12 @@ else
 	"
 fi
 
+printinfo "Updating SELINUX to permissive"
+sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+if [ $? -ne 1 ];then
+	printerror "Updating SELINUX failed, Cacti pay may not load..."
+fi
+
 printinfo "Updating Apache Settings for Cacti 1.2.x"
 sudo systemctl restart $webserver
 }
