@@ -193,6 +193,9 @@ case "$1" in
 			else
 				printinfo "Spine config file updated for DB connectivity
 			fi
+			sudo systemctl start snmpd
+			sudo systemctl enable snmpd
+
 		fi
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
