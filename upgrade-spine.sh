@@ -196,7 +196,6 @@ case "$1" in
 				sudo systemctl enable snmpd
 				fi
 			#fi
-		fi
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
 		exit 0
