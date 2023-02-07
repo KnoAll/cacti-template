@@ -279,7 +279,7 @@ case $os_name in
 			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
 			#printinfo "Setting up help2man"
 			# sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
-			printinfo "Securing MariaDB server, please follow prompts..."
+			printinfo "Securing MariaDB server, please follow prompts, root user password is cacti ..."
 			sudo mysql_secure_installation
 			printinfo "Setting up php..."
 			sudo dnf install -q -y php-fpm php-mysqlnd php-gd php-cli php-curl php-mbstring php-bcmath php-zip php-opcache php-xml php-json php-intl
