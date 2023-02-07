@@ -186,7 +186,7 @@ case "$1" in
 				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
 				exit 1
 			fi
-			if $install_spine=1;then
+			#if $install_spine=1;then
 				copyConfig
 				if [ $? -ne 0 ];then
 					printerror "Error updating config file, Spine will not be able to communicate with DB."
@@ -195,7 +195,7 @@ case "$1" in
 				sudo systemctl start snmpd
 				sudo systemctl enable snmpd
 				fi
-			fi
+			#fi
 		fi
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
