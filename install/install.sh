@@ -270,7 +270,7 @@ case $os_name in
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
 		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
-		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
+		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp rsync
 			if [ $? -ne 0 ];then
 			printerror "Something went wrong installing packages, exiting..."
 			exit 1
