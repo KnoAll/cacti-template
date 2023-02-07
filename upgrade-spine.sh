@@ -158,10 +158,11 @@ function pick-version() {
 		upgrade-spine
 }
 
-copyConfig() {
+function copyConfig() {
 	sudo cp /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 	sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-	
+	sudo systemctl start snmpd
+	sudo systemctl enable snmpd
 }
 
 case "$1" in
@@ -186,14 +187,7 @@ case "$1" in
 				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
 				exit 1
 			fi
-			copyConfig
-			if [ $? -ne 0 ];then
-				printerror "Error updating config file, Spine will not be able to communicate with DB."
-			else
-				printinfo "Spine config file updated for DB connectivity
-				sudo systemctl start snmpd
-				sudo systemctl enable snmpd
-			fi
+		copyConfig
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
 		exit 0
