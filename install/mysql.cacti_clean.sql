@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.16-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: cacti
 -- ------------------------------------------------------
--- Server version	10.4.12-MariaDB
+-- Server version	10.5.16-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -284,7 +284,7 @@ CREATE TABLE `automation_devices` (
   `sysLocation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `sysContact` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `sysDescr` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `sysUptime` int(32) NOT NULL DEFAULT 0,
+  `sysUpTime` bigint(20) unsigned NOT NULL DEFAULT 0,
   `os` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `snmp` tinyint(4) NOT NULL DEFAULT 0,
   `known` tinyint(4) NOT NULL DEFAULT 0,
@@ -551,6 +551,7 @@ CREATE TABLE `automation_snmp_items` (
   `snmp_timeout` int(10) unsigned NOT NULL DEFAULT 500,
   `snmp_retries` tinyint(11) unsigned NOT NULL DEFAULT 3,
   `max_oids` int(12) unsigned DEFAULT 10,
+  `bulk_walk_size` int(11) DEFAULT -1,
   `snmp_username` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `snmp_password` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `snmp_auth_protocol` char(6) COLLATE utf8mb4_unicode_ci DEFAULT '',
@@ -568,7 +569,7 @@ CREATE TABLE `automation_snmp_items` (
 
 LOCK TABLES `automation_snmp_items` WRITE;
 /*!40000 ALTER TABLE `automation_snmp_items` DISABLE KEYS */;
-INSERT INTO `automation_snmp_items` VALUES (1,1,1,2,'public',161,1000,3,10,'admin','baseball','MD5','','DES','',''),(2,1,2,2,'private',161,1000,3,10,'admin','baseball','MD5','','DES','','');
+INSERT INTO `automation_snmp_items` VALUES (1,1,1,2,'public',161,1000,3,10,-1,'admin','baseball','MD5','','DES','',''),(2,1,2,2,'private',161,1000,3,10,-1,'admin','baseball','MD5','','DES','','');
 /*!40000 ALTER TABLE `automation_snmp_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -864,7 +865,7 @@ DROP TABLE IF EXISTS `data_input_data`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_input_data` (
   `data_input_field_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `data_template_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `data_template_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `t_value` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`data_input_field_id`,`data_template_data_id`),
@@ -879,7 +880,7 @@ CREATE TABLE `data_input_data` (
 
 LOCK TABLES `data_input_data` WRITE;
 /*!40000 ALTER TABLE `data_input_data` DISABLE KEYS */;
-INSERT INTO `data_input_data` VALUES (1,4,'',''),(1,5,'',''),(1,6,'',''),(1,19,'',''),(1,20,'',''),(1,22,'',''),(1,23,'',''),(1,24,'',''),(1,25,'',''),(1,26,'',''),(1,27,'',''),(1,30,'',''),(1,31,'',''),(1,32,'',''),(1,33,'',''),(1,34,'',''),(1,35,'',''),(1,42,'',''),(1,43,'',''),(1,44,'',''),(1,45,'',''),(1,46,'',''),(1,47,'',''),(1,48,'',''),(1,49,'',''),(1,50,'',''),(1,51,'',''),(1,52,'',''),(1,53,'',''),(1,54,'',''),(1,55,'',''),(1,58,'',''),(1,59,'',''),(1,61,'',''),(1,67,'',''),(1,68,'',''),(1,69,'',''),(1,70,'',''),(1,71,'',''),(1,72,'',''),(1,73,'',''),(1,74,'',''),(1,75,'',''),(1,76,'',''),(1,79,'',''),(1,80,'',''),(1,81,'',''),(1,98,'',''),(1,100,'',''),(1,101,'',''),(1,102,'',''),(1,103,'',''),(2,4,'',''),(2,5,'',''),(2,6,'',''),(2,19,'',''),(2,20,'',''),(2,22,'',''),(2,23,'',''),(2,24,'',''),(2,25,'',''),(2,26,'',''),(2,27,'',''),(2,30,'',''),(2,31,'',''),(2,32,'',''),(2,33,'',''),(2,34,'',''),(2,35,'',''),(2,42,'',''),(2,43,'',''),(2,44,'',''),(2,45,'',''),(2,46,'',''),(2,47,'',''),(2,48,'',''),(2,49,'',''),(2,50,'',''),(2,51,'',''),(2,52,'',''),(2,53,'',''),(2,54,'',''),(2,55,'',''),(2,58,'',''),(2,59,'',''),(2,61,'',''),(2,67,'',''),(2,68,'',''),(2,69,'',''),(2,70,'',''),(2,71,'',''),(2,72,'',''),(2,73,'',''),(2,74,'',''),(2,75,'',''),(2,76,'',''),(2,79,'',''),(2,80,'',''),(2,81,'',''),(2,98,'',''),(2,100,'',''),(2,101,'',''),(2,102,'',''),(2,103,'',''),(3,4,'',''),(3,5,'',''),(3,6,'',''),(3,19,'',''),(3,20,'',''),(3,22,'',''),(3,23,'',''),(3,24,'',''),(3,25,'',''),(3,26,'',''),(3,27,'',''),(3,30,'',''),(3,32,'',''),(3,33,'',''),(3,35,'',''),(3,42,'',''),(3,43,'',''),(3,44,'',''),(3,45,'',''),(3,46,'',''),(3,47,'',''),(3,48,'',''),(3,49,'',''),(3,50,'',''),(3,51,'',''),(3,52,'',''),(3,53,'',''),(3,54,'',''),(3,55,'',''),(3,67,'',''),(3,68,'',''),(3,69,'',''),(3,70,'',''),(3,71,'',''),(3,72,'',''),(3,73,'',''),(3,74,'',''),(3,75,'',''),(3,76,'',''),(3,79,'',''),(3,80,'',''),(3,81,'',''),(3,98,'',''),(3,100,'',''),(3,101,'',''),(3,102,'',''),(3,103,'',''),(4,27,'',''),(4,35,'',''),(4,42,'',''),(4,43,'',''),(4,44,'',''),(4,45,'',''),(4,46,'',''),(4,47,'',''),(4,48,'',''),(4,49,'',''),(4,50,'',''),(4,51,'',''),(4,52,'',''),(4,53,'',''),(4,54,'',''),(4,55,'',''),(4,67,'',''),(4,68,'',''),(4,69,'',''),(4,70,'',''),(4,71,'',''),(4,72,'',''),(4,73,'',''),(4,74,'',''),(4,75,'',''),(4,76,'',''),(4,79,'',''),(4,80,'',''),(4,81,'',''),(5,27,'',''),(5,35,'',''),(5,42,'',''),(5,43,'',''),(5,44,'',''),(5,45,'',''),(5,46,'',''),(5,47,'',''),(5,48,'',''),(5,49,'',''),(5,50,'',''),(5,51,'',''),(5,52,'',''),(5,53,'',''),(5,54,'',''),(5,55,'',''),(5,67,'',''),(5,68,'',''),(5,69,'',''),(5,70,'',''),(5,71,'',''),(5,72,'',''),(5,73,'',''),(5,74,'',''),(5,75,'',''),(5,76,'',''),(5,79,'',''),(5,80,'',''),(5,81,'',''),(6,27,'','.1.3.6.1.4.1.9.2.1.58.0'),(6,35,'on',''),(6,42,'','.1.3.6.1.4.1.2021.10.1.3.1'),(6,43,'','.1.3.6.1.4.1.2021.10.1.3.2'),(6,44,'','.1.3.6.1.4.1.2021.10.1.3.3'),(6,45,'','.1.3.6.1.4.1.2021.4.14.0'),(6,46,'','.1.3.6.1.4.1.2021.4.6.0'),(6,47,'','.1.3.6.1.4.1.2021.4.15.0'),(6,48,'','.1.3.6.1.4.1.2021.4.5.0'),(6,49,'','.1.3.6.1.2.1.25.1.5.0'),(6,50,'','.1.3.6.1.2.1.25.1.6.0'),(6,51,'','.1.3.6.1.4.1.2021.11.10.0'),(6,52,'','.1.3.6.1.4.1.2021.11.9.0'),(6,53,'','.1.3.6.1.4.1.2021.11.11.0'),(6,54,'','.1.3.6.1.4.1.2021.11.7.0'),(6,55,'','.1.3.6.1.4.1.2021.11.8.0'),(6,67,'','.1.3.6.1.2.1.1.3.0'),(6,68,'','.1.3.6.1.4.1.25461.2.1.2.3.1.0'),(6,69,'','.1.3.6.1.4.1.25461.2.1.2.3.3.0'),(6,70,'','.1.3.6.1.4.1.25461.2.1.2.3.4.0'),(6,71,'','.1.3.6.1.4.1.25461.2.1.2.3.5.0'),(6,72,'','.1.3.6.1.4.1.25461.2.1.2.3.6.0'),(6,73,'','.1.3.6.1.2.1.25.3.3.1.2.2'),(6,74,'','.1.3.6.1.2.1.25.3.3.1.2.1'),(6,75,'','.1.3.6.1.2.1.99.1.1.1.4.5'),(6,76,'','.1.3.6.1.2.1.99.1.1.1.4.4'),(6,79,'','.1.3.6.1.4.1.12356.1.8.0'),(6,80,'','.1.3.6.1.4.1.12356.1.10.0'),(6,81,'','.1.3.6.1.4.1.12356.1.9.0'),(7,30,'',''),(7,31,'',''),(7,32,'',''),(7,33,'',''),(7,58,'',''),(7,61,'',''),(7,77,'',''),(7,78,'',''),(7,83,'',''),(7,84,'',''),(7,85,'',''),(7,86,'',''),(7,87,'',''),(7,88,'',''),(7,89,'',''),(7,90,'',''),(7,91,'',''),(8,30,'',''),(8,31,'',''),(8,32,'',''),(8,33,'',''),(8,58,'',''),(8,61,'',''),(8,77,'',''),(8,78,'',''),(8,83,'',''),(8,84,'',''),(8,85,'',''),(8,86,'',''),(8,87,'',''),(8,88,'',''),(8,89,'',''),(8,90,'',''),(8,91,'',''),(9,30,'',''),(9,31,'',''),(9,32,'',''),(9,33,'',''),(9,58,'',''),(9,61,'',''),(9,77,'',''),(9,78,'',''),(9,83,'',''),(9,84,'',''),(9,85,'',''),(9,86,'',''),(9,87,'',''),(9,88,'',''),(9,89,'',''),(9,90,'',''),(9,91,'',''),(10,30,'',''),(10,31,'',''),(10,32,'',''),(10,33,'',''),(10,58,'',''),(10,61,'',''),(10,77,'',''),(10,78,'',''),(10,83,'',''),(10,84,'',''),(10,85,'',''),(10,86,'',''),(10,87,'',''),(10,88,'',''),(10,89,'',''),(10,90,'',''),(10,91,'',''),(11,30,'',''),(11,31,'',''),(11,32,'',''),(11,33,'',''),(11,58,'',''),(11,61,'',''),(11,77,'',''),(11,78,'',''),(11,83,'',''),(11,84,'',''),(11,85,'',''),(11,86,'',''),(11,87,'',''),(11,88,'',''),(11,89,'',''),(11,90,'',''),(11,91,'',''),(12,30,'on',''),(12,31,'on',''),(12,32,'on',''),(12,33,'on',''),(12,58,'on',''),(12,61,'on',''),(12,77,'on',''),(12,78,'on',''),(12,83,'on',''),(12,84,'on',''),(12,85,'on',''),(12,86,'on',''),(12,87,'on',''),(12,88,'on',''),(12,89,'on',''),(12,90,'on',''),(12,91,'on',''),(13,30,'on',''),(13,31,'on',''),(13,32,'on',''),(13,33,'on',''),(13,58,'on',''),(13,61,'on',''),(13,77,'on',''),(13,78,'on',''),(13,83,'on',''),(13,84,'on',''),(13,85,'on',''),(13,86,'on',''),(13,87,'on',''),(13,88,'on',''),(13,89,'on',''),(13,90,'on',''),(13,91,'on',''),(14,30,'on',''),(14,31,'on',''),(14,32,'on',''),(14,33,'on',''),(14,58,'on',''),(14,61,'on',''),(14,77,'on',''),(14,78,'on',''),(14,83,'on',''),(14,84,'on',''),(14,85,'on',''),(14,86,'on',''),(14,87,'on',''),(14,88,'on',''),(14,89,'on',''),(14,90,'on',''),(14,91,'on',''),(20,38,'',''),(20,64,'',''),(22,39,'','MemFree:'),(22,40,'','SwapFree:'),(22,65,'','MemFree:'),(22,66,'','SwapFree:'),(29,34,'',''),(31,41,'on',''),(31,93,'','dskDevice'),(32,41,'on',''),(32,93,'','/dev/mapper/centos-root'),(33,41,'on',''),(33,93,'','26'),(35,17,'',''),(35,18,'',''),(35,19,'',''),(35,20,'',''),(35,21,'',''),(35,22,'',''),(35,23,'',''),(35,24,'',''),(35,25,'',''),(35,26,'',''),(35,59,'on',''),(35,60,'on',''),(36,17,'',''),(36,18,'',''),(36,19,'',''),(36,20,'',''),(36,21,'',''),(36,22,'',''),(36,23,'',''),(36,24,'',''),(36,25,'',''),(36,26,'',''),(36,59,'on',''),(36,60,'on',''),(37,17,'',''),(37,18,'',''),(37,19,'',''),(37,20,'',''),(37,21,'',''),(37,22,'',''),(37,23,'',''),(37,24,'',''),(37,25,'',''),(37,26,'',''),(37,59,'on',''),(37,60,'on',''),(39,30,'',''),(39,31,'',''),(39,32,'',''),(39,33,'',''),(39,58,'',''),(39,78,'',''),(39,83,'',''),(39,84,'',''),(39,85,'',''),(39,86,'',''),(39,87,'',''),(39,88,'',''),(39,89,'',''),(39,90,'',''),(39,91,'',''),(40,27,'',''),(40,35,'',''),(40,42,'',''),(40,43,'',''),(40,44,'',''),(40,45,'',''),(40,46,'',''),(40,47,'',''),(40,48,'',''),(40,49,'',''),(40,50,'',''),(40,51,'',''),(40,52,'',''),(40,53,'',''),(40,54,'',''),(40,55,'',''),(40,67,'',''),(40,68,'',''),(40,69,'',''),(40,70,'',''),(40,71,'',''),(40,72,'',''),(40,73,'',''),(40,74,'',''),(40,75,'',''),(40,76,'',''),(41,27,'',''),(41,35,'',''),(41,42,'',''),(41,43,'',''),(41,44,'',''),(41,45,'',''),(41,46,'',''),(41,47,'',''),(41,48,'',''),(41,49,'',''),(41,50,'',''),(41,51,'',''),(41,52,'',''),(41,53,'',''),(41,54,'',''),(41,55,'',''),(41,67,'',''),(41,68,'',''),(41,69,'',''),(41,70,'',''),(41,71,'',''),(41,72,'',''),(41,73,'',''),(41,74,'',''),(41,75,'',''),(41,76,'',''),(42,27,'',''),(42,35,'',''),(42,42,'',''),(42,43,'',''),(42,44,'',''),(42,45,'',''),(42,46,'',''),(42,47,'',''),(42,48,'',''),(42,49,'',''),(42,50,'',''),(42,51,'',''),(42,52,'',''),(42,53,'',''),(42,54,'',''),(42,55,'',''),(42,67,'',''),(42,68,'',''),(42,69,'',''),(42,70,'',''),(42,71,'',''),(42,72,'',''),(42,73,'',''),(42,74,'',''),(42,75,'',''),(42,76,'',''),(43,27,'',''),(43,35,'',''),(43,42,'',''),(43,43,'',''),(43,44,'',''),(43,45,'',''),(43,46,'',''),(43,47,'',''),(43,48,'',''),(43,49,'',''),(43,50,'',''),(43,51,'',''),(43,52,'',''),(43,53,'',''),(43,54,'',''),(43,55,'',''),(43,67,'',''),(43,68,'',''),(43,69,'',''),(43,70,'',''),(43,71,'',''),(43,72,'',''),(43,73,'',''),(43,74,'',''),(43,75,'',''),(43,76,'',''),(44,30,'',''),(44,31,'',''),(44,58,'',''),(44,83,'',''),(44,84,'',''),(44,85,'',''),(44,86,'',''),(44,87,'',''),(44,88,'',''),(44,89,'',''),(44,90,'',''),(44,91,'',''),(45,30,'',''),(45,31,'',''),(45,58,'',''),(45,83,'',''),(45,84,'',''),(45,85,'',''),(45,86,'',''),(45,87,'',''),(45,88,'',''),(45,89,'',''),(45,90,'',''),(45,91,'',''),(46,30,'',''),(46,31,'',''),(46,58,'',''),(46,83,'',''),(46,84,'',''),(46,85,'',''),(46,86,'',''),(46,87,'',''),(46,88,'',''),(46,89,'',''),(46,90,'',''),(46,91,'',''),(89,28,'',''),(91,29,'',''),(93,56,'',''),(96,57,'',''),(99,82,'',''),(99,92,'',''),(100,82,'','ICMP'),(100,92,'','ICMP'),(101,82,'','10'),(101,92,'','10'),(102,82,'',''),(102,92,NULL,'127.0.0.1');
+INSERT INTO `data_input_data` VALUES (1,4,'',''),(1,5,'',''),(1,6,'',''),(1,19,'',''),(1,20,'',''),(1,22,'',''),(1,23,'',''),(1,24,'',''),(1,25,'',''),(1,26,'',''),(1,27,'',''),(1,30,'',''),(1,31,'',''),(1,32,'',''),(1,33,'',''),(1,34,'',''),(1,35,'',''),(1,42,'',''),(1,43,'',''),(1,44,'',''),(1,45,'',''),(1,46,'',''),(1,47,'',''),(1,48,'',''),(1,49,'',''),(1,50,'',''),(1,51,'',''),(1,52,'',''),(1,53,'',''),(1,54,'',''),(1,55,'',''),(1,58,'',''),(1,59,'',''),(1,61,'',''),(1,67,'',''),(1,68,'',''),(1,69,'',''),(1,70,'',''),(1,71,'',''),(1,72,'',''),(1,73,'',''),(1,74,'',''),(1,75,'',''),(1,76,'',''),(1,79,'',''),(1,80,'',''),(1,81,'',''),(1,98,'','127.0.0.1'),(1,100,'','127.0.0.1'),(1,101,'','127.0.0.1'),(1,102,'','127.0.0.1'),(1,103,'','127.0.0.1'),(2,4,'',''),(2,5,'',''),(2,6,'',''),(2,19,'',''),(2,20,'',''),(2,22,'',''),(2,23,'',''),(2,24,'',''),(2,25,'',''),(2,26,'',''),(2,27,'',''),(2,30,'',''),(2,31,'',''),(2,32,'',''),(2,33,'',''),(2,34,'',''),(2,35,'',''),(2,42,'',''),(2,43,'',''),(2,44,'',''),(2,45,'',''),(2,46,'',''),(2,47,'',''),(2,48,'',''),(2,49,'',''),(2,50,'',''),(2,51,'',''),(2,52,'',''),(2,53,'',''),(2,54,'',''),(2,55,'',''),(2,58,'',''),(2,59,'',''),(2,61,'',''),(2,67,'',''),(2,68,'',''),(2,69,'',''),(2,70,'',''),(2,71,'',''),(2,72,'',''),(2,73,'',''),(2,74,'',''),(2,75,'',''),(2,76,'',''),(2,79,'',''),(2,80,'',''),(2,81,'',''),(2,98,'',''),(2,100,'',''),(2,101,'',''),(2,102,'',''),(2,103,'',''),(3,4,'',''),(3,5,'',''),(3,6,'',''),(3,19,'',''),(3,20,'',''),(3,22,'',''),(3,23,'',''),(3,24,'',''),(3,25,'',''),(3,26,'',''),(3,27,'',''),(3,30,'',''),(3,32,'',''),(3,33,'',''),(3,35,'',''),(3,42,'',''),(3,43,'',''),(3,44,'',''),(3,45,'',''),(3,46,'',''),(3,47,'',''),(3,48,'',''),(3,49,'',''),(3,50,'',''),(3,51,'',''),(3,52,'',''),(3,53,'',''),(3,54,'',''),(3,55,'',''),(3,67,'',''),(3,68,'',''),(3,69,'',''),(3,70,'',''),(3,71,'',''),(3,72,'',''),(3,73,'',''),(3,74,'',''),(3,75,'',''),(3,76,'',''),(3,79,'',''),(3,80,'',''),(3,81,'',''),(3,98,'',''),(3,100,'',''),(3,101,'',''),(3,102,'',''),(3,103,'',''),(4,27,'',''),(4,35,'',''),(4,42,'',''),(4,43,'',''),(4,44,'',''),(4,45,'',''),(4,46,'',''),(4,47,'',''),(4,48,'',''),(4,49,'',''),(4,50,'',''),(4,51,'',''),(4,52,'',''),(4,53,'',''),(4,54,'',''),(4,55,'',''),(4,67,'',''),(4,68,'',''),(4,69,'',''),(4,70,'',''),(4,71,'',''),(4,72,'',''),(4,73,'',''),(4,74,'',''),(4,75,'',''),(4,76,'',''),(4,79,'',''),(4,80,'',''),(4,81,'',''),(5,27,'',''),(5,35,'',''),(5,42,'',''),(5,43,'',''),(5,44,'',''),(5,45,'',''),(5,46,'',''),(5,47,'',''),(5,48,'',''),(5,49,'',''),(5,50,'',''),(5,51,'',''),(5,52,'',''),(5,53,'',''),(5,54,'',''),(5,55,'',''),(5,67,'',''),(5,68,'',''),(5,69,'',''),(5,70,'',''),(5,71,'',''),(5,72,'',''),(5,73,'',''),(5,74,'',''),(5,75,'',''),(5,76,'',''),(5,79,'',''),(5,80,'',''),(5,81,'',''),(6,27,'','.1.3.6.1.4.1.9.2.1.58.0'),(6,35,'on',''),(6,42,'','.1.3.6.1.4.1.2021.10.1.3.1'),(6,43,'','.1.3.6.1.4.1.2021.10.1.3.2'),(6,44,'','.1.3.6.1.4.1.2021.10.1.3.3'),(6,45,'','.1.3.6.1.4.1.2021.4.14.0'),(6,46,'','.1.3.6.1.4.1.2021.4.6.0'),(6,47,'','.1.3.6.1.4.1.2021.4.15.0'),(6,48,'','.1.3.6.1.4.1.2021.4.5.0'),(6,49,'','.1.3.6.1.2.1.25.1.5.0'),(6,50,'','.1.3.6.1.2.1.25.1.6.0'),(6,51,'','.1.3.6.1.4.1.2021.11.10.0'),(6,52,'','.1.3.6.1.4.1.2021.11.9.0'),(6,53,'','.1.3.6.1.4.1.2021.11.11.0'),(6,54,'','.1.3.6.1.4.1.2021.11.7.0'),(6,55,'','.1.3.6.1.4.1.2021.11.8.0'),(6,67,'','.1.3.6.1.2.1.1.3.0'),(6,68,'','.1.3.6.1.4.1.25461.2.1.2.3.1.0'),(6,69,'','.1.3.6.1.4.1.25461.2.1.2.3.3.0'),(6,70,'','.1.3.6.1.4.1.25461.2.1.2.3.4.0'),(6,71,'','.1.3.6.1.4.1.25461.2.1.2.3.5.0'),(6,72,'','.1.3.6.1.4.1.25461.2.1.2.3.6.0'),(6,73,'','.1.3.6.1.2.1.25.3.3.1.2.2'),(6,74,'','.1.3.6.1.2.1.25.3.3.1.2.1'),(6,75,'','.1.3.6.1.2.1.99.1.1.1.4.5'),(6,76,'','.1.3.6.1.2.1.99.1.1.1.4.4'),(6,79,'','.1.3.6.1.4.1.12356.1.8.0'),(6,80,'','.1.3.6.1.4.1.12356.1.10.0'),(6,81,'','.1.3.6.1.4.1.12356.1.9.0'),(7,30,'',''),(7,31,'',''),(7,32,'',''),(7,33,'',''),(7,58,'',''),(7,61,'',''),(7,77,'',''),(7,78,'',''),(7,83,'',''),(7,84,'',''),(7,85,'',''),(7,86,'',''),(7,87,'',''),(7,88,'',''),(7,89,'',''),(7,90,'',''),(7,91,'',''),(8,30,'',''),(8,31,'',''),(8,32,'',''),(8,33,'',''),(8,58,'',''),(8,61,'',''),(8,77,'',''),(8,78,'',''),(8,83,'',''),(8,84,'',''),(8,85,'',''),(8,86,'',''),(8,87,'',''),(8,88,'',''),(8,89,'',''),(8,90,'',''),(8,91,'',''),(9,30,'',''),(9,31,'',''),(9,32,'',''),(9,33,'',''),(9,58,'',''),(9,61,'',''),(9,77,'',''),(9,78,'',''),(9,83,'',''),(9,84,'',''),(9,85,'',''),(9,86,'',''),(9,87,'',''),(9,88,'',''),(9,89,'',''),(9,90,'',''),(9,91,'',''),(10,30,'',''),(10,31,'',''),(10,32,'',''),(10,33,'',''),(10,58,'',''),(10,61,'',''),(10,77,'',''),(10,78,'',''),(10,83,'',''),(10,84,'',''),(10,85,'',''),(10,86,'',''),(10,87,'',''),(10,88,'',''),(10,89,'',''),(10,90,'',''),(10,91,'',''),(11,30,'',''),(11,31,'',''),(11,32,'',''),(11,33,'',''),(11,58,'',''),(11,61,'',''),(11,77,'',''),(11,78,'',''),(11,83,'',''),(11,84,'',''),(11,85,'',''),(11,86,'',''),(11,87,'',''),(11,88,'',''),(11,89,'',''),(11,90,'',''),(11,91,'',''),(12,30,'on',''),(12,31,'on',''),(12,32,'on',''),(12,33,'on',''),(12,58,'on',''),(12,61,'on',''),(12,77,'on',''),(12,78,'on',''),(12,83,'on',''),(12,84,'on',''),(12,85,'on',''),(12,86,'on',''),(12,87,'on',''),(12,88,'on',''),(12,89,'on',''),(12,90,'on',''),(12,91,'on',''),(13,30,'on',''),(13,31,'on',''),(13,32,'on',''),(13,33,'on',''),(13,58,'on',''),(13,61,'on',''),(13,77,'on',''),(13,78,'on',''),(13,83,'on',''),(13,84,'on',''),(13,85,'on',''),(13,86,'on',''),(13,87,'on',''),(13,88,'on',''),(13,89,'on',''),(13,90,'on',''),(13,91,'on',''),(14,30,'on',''),(14,31,'on',''),(14,32,'on',''),(14,33,'on',''),(14,58,'on',''),(14,61,'on',''),(14,77,'on',''),(14,78,'on',''),(14,83,'on',''),(14,84,'on',''),(14,85,'on',''),(14,86,'on',''),(14,87,'on',''),(14,88,'on',''),(14,89,'on',''),(14,90,'on',''),(14,91,'on',''),(20,38,'',''),(20,64,'',''),(22,39,'','MemFree:'),(22,40,'','SwapFree:'),(22,65,'','MemFree:'),(22,66,'','SwapFree:'),(29,34,'',''),(31,41,'on',''),(31,93,'on','dskDevice'),(32,41,'on',''),(32,93,'on','/dev/mapper/centos-root'),(33,41,'on',''),(33,93,'on','26'),(35,17,'on',''),(35,18,'on',''),(35,19,'on',''),(35,20,'on',''),(35,21,'on',''),(35,22,'on',''),(35,23,'on',''),(35,24,'on',''),(35,25,'on',''),(35,26,'on',''),(35,59,'on',''),(35,60,'on',''),(36,17,'on',''),(36,18,'on',''),(36,19,'on',''),(36,20,'on',''),(36,21,'on',''),(36,22,'on',''),(36,23,'on',''),(36,24,'on',''),(36,25,'on',''),(36,26,'on',''),(36,59,'on',''),(36,60,'on',''),(37,17,'on',''),(37,18,'on',''),(37,19,'on',''),(37,20,'on',''),(37,21,'on',''),(37,22,'on',''),(37,23,'on',''),(37,24,'on',''),(37,25,'on',''),(37,26,'on',''),(37,59,'on',''),(37,60,'on',''),(39,30,'',''),(39,31,'',''),(39,32,'',''),(39,33,'',''),(39,58,'',''),(39,78,'',''),(39,83,'',''),(39,84,'',''),(39,85,'',''),(39,86,'',''),(39,87,'',''),(39,88,'',''),(39,89,'',''),(39,90,'',''),(39,91,'',''),(40,27,'',''),(40,35,'',''),(40,42,'',''),(40,43,'',''),(40,44,'',''),(40,45,'',''),(40,46,'',''),(40,47,'',''),(40,48,'',''),(40,49,'',''),(40,50,'',''),(40,51,'',''),(40,52,'',''),(40,53,'',''),(40,54,'',''),(40,55,'',''),(40,67,'',''),(40,68,'',''),(40,69,'',''),(40,70,'',''),(40,71,'',''),(40,72,'',''),(40,73,'',''),(40,74,'',''),(40,75,'',''),(40,76,'',''),(41,27,'',''),(41,35,'',''),(41,42,'',''),(41,43,'',''),(41,44,'',''),(41,45,'',''),(41,46,'',''),(41,47,'',''),(41,48,'',''),(41,49,'',''),(41,50,'',''),(41,51,'',''),(41,52,'',''),(41,53,'',''),(41,54,'',''),(41,55,'',''),(41,67,'',''),(41,68,'',''),(41,69,'',''),(41,70,'',''),(41,71,'',''),(41,72,'',''),(41,73,'',''),(41,74,'',''),(41,75,'',''),(41,76,'',''),(42,27,'',''),(42,35,'',''),(42,42,'',''),(42,43,'',''),(42,44,'',''),(42,45,'',''),(42,46,'',''),(42,47,'',''),(42,48,'',''),(42,49,'',''),(42,50,'',''),(42,51,'',''),(42,52,'',''),(42,53,'',''),(42,54,'',''),(42,55,'',''),(42,67,'',''),(42,68,'',''),(42,69,'',''),(42,70,'',''),(42,71,'',''),(42,72,'',''),(42,73,'',''),(42,74,'',''),(42,75,'',''),(42,76,'',''),(43,27,'',''),(43,35,'',''),(43,42,'',''),(43,43,'',''),(43,44,'',''),(43,45,'',''),(43,46,'',''),(43,47,'',''),(43,48,'',''),(43,49,'',''),(43,50,'',''),(43,51,'',''),(43,52,'',''),(43,53,'',''),(43,54,'',''),(43,55,'',''),(43,67,'',''),(43,68,'',''),(43,69,'',''),(43,70,'',''),(43,71,'',''),(43,72,'',''),(43,73,'',''),(43,74,'',''),(43,75,'',''),(43,76,'',''),(44,30,'',''),(44,31,'',''),(44,58,'',''),(44,83,'',''),(44,84,'',''),(44,85,'',''),(44,86,'',''),(44,87,'',''),(44,88,'',''),(44,89,'',''),(44,90,'',''),(44,91,'',''),(45,30,'',''),(45,31,'',''),(45,58,'',''),(45,83,'',''),(45,84,'',''),(45,85,'',''),(45,86,'',''),(45,87,'',''),(45,88,'',''),(45,89,'',''),(45,90,'',''),(45,91,'',''),(46,30,'',''),(46,31,'',''),(46,58,'',''),(46,83,'',''),(46,84,'',''),(46,85,'',''),(46,86,'',''),(46,87,'',''),(46,88,'',''),(46,89,'',''),(46,90,'',''),(46,91,'',''),(89,28,'',''),(91,29,'',''),(93,56,'',''),(96,57,'',''),(99,82,'',''),(99,92,'',''),(100,82,'','ICMP'),(100,92,'','ICMP'),(101,82,'','10'),(101,92,'','10'),(102,82,'',''),(102,92,NULL,'127.0.0.1');
 /*!40000 ALTER TABLE `data_input_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -927,11 +928,12 @@ DROP TABLE IF EXISTS `data_local`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_local` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `data_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `host_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `snmp_query_id` mediumint(8) NOT NULL DEFAULT 0,
   `snmp_index` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `orphan` tinyint(3) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `data_template_id` (`data_template_id`),
   KEY `snmp_query_id` (`snmp_query_id`),
@@ -946,7 +948,7 @@ CREATE TABLE `data_local` (
 
 LOCK TABLES `data_local` WRITE;
 /*!40000 ALTER TABLE `data_local` DISABLE KEYS */;
-INSERT INTO `data_local` VALUES (1,36,1,0,''),(2,37,1,0,''),(3,38,1,0,''),(4,39,1,0,''),(5,40,1,0,''),(6,77,1,0,''),(7,41,1,5,'/dev/mapper/centos-root'),(8,1,1,0,''),(9,1,1,0,''),(10,2,1,0,''),(11,3,1,0,''),(12,4,1,0,''),(13,1,1,0,''),(14,5,1,0,''),(15,6,1,0,''),(16,6,1,0,''),(17,6,1,0,''),(18,2,1,0,''),(19,1,1,0,''),(20,7,1,0,''),(21,8,1,0,''),(22,9,1,0,''),(23,10,1,0,''),(24,11,1,0,''),(25,12,1,0,''),(26,13,1,0,''),(27,14,1,0,''),(28,15,1,0,''),(29,16,1,0,'');
+INSERT INTO `data_local` VALUES (1,36,1,0,'',0),(2,37,1,0,'',0),(3,38,1,0,'',0),(4,39,1,0,'',0),(5,40,1,0,'',0),(6,77,1,0,'',0),(7,41,1,5,'/dev/mapper/centos-root',0),(8,1,1,0,'',0),(9,1,1,0,'',0),(10,2,1,0,'',0),(11,3,1,0,'',0),(12,4,1,0,'',0),(13,1,1,0,'',0),(14,5,1,0,'',0),(15,6,1,0,'',0),(16,6,1,0,'',0),(17,6,1,0,'',0),(18,2,1,0,'',0),(19,1,1,0,'',0),(20,7,1,0,'',0),(21,8,1,0,'',0),(22,9,1,0,'',0),(23,10,1,0,'',0),(24,11,1,0,'',0),(25,12,1,0,'',0),(26,13,1,0,'',0),(27,14,1,0,'',0),(28,15,1,0,'',0),(29,16,1,0,'',0);
 /*!40000 ALTER TABLE `data_local` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -990,8 +992,7 @@ DROP TABLE IF EXISTS `data_source_profiles_cf`;
 CREATE TABLE `data_source_profiles_cf` (
   `data_source_profile_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `consolidation_function_id` smallint(5) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`data_source_profile_id`,`consolidation_function_id`),
-  KEY `data_source_profile_id` (`data_source_profile_id`)
+  PRIMARY KEY (`data_source_profile_id`,`consolidation_function_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Maps the Data Source Profile Consolidation Functions';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1044,7 +1045,7 @@ DROP TABLE IF EXISTS `data_source_purge_action`;
 CREATE TABLE `data_source_purge_action` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `action` tinyint(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
@@ -1070,7 +1071,7 @@ DROP TABLE IF EXISTS `data_source_purge_temp`;
 CREATE TABLE `data_source_purge_temp` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name_cache` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `size` int(10) unsigned NOT NULL DEFAULT 0,
   `last_mod` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1101,7 +1102,7 @@ DROP TABLE IF EXISTS `data_source_stats_daily`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_daily` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `average` double DEFAULT NULL,
   `peak` double DEFAULT NULL,
@@ -1126,7 +1127,7 @@ DROP TABLE IF EXISTS `data_source_stats_hourly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_hourly` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `average` double DEFAULT NULL,
   `peak` double DEFAULT NULL,
@@ -1152,7 +1153,7 @@ DROP TABLE IF EXISTS `data_source_stats_hourly_cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_hourly_cache` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `value` double DEFAULT NULL,
@@ -1179,7 +1180,7 @@ DROP TABLE IF EXISTS `data_source_stats_hourly_last`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_hourly_last` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` double DEFAULT NULL,
   `calculated` double DEFAULT NULL,
@@ -1205,7 +1206,7 @@ DROP TABLE IF EXISTS `data_source_stats_monthly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_monthly` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `average` double DEFAULT NULL,
   `peak` double DEFAULT NULL,
@@ -1230,7 +1231,7 @@ DROP TABLE IF EXISTS `data_source_stats_weekly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_weekly` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `average` double DEFAULT NULL,
   `peak` double DEFAULT NULL,
@@ -1255,7 +1256,7 @@ DROP TABLE IF EXISTS `data_source_stats_yearly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_source_stats_yearly` (
-  `local_data_id` mediumint(8) unsigned NOT NULL,
+  `local_data_id` int(10) unsigned NOT NULL,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL,
   `average` double DEFAULT NULL,
   `peak` double DEFAULT NULL,
@@ -1306,9 +1307,9 @@ DROP TABLE IF EXISTS `data_template_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_template_data` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `local_data_template_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `local_data_template_data_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `data_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `data_input_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `t_name` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1325,7 +1326,7 @@ CREATE TABLE `data_template_data` (
   KEY `local_data_id` (`local_data_id`),
   KEY `data_template_id` (`data_template_id`),
   KEY `data_input_id` (`data_input_id`),
-  KEY `name_cache` (`name_cache`(191))
+  KEY `name_cache` (`name_cache`)
 ) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1347,10 +1348,10 @@ DROP TABLE IF EXISTS `data_template_rrd`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_template_rrd` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `local_data_template_rrd_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_template_rrd_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `data_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `t_rrd_maximum` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rrd_maximum` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
@@ -1366,7 +1367,6 @@ CREATE TABLE `data_template_rrd` (
   `data_input_field_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `duplicate_dsname_contraint` (`local_data_id`,`data_source_name`,`data_template_id`),
-  KEY `local_data_id` (`local_data_id`),
   KEY `data_template_id` (`data_template_id`),
   KEY `local_data_template_rrd_id` (`local_data_template_rrd_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1419,7 +1419,7 @@ DROP TABLE IF EXISTS `graph_local`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `graph_local` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `graph_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `host_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `snmp_query_id` mediumint(8) NOT NULL DEFAULT 0,
@@ -1481,9 +1481,8 @@ DROP TABLE IF EXISTS `graph_template_input_defs`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `graph_template_input_defs` (
   `graph_template_input_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `graph_template_item_id` int(12) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`graph_template_input_id`,`graph_template_item_id`),
-  KEY `graph_template_input_id` (`graph_template_input_id`)
+  `graph_template_item_id` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`graph_template_input_id`,`graph_template_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Stores the relationship for what graph items are associated';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1509,9 +1508,10 @@ CREATE TABLE `graph_templates` (
   `hash` char(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `name` char(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `multiple` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `test_source` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `multiple_name` (`multiple`,`name`(171)),
-  KEY `name` (`name`(171))
+  KEY `multiple_name` (`multiple`,`name`),
+  KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Contains each graph template name.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1521,7 +1521,7 @@ CREATE TABLE `graph_templates` (
 
 LOCK TABLES `graph_templates` WRITE;
 /*!40000 ALTER TABLE `graph_templates` DISABLE KEYS */;
-INSERT INTO `graph_templates` VALUES (1,'d4d9ba31d18ea0e68f8b2fd89b1dae92','Cacti Poller Statistics - Hosts',''),(2,'a50a3bc4e066509b42440ab0e06621fb','Cacti Poller Statistics - DS/RRD',''),(3,'7bb3750476173205d78e311bf6c1f29d','Cacti Poller Statistics - Boost Updates',''),(4,'9cd180035d1c3c356001443ccd3c029e','Cacti Poller Statistics - Items',''),(5,'bb6ae539aa2820d7b37da36992bd3f12','Cacti Poller Statistics - Recache',''),(6,'5cd07a18f0076e900def9b79e1785861','Cacti Poller Statistics - Processes',''),(7,'1b9b8b6504ab7b73a8e13e8671e6c509','Cacti Poller Statistics - Boost Memory',''),(8,'ad4ea3a1098d5f10fcda988546ca9d78','Cacti - User Login Statistics',''),(9,'1457dec786872e830766b2768254f8c5','Cacti - User Session Statistics',''),(10,'b0735807abd3052d4db6065f2411fb41','Cacti - User Statistics',''),(11,'716619d434129b9bd90be43618b5bb54','Cacti Poller Statistics - Boost Runtime',''),(12,'d102a1438c07245d192805e90ba5e42e','Cacti Poller Statistics - Poller Runtime',''),(13,'51954f9e80badf0c9bc1e67777210ef5','Cacti Poller Statistics - Export Graphs',''),(14,'f67c5d8ba4bbdd3ecfe7b1854745cabf','Cacti Poller Statistics - Export Duration',''),(15,'5d893f5aee233b192e02612aff47024d','Cacti Stats - Syslog Activity',''),(16,'621277ec8450d399db596a2d171cd5b3','Cacti Stats - Syslog Runtime',''),(17,'40a91456224a4426c55934ef3413a650','Cacti Stats - Syslog Alerts/Reports',''),(18,'e706b17bc68ad7f19c398dcc8f11f8c1','Cacti Stats - Thold Runtime',''),(19,'471c9e317c6367c55ccb503317a31257','Cacti Stats - Boost Average Row Size',''),(20,'5f5f062f7e63298286ce5c898eb91cf5','Cacti Stats - Boost Records',''),(21,'a8f16dfc82c0d3ab595830e70719958d','Cacti Stats - Boost Table Size',''),(22,'c3592c9f0a195076da0fcd6c01e3d676','Cacti Stats - Boost Timing Detail',''),(23,'bac8b167f00ed98fea715c2f9c6c0aaf','Cacti Stats - Collector Runtime',''),(24,'c6cc8c783be165409c113558f8f72923','Cacti Stats - Collector Items',''),(25,'945f74875f8e03aadf6735af5c0f11e5','Cacti Stats - Collector Settings',''),(26,'ffbb6607d79c397cf7a9e038a2468c4b','Cacti Stats - Collector Recache Stats',''),(27,'52d74f16af1b03f725ac2e696dc50445','Cacti Stats - WebSeer Timing',''),(28,'7581c1bece3710774ff2be60bf2ff0cc','Cacti Stats - WebSeer Download Size',''),(29,'e4089f6ac6ae8a30cfed7445bb7cce95','Cacti Stats - WebSeer Download Speed',''),(30,'2ca099e4bb6ae26846c741b6e01c73ae','Cacti Stats - WebSeer Status',''),(31,'c666eb00d5bd1f8d24e9dfb993f073c6','Cacti Stats - Export Graphs',''),(32,'2b4c7fb3d698e6bd375cddd4dbc1e083','Cacti Stats - Export Duration',''),(33,'9a5e6d7781cc1bd6cf24f64dd6ffb423','Cisco - CPU Usage',''),(34,'cd8d52f25b080c482485b61b236a433f','Device - Polling Time',''),(35,'ab37cbed8610deeffbb20dc1fe57b330','Device - Uptime',''),(36,'5deb0d66c81262843dce5f3861be9966','Interface - Traffic (bits/sec)',''),(37,'06621cd4a9289417cadcb8f9b5cfba80','Interface - Errors/Discards',''),(38,'e0d1625a1f4776a5294583659d5cee15','Interface - Unicast Packets',''),(39,'10ca5530554da7b73dc69d291bf55d38','Interface - Non-Unicast Packets',''),(40,'df244b337547b434b486662c3c5c7472','Interface - Traffic (bytes/sec)',''),(41,'1742b2066384637022d178cc5072905a','Interface - Traffic (bits/sec, 95th Percentile)',''),(42,'13b47e10b2d5db45707d61851f69c52b','Interface - Traffic (bits/sec, Total Bandwidth)',''),(43,'8ad6790c22b693680e041f21d62537ac','Interface - Traffic (bytes/sec, Total Bandwidth)',''),(44,'d4dff05337bbf42c70cb6f73647d0d2a','Interface - Multicast Packets',''),(45,'ed3f434a9ebd2f23ab9bc173d608b3d7','Interface - Broadcast Packets',''),(46,'cf96dfb22b58e08bf101ca825377fa4b','Unix - Ping Latency',''),(47,'010b90500e1fc6a05abfd542940584d0','SNMP - Generic OID Template',''),(48,'9fe8b4da353689d376b99b2ea526cc6b','Unix - Processes',''),(49,'fe5edd777a76d48fc48c11aded5211ef','Unix - Load Average',''),(50,'63610139d44d52b195cc375636653ebd','Unix - Logged in Users',''),(51,'6992ed4df4b44f3d5595386b8298f0ec','Linux - Memory Usage',''),(52,'8e7c8a511652fe4a8e65c69f3d34779d','Unix - Available Disk Space',''),(53,'5107ec0206562e77d965ce6b852ef9d4','Net-SNMP - Load Average',''),(54,'be275639d5680e94c72c0ebb4e19056d','Net-SNMP - Memory Usage',''),(55,'e8462bbe094e4e9e814d4e681671ea82','Host MIB - Logged in Users',''),(56,'62205afbd4066e5c4700338841e3901e','Host MIB - Processes',''),(57,'eee71ec20dc7b44635ab185bbf924dc4','Net-SNMP - CPU Utilization',''),(58,'4d2bdea3c52db05896b0d9323076613d','Net-SNMP - Interrupts',''),(59,'a9a2ce15df48242361bea33f786de6ee','Net-SNMP - Context Switches',''),(60,'8eeff0b956240da5625c05d4cdbfbe7f','Net-SNMP - Combined SCSI Disk I/O',''),(61,'cf044e8a7a9d21229564265d2fa2d80c','Net-SNMP - Combined SCSI Disk Bytes',''),(62,'abb5e813c9f1e8cd6fc1e393092ef8cb','Net-SNMP - Available Disk Space',''),(63,'7489e44466abee8a7d8636cb2cb14a1a','Host MIB - Available Disk Space',''),(64,'c6bb62bedec4ab97f9db9fd780bd85a6','Host MIB - CPU Utilization',''),(65,'30cbb1cfd3602413d84757642b71666a','Net-SNMP - Device I/O - Bytes Read/Written',''),(66,'aa2984e39e8c1a1a417e4de3a06be822','Net-SNMP - Device I/O - Load Averages',''),(67,'9ac598676e55dfc08efe6e4ec7c51a0a','Net-SNMP - Device I/O - Reads/Writes',''),(68,'198d51ec4faaf320ef8368c9d0812c36','SNMP - Uptime',''),(69,'34bbcd61a7e4e3bc9d5d4716b86ba9cc','PA FW - Session Utilization',''),(70,'5032df09b7cb580aaa1dff14ac75c49b','PA FW - Concurrent Sessions',''),(71,'54908a527e321f657602098931184bca','PA FW - Active Sessions',''),(72,'ee0da7aa6a0d84d1b2fc288150dc42b5','PA FW - CPU Utilization',''),(73,'3d780a2f2f5b3bab6a6869b67fb60b57','PA FW - Temperature - PA-500',''),(74,'9bd6d6c194c974806a6267ac4c6151f2','Interface - Multicast Packets',''),(75,'47c9d51345c3ddc162ae17331aa2e728','Interface - Status',''),(76,'1178bf5647a7ed3f97679ffa7000cdd5','Fortigate - CPU Load',''),(77,'7cdd7cf187f12b1165104c0df033a4a9','Fortigate - Session',''),(78,'cee1ccf1e0e5a9a5705d603bf05b721e','Fortigate - Memory Usage',''),(79,'ea8c30d7761c7633d8a360b39af1ea93',' 00 Advanced Ping',''),(80,'aa0d55cdeebcf62b3f0a29005dd9d125','SNMP_Informant_Standard - CPU Statistics',''),(81,'f759f6ace7d5cf7668bbbf7d4919a1e0','SNMP_Informant_Standard - Disk Statistics (I/O)',''),(82,'4780ae963d145d456345f53416bc2420','SNMP_Informant_Standard - Disk Statistics (%\'s)',''),(83,'72375beb4624f86e9d3181819fb76a95','SNMP_Informant_Standard - Disk Statistics (Metrics)',''),(84,'a685715cc39ded4bd336f8329f6970d5','SNMP_Informant_Standard - Memory Statistics (Usage)',''),(85,'b1e1c00a9e4ee316a5c684f13bb4551f','SNMP_Informant_Standard - Memory Statistics (Paging)',''),(86,'9a631e9b7edf3855469cfeef78d65fdb','SNMP_Informant_Standard - Network Statistics',''),(87,'f061600d07f065408c1dc7b9a1975ecc','SNMP_Informant_Standard - Network Statistics (Packets)',''),(88,'665e867126af230a3bac8ae33dbecb04','SNMP_Informant_Standard - Object Statistics','');
+INSERT INTO `graph_templates` VALUES (1,'d4d9ba31d18ea0e68f8b2fd89b1dae92','Cacti Poller Statistics - Hosts','',''),(2,'a50a3bc4e066509b42440ab0e06621fb','Cacti Poller Statistics - DS/RRD','',''),(3,'7bb3750476173205d78e311bf6c1f29d','Cacti Poller Statistics - Boost Updates','',''),(4,'9cd180035d1c3c356001443ccd3c029e','Cacti Poller Statistics - Items','',''),(5,'bb6ae539aa2820d7b37da36992bd3f12','Cacti Poller Statistics - Recache','',''),(6,'5cd07a18f0076e900def9b79e1785861','Cacti Poller Statistics - Processes','',''),(7,'1b9b8b6504ab7b73a8e13e8671e6c509','Cacti Poller Statistics - Boost Memory','',''),(8,'ad4ea3a1098d5f10fcda988546ca9d78','Cacti - User Login Statistics','',''),(9,'1457dec786872e830766b2768254f8c5','Cacti - User Session Statistics','',''),(10,'b0735807abd3052d4db6065f2411fb41','Cacti - User Statistics','',''),(11,'716619d434129b9bd90be43618b5bb54','Cacti Poller Statistics - Boost Runtime','',''),(12,'d102a1438c07245d192805e90ba5e42e','Cacti Poller Statistics - Poller Runtime','',''),(13,'51954f9e80badf0c9bc1e67777210ef5','Cacti Poller Statistics - Export Graphs','',''),(14,'f67c5d8ba4bbdd3ecfe7b1854745cabf','Cacti Poller Statistics - Export Duration','',''),(15,'5d893f5aee233b192e02612aff47024d','Cacti Stats - Syslog Activity','',''),(16,'621277ec8450d399db596a2d171cd5b3','Cacti Stats - Syslog Runtime','',''),(17,'40a91456224a4426c55934ef3413a650','Cacti Stats - Syslog Alerts/Reports','',''),(18,'e706b17bc68ad7f19c398dcc8f11f8c1','Cacti Stats - Thold Runtime','',''),(19,'471c9e317c6367c55ccb503317a31257','Cacti Stats - Boost Average Row Size','',''),(20,'5f5f062f7e63298286ce5c898eb91cf5','Cacti Stats - Boost Records','',''),(21,'a8f16dfc82c0d3ab595830e70719958d','Cacti Stats - Boost Table Size','',''),(22,'c3592c9f0a195076da0fcd6c01e3d676','Cacti Stats - Boost Timing Detail','',''),(23,'bac8b167f00ed98fea715c2f9c6c0aaf','Cacti Stats - Collector Runtime','',''),(24,'c6cc8c783be165409c113558f8f72923','Cacti Stats - Collector Items','',''),(25,'945f74875f8e03aadf6735af5c0f11e5','Cacti Stats - Collector Settings','',''),(26,'ffbb6607d79c397cf7a9e038a2468c4b','Cacti Stats - Collector Recache Stats','',''),(27,'52d74f16af1b03f725ac2e696dc50445','Cacti Stats - WebSeer Timing','',''),(28,'7581c1bece3710774ff2be60bf2ff0cc','Cacti Stats - WebSeer Download Size','',''),(29,'e4089f6ac6ae8a30cfed7445bb7cce95','Cacti Stats - WebSeer Download Speed','',''),(30,'2ca099e4bb6ae26846c741b6e01c73ae','Cacti Stats - WebSeer Status','',''),(31,'c666eb00d5bd1f8d24e9dfb993f073c6','Cacti Stats - Export Graphs','',''),(32,'2b4c7fb3d698e6bd375cddd4dbc1e083','Cacti Stats - Export Duration','',''),(33,'9a5e6d7781cc1bd6cf24f64dd6ffb423','Cisco - CPU Usage','',''),(34,'cd8d52f25b080c482485b61b236a433f','Device - Polling Time','',''),(35,'ab37cbed8610deeffbb20dc1fe57b330','Device - Uptime','',''),(36,'5deb0d66c81262843dce5f3861be9966','Interface - Traffic (bits/sec)','',''),(37,'06621cd4a9289417cadcb8f9b5cfba80','Interface - Errors/Discards','',''),(38,'e0d1625a1f4776a5294583659d5cee15','Interface - Unicast Packets','',''),(39,'10ca5530554da7b73dc69d291bf55d38','Interface - Non-Unicast Packets','',''),(40,'df244b337547b434b486662c3c5c7472','Interface - Traffic (bytes/sec)','',''),(41,'1742b2066384637022d178cc5072905a','Interface - Traffic (bits/sec, 95th Percentile)','',''),(42,'13b47e10b2d5db45707d61851f69c52b','Interface - Traffic (bits/sec, Total Bandwidth)','',''),(43,'8ad6790c22b693680e041f21d62537ac','Interface - Traffic (bytes/sec, Total Bandwidth)','',''),(44,'d4dff05337bbf42c70cb6f73647d0d2a','Interface - Multicast Packets','',''),(45,'ed3f434a9ebd2f23ab9bc173d608b3d7','Interface - Broadcast Packets','',''),(46,'cf96dfb22b58e08bf101ca825377fa4b','Unix - Ping Latency','',''),(47,'010b90500e1fc6a05abfd542940584d0','SNMP - Generic OID Template','',''),(48,'9fe8b4da353689d376b99b2ea526cc6b','Unix - Processes','',''),(49,'fe5edd777a76d48fc48c11aded5211ef','Unix - Load Average','',''),(50,'63610139d44d52b195cc375636653ebd','Unix - Logged in Users','',''),(51,'6992ed4df4b44f3d5595386b8298f0ec','Linux - Memory Usage','',''),(52,'8e7c8a511652fe4a8e65c69f3d34779d','Unix - Available Disk Space','',''),(53,'5107ec0206562e77d965ce6b852ef9d4','Net-SNMP - Load Average','',''),(54,'be275639d5680e94c72c0ebb4e19056d','Net-SNMP - Memory Usage','',''),(55,'e8462bbe094e4e9e814d4e681671ea82','Host MIB - Logged in Users','',''),(56,'62205afbd4066e5c4700338841e3901e','Host MIB - Processes','',''),(57,'eee71ec20dc7b44635ab185bbf924dc4','Net-SNMP - CPU Utilization','',''),(58,'4d2bdea3c52db05896b0d9323076613d','Net-SNMP - Interrupts','',''),(59,'a9a2ce15df48242361bea33f786de6ee','Net-SNMP - Context Switches','',''),(60,'8eeff0b956240da5625c05d4cdbfbe7f','Net-SNMP - Combined SCSI Disk I/O','',''),(61,'cf044e8a7a9d21229564265d2fa2d80c','Net-SNMP - Combined SCSI Disk Bytes','',''),(62,'abb5e813c9f1e8cd6fc1e393092ef8cb','Net-SNMP - Available Disk Space','',''),(63,'7489e44466abee8a7d8636cb2cb14a1a','Host MIB - Available Disk Space','',''),(64,'c6bb62bedec4ab97f9db9fd780bd85a6','Host MIB - CPU Utilization','',''),(65,'30cbb1cfd3602413d84757642b71666a','Net-SNMP - Device I/O - Bytes Read/Written','',''),(66,'aa2984e39e8c1a1a417e4de3a06be822','Net-SNMP - Device I/O - Load Averages','',''),(67,'9ac598676e55dfc08efe6e4ec7c51a0a','Net-SNMP - Device I/O - Reads/Writes','',''),(68,'198d51ec4faaf320ef8368c9d0812c36','SNMP - Uptime','',''),(69,'34bbcd61a7e4e3bc9d5d4716b86ba9cc','PA FW - Session Utilization','',''),(70,'5032df09b7cb580aaa1dff14ac75c49b','PA FW - Concurrent Sessions','',''),(71,'54908a527e321f657602098931184bca','PA FW - Active Sessions','',''),(72,'ee0da7aa6a0d84d1b2fc288150dc42b5','PA FW - CPU Utilization','',''),(73,'3d780a2f2f5b3bab6a6869b67fb60b57','PA FW - Temperature - PA-500','',''),(74,'9bd6d6c194c974806a6267ac4c6151f2','Interface - Multicast Packets','',''),(75,'47c9d51345c3ddc162ae17331aa2e728','Interface - Status','',''),(76,'1178bf5647a7ed3f97679ffa7000cdd5','Fortigate - CPU Load','',''),(77,'7cdd7cf187f12b1165104c0df033a4a9','Fortigate - Session','',''),(78,'cee1ccf1e0e5a9a5705d603bf05b721e','Fortigate - Memory Usage','',''),(79,'ea8c30d7761c7633d8a360b39af1ea93',' 00 Advanced Ping','',''),(80,'aa0d55cdeebcf62b3f0a29005dd9d125','SNMP_Informant_Standard - CPU Statistics','',''),(81,'f759f6ace7d5cf7668bbbf7d4919a1e0','SNMP_Informant_Standard - Disk Statistics (I/O)','',''),(82,'4780ae963d145d456345f53416bc2420','SNMP_Informant_Standard - Disk Statistics (%\'s)','',''),(83,'72375beb4624f86e9d3181819fb76a95','SNMP_Informant_Standard - Disk Statistics (Metrics)','',''),(84,'a685715cc39ded4bd336f8329f6970d5','SNMP_Informant_Standard - Memory Statistics (Usage)','',''),(85,'b1e1c00a9e4ee316a5c684f13bb4551f','SNMP_Informant_Standard - Memory Statistics (Paging)','',''),(86,'9a631e9b7edf3855469cfeef78d65fdb','SNMP_Informant_Standard - Network Statistics','',''),(87,'f061600d07f065408c1dc7b9a1975ecc','SNMP_Informant_Standard - Network Statistics (Packets)','',''),(88,'665e867126af230a3bac8ae33dbecb04','SNMP_Informant_Standard - Object Statistics','','');
 /*!40000 ALTER TABLE `graph_templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1560,9 +1560,9 @@ DROP TABLE IF EXISTS `graph_templates_graph`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `graph_templates_graph` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `local_graph_template_graph_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `local_graph_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `local_graph_template_graph_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `local_graph_id` int(10) unsigned NOT NULL DEFAULT 0,
   `graph_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `t_image_format_id` char(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `image_format_id` tinyint(1) NOT NULL DEFAULT 0,
@@ -1630,7 +1630,7 @@ CREATE TABLE `graph_templates_graph` (
   PRIMARY KEY (`id`),
   KEY `local_graph_id` (`local_graph_id`),
   KEY `graph_template_id` (`graph_template_id`),
-  KEY `title_cache` (`title_cache`(191))
+  KEY `title_cache` (`title_cache`)
 ) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Stores the actual graph data.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1652,12 +1652,12 @@ DROP TABLE IF EXISTS `graph_templates_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `graph_templates_item` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `local_graph_template_item_id` int(12) unsigned NOT NULL DEFAULT 0,
-  `local_graph_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_graph_template_item_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `local_graph_id` int(10) unsigned NOT NULL DEFAULT 0,
   `graph_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `task_item_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `task_item_id` int(10) unsigned NOT NULL DEFAULT 0,
   `color_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `alpha` char(2) COLLATE utf8mb4_unicode_ci DEFAULT 'FF',
   `graph_type_id` tinyint(3) NOT NULL DEFAULT 0,
@@ -1678,7 +1678,12 @@ CREATE TABLE `graph_templates_item` (
   KEY `graph_template_id` (`graph_template_id`),
   KEY `local_graph_id_sequence` (`local_graph_id`,`sequence`),
   KEY `task_item_id` (`task_item_id`),
-  KEY `lgi_gti` (`local_graph_id`,`graph_template_id`)
+  KEY `lgi_gti` (`local_graph_id`,`graph_template_id`),
+  KEY `cdef_id` (`cdef_id`),
+  KEY `vdef_id` (`vdef_id`),
+  KEY `color_id` (`color_id`),
+  KEY `gprint_id` (`gprint_id`),
+  KEY `local_graph_template_item_id` (`local_graph_template_item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1423 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Stores the actual graph item data.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1738,7 +1743,7 @@ CREATE TABLE `graph_tree_items` (
   `parent` bigint(20) unsigned DEFAULT NULL,
   `position` int(10) unsigned DEFAULT NULL,
   `graph_tree_id` smallint(5) unsigned NOT NULL DEFAULT 0,
-  `local_graph_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_graph_id` int(10) unsigned NOT NULL DEFAULT 0,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `host_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `site_id` int(10) unsigned DEFAULT 0,
@@ -1795,7 +1800,7 @@ CREATE TABLE `host` (
   `snmp_timeout` mediumint(8) unsigned NOT NULL DEFAULT 500,
   `snmp_sysDescr` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `snmp_sysObjectID` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `snmp_sysUpTimeInstance` int(10) unsigned NOT NULL DEFAULT 0,
+  `snmp_sysUpTimeInstance` bigint(20) unsigned NOT NULL DEFAULT 0,
   `snmp_sysContact` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `snmp_sysName` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `snmp_sysLocation` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -1805,9 +1810,10 @@ CREATE TABLE `host` (
   `ping_timeout` int(12) unsigned DEFAULT 500,
   `ping_retries` int(12) unsigned DEFAULT 2,
   `max_oids` int(12) unsigned DEFAULT 10,
+  `bulk_walk_size` int(11) DEFAULT -1,
   `device_threads` tinyint(2) unsigned NOT NULL DEFAULT 1,
-  `deleted` char(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `disabled` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `disabled` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `status` tinyint(2) NOT NULL DEFAULT 0,
   `status_event_count` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `status_fail_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1824,7 +1830,6 @@ CREATE TABLE `host` (
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `poller_id_disabled` (`poller_id`,`disabled`),
-  KEY `site_id` (`site_id`),
   KEY `external_id` (`external_id`),
   KEY `disabled` (`disabled`),
   KEY `status` (`status`),
@@ -1840,7 +1845,7 @@ CREATE TABLE `host` (
 
 LOCK TABLES `host` WRITE;
 /*!40000 ALTER TABLE `host` DISABLE KEYS */;
-INSERT INTO `host` VALUES (1,1,0,1,'Cacti-Template','127.0.0.1','','','','public',2,'','','','','','','',161,500,'\\\"Linux localhost.localdomain 3.10.0-1062.12.1.el7.x86_64 #1 SMP Tue Feb 4 23:02:59 UTC 2020 x86_64\\\"','iso.3.6.1.4.1.8072.3.2.10',212703,'\\\"Root <root@localhost> (configure /etc/snmp/snmp.local.conf)\\\"','\\\"localhost.localdomain\\\"','\\\"Unknown (edit /etc/snmp/snmpd.conf)\\\"',4,1,23,400,1,10,1,'','',3,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','',0.00000,0.36883,0.24199,0.03400,0.752,33,0,100.00000,'2020-03-08 01:00:02');
+INSERT INTO `host` VALUES (1,1,0,1,'Cacti-Template','127.0.0.1','','','','public',2,'','','','','','','',161,500,'\\\"Linux localhost.localdomain 3.10.0-1062.12.1.el7.x86_64 #1 SMP Tue Feb 4 23:02:59 UTC 2020 x86_64\\\"','iso.3.6.1.4.1.8072.3.2.10',212703,'\\\"Root <root@localhost> (configure /etc/snmp/snmp.local.conf)\\\"','\\\"localhost.localdomain\\\"','\\\"Unknown (edit /etc/snmp/snmpd.conf)\\\"',4,1,23,400,1,10,-1,1,'','',3,0,'0000-00-00 00:00:00','0000-00-00 00:00:00','',0.00000,0.36883,0.24199,0.03400,0.752,33,0,100.00000,'2020-03-08 01:00:02');
 /*!40000 ALTER TABLE `host` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1918,8 +1923,7 @@ CREATE TABLE `host_snmp_query` (
   `sort_field` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `title_format` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `reindex_method` tinyint(3) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`host_id`,`snmp_query_id`),
-  KEY `host_id` (`host_id`)
+  PRIMARY KEY (`host_id`,`snmp_query_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1969,8 +1973,7 @@ DROP TABLE IF EXISTS `host_template_graph`;
 CREATE TABLE `host_template_graph` (
   `host_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `graph_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`host_template_id`,`graph_template_id`),
-  KEY `host_template_id` (`host_template_id`)
+  PRIMARY KEY (`host_template_id`,`graph_template_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1994,8 +1997,7 @@ DROP TABLE IF EXISTS `host_template_snmp_query`;
 CREATE TABLE `host_template_snmp_query` (
   `host_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `snmp_query_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`host_template_id`,`snmp_query_id`),
-  KEY `host_template_id` (`host_template_id`)
+  PRIMARY KEY (`host_template_id`,`snmp_query_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2023,7 +2025,7 @@ CREATE TABLE `plugin_config` (
   `status` tinyint(2) NOT NULL DEFAULT 0,
   `author` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `webpage` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `version` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `version` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
   KEY `directory` (`directory`)
@@ -2036,7 +2038,6 @@ CREATE TABLE `plugin_config` (
 
 LOCK TABLES `plugin_config` WRITE;
 /*!40000 ALTER TABLE `plugin_config` DISABLE KEYS */;
-INSERT INTO `plugin_config` VALUES (1,'webseer','Web Service Monitor',4,'The Cacti Group','http://cactiusers.org','3.0');
 /*!40000 ALTER TABLE `plugin_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2094,7 +2095,7 @@ CREATE TABLE `plugin_hooks` (
 
 LOCK TABLES `plugin_hooks` WRITE;
 /*!40000 ALTER TABLE `plugin_hooks` DISABLE KEYS */;
-INSERT INTO `plugin_hooks` VALUES (1,'internal','config_arrays','','plugin_config_arrays',1),(2,'internal','draw_navigation_text','','plugin_draw_navigation_text',1),(3,'webseer','draw_navigation_text','setup.php','plugin_webseer_draw_navigation_text',0),(4,'webseer','config_arrays','setup.php','plugin_webseer_config_arrays',1),(5,'webseer','poller_bottom','setup.php','plugin_webseer_poller_bottom',0);
+INSERT INTO `plugin_hooks` VALUES (1,'internal','config_arrays','','plugin_config_arrays',1),(2,'internal','draw_navigation_text','','plugin_draw_navigation_text',1);
 /*!40000 ALTER TABLE `plugin_hooks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2121,262 +2122,8 @@ CREATE TABLE `plugin_realms` (
 
 LOCK TABLES `plugin_realms` WRITE;
 /*!40000 ALTER TABLE `plugin_realms` DISABLE KEYS */;
-INSERT INTO `plugin_realms` VALUES (1,'internal','plugins.php','Plugin Management'),(2,'webseer','webseer.php,webseer_edit.php,webseer_servers.php,webseer_servers_edit.php,webseer_proxies.php','Web Service Check Admin');
+INSERT INTO `plugin_realms` VALUES (1,'internal','plugins.php','Plugin Management');
 /*!40000 ALTER TABLE `plugin_realms` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_contacts`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_contacts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_contacts` (
-  `id` int(12) NOT NULL AUTO_INCREMENT,
-  `user_id` int(12) NOT NULL,
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id_type` (`user_id`,`type`),
-  KEY `type` (`type`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table of WebSeer contacts';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_contacts`
---
-
-LOCK TABLES `plugin_webseer_contacts` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_contacts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_contacts` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_processes`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_processes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_processes` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `url_id` int(11) unsigned NOT NULL,
-  `pid` int(11) unsigned NOT NULL,
-  `time` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `pid` (`pid`),
-  KEY `url_id` (`url_id`),
-  KEY `time` (`time`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds running process information';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_processes`
---
-
-LOCK TABLES `plugin_webseer_processes` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_processes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_processes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_proxies`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_proxies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_proxies` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `hostname` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `http_port` mediumint(8) unsigned DEFAULT 80,
-  `https_port` mediumint(8) unsigned DEFAULT 443,
-  `username` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `password` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `hostname` (`hostname`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds Proxy Information for Connections';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_proxies`
---
-
-LOCK TABLES `plugin_webseer_proxies` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_proxies` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_proxies` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_servers`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_servers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_servers` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `enabled` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'on',
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ip` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `location` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastcheck` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `compression` int(3) NOT NULL DEFAULT 0,
-  `isme` int(11) unsigned NOT NULL DEFAULT 0,
-  `master` int(11) unsigned NOT NULL DEFAULT 0,
-  `url` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `location` (`location`,`lastcheck`),
-  KEY `isme` (`isme`),
-  KEY `master` (`master`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds WebSeer Server Definitions';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_servers`
---
-
-LOCK TABLES `plugin_webseer_servers` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_servers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_servers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_servers_log`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_servers_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_servers_log` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `server` int(11) unsigned NOT NULL DEFAULT 0,
-  `url_id` int(11) unsigned NOT NULL DEFAULT 0,
-  `lastcheck` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `compression` int(3) unsigned NOT NULL DEFAULT 0,
-  `result` int(11) unsigned NOT NULL DEFAULT 0,
-  `http_code` int(11) unsigned DEFAULT NULL,
-  `error` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_time` double DEFAULT NULL,
-  `namelookup_time` double DEFAULT NULL,
-  `connect_time` double DEFAULT NULL,
-  `redirect_time` double DEFAULT NULL,
-  `redirect_count` int(11) unsigned DEFAULT NULL,
-  `size_download` int(11) unsigned DEFAULT NULL,
-  `speed_download` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `url_id` (`url_id`),
-  KEY `lastcheck` (`lastcheck`),
-  KEY `result` (`result`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds WebSeer Service Check Results';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_servers_log`
---
-
-LOCK TABLES `plugin_webseer_servers_log` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_servers_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_servers_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_urls`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_urls`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_urls` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `enabled` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'on',
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'http',
-  `display_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `url` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ip` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `search` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `search_maint` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `search_failed` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `requiresauth` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `proxy_server` int(11) unsigned NOT NULL DEFAULT 0,
-  `checkcert` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'on',
-  `notify_accounts` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notify_extra` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notify_format` int(3) unsigned NOT NULL DEFAULT 0,
-  `result` int(11) unsigned NOT NULL DEFAULT 0,
-  `downtrigger` int(11) unsigned NOT NULL DEFAULT 3,
-  `timeout_trigger` int(11) unsigned NOT NULL DEFAULT 4,
-  `failures` int(11) unsigned NOT NULL DEFAULT 0,
-  `triggered` int(11) unsigned NOT NULL DEFAULT 0,
-  `lastcheck` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `compression` int(3) unsigned NOT NULL DEFAULT 0,
-  `error` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `http_code` int(11) unsigned DEFAULT NULL,
-  `total_time` double DEFAULT NULL,
-  `namelookup_time` double DEFAULT NULL,
-  `connect_time` double DEFAULT NULL,
-  `redirect_time` double DEFAULT NULL,
-  `speed_download` int(11) unsigned DEFAULT NULL,
-  `size_download` int(11) unsigned DEFAULT NULL,
-  `redirect_count` int(11) unsigned DEFAULT NULL,
-  `debug` longblob DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `lastcheck` (`lastcheck`),
-  KEY `triggered` (`triggered`),
-  KEY `result` (`result`),
-  KEY `enabled` (`enabled`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds WebSeer Service Check Definitions';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_urls`
---
-
-LOCK TABLES `plugin_webseer_urls` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_urls` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_urls` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `plugin_webseer_urls_log`
---
-
-DROP TABLE IF EXISTS `plugin_webseer_urls_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `plugin_webseer_urls_log` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `url_id` int(11) unsigned NOT NULL DEFAULT 0,
-  `lastcheck` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `compression` int(3) unsigned NOT NULL DEFAULT 0,
-  `result` int(11) unsigned NOT NULL DEFAULT 0,
-  `http_code` int(11) unsigned DEFAULT NULL,
-  `error` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_time` double DEFAULT NULL,
-  `namelookup_time` double DEFAULT NULL,
-  `connect_time` double DEFAULT NULL,
-  `redirect_time` double unsigned DEFAULT NULL,
-  `redirect_count` int(11) unsigned DEFAULT NULL,
-  `size_download` int(11) unsigned DEFAULT NULL,
-  `speed_download` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `url_id` (`url_id`),
-  KEY `lastcheck` (`lastcheck`),
-  KEY `result` (`result`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Holds WebSeer Service Check Logs';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `plugin_webseer_urls_log`
---
-
-LOCK TABLES `plugin_webseer_urls_log` WRITE;
-/*!40000 ALTER TABLE `plugin_webseer_urls_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `plugin_webseer_urls_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2399,6 +2146,7 @@ CREATE TABLE `poller` (
   `dbuser` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `dbpass` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `dbport` int(10) unsigned DEFAULT 3306,
+  `dbretries` int(10) unsigned NOT NULL DEFAULT 2,
   `dbssl` char(3) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `dbsslkey` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dbsslcert` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2430,7 +2178,7 @@ CREATE TABLE `poller` (
 
 LOCK TABLES `poller` WRITE;
 /*!40000 ALTER TABLE `poller` DISABLE KEYS */;
-INSERT INTO `poller` VALUES (1,'','Main Poller','',2,'','localhost.localdomain','','localhost.localdomain','','',3306,'',NULL,NULL,NULL,1.4263,69.58581495285,1.1521289348602,5.219002369288,37,1,1,7200,0,10,20,'2020-03-08 01:00:03','2020-03-08 01:00:03','0000-00-00 00:00:00','');
+INSERT INTO `poller` VALUES (1,'','Main Poller','',1,'','localhost.localdomain','','localhost.localdomain','','',3306,2,'',NULL,NULL,NULL,1.4263,69.58581495285,1.1521289348602,5.219002369288,37,1,1,7200,0,10,20,'2020-03-08 01:00:03','2023-02-07 00:33:01','0000-00-00 00:00:00','');
 /*!40000 ALTER TABLE `poller` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2495,7 +2243,7 @@ DROP TABLE IF EXISTS `poller_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poller_item` (
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `poller_id` int(10) unsigned NOT NULL DEFAULT 1,
   `host_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `action` tinyint(2) unsigned NOT NULL DEFAULT 1,
@@ -2550,7 +2298,7 @@ DROP TABLE IF EXISTS `poller_output`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poller_output` (
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `output` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -2575,7 +2323,7 @@ DROP TABLE IF EXISTS `poller_output_boost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poller_output_boost` (
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `output` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2623,7 +2371,7 @@ DROP TABLE IF EXISTS `poller_output_realtime`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poller_output_realtime` (
-  `local_data_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `local_data_id` int(10) unsigned NOT NULL DEFAULT 0,
   `rrd_name` varchar(19) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `output` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2726,8 +2474,38 @@ CREATE TABLE `poller_time` (
 
 LOCK TABLES `poller_time` WRITE;
 /*!40000 ALTER TABLE `poller_time` DISABLE KEYS */;
-INSERT INTO `poller_time` VALUES (68,3481,1,'2020-03-08 01:00:01','2020-03-08 01:00:01'),(69,3484,1,'2020-03-08 01:00:02','2020-03-08 01:00:02');
 /*!40000 ALTER TABLE `poller_time` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `processes`
+--
+
+DROP TABLE IF EXISTS `processes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `processes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(10) unsigned NOT NULL DEFAULT 0,
+  `tasktype` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `taskname` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `taskid` int(10) unsigned NOT NULL DEFAULT 0,
+  `timeout` int(11) DEFAULT 300,
+  `started` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`pid`,`tasktype`,`taskname`,`taskid`),
+  KEY `tasktype` (`tasktype`),
+  KEY `id` (`id`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1 COMMENT='Stores Process Status for Cacti Background Processes';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `processes`
+--
+
+LOCK TABLES `processes` WRITE;
+/*!40000 ALTER TABLE `processes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `processes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2791,9 +2569,10 @@ CREATE TABLE `reports_items` (
   `branch_id` int(10) unsigned NOT NULL DEFAULT 0,
   `tree_cascade` char(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `graph_name_regexp` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `host_template_id` int(10) unsigned NOT NULL DEFAULT 0,
-  `host_id` int(10) unsigned NOT NULL DEFAULT 0,
-  `graph_template_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `site_id` int(11) DEFAULT -1,
+  `host_template_id` int(11) DEFAULT -1,
+  `host_id` int(11) DEFAULT -1,
+  `graph_template_id` int(11) DEFAULT -1,
   `local_graph_id` int(10) unsigned NOT NULL DEFAULT 0,
   `timespan` int(10) unsigned NOT NULL DEFAULT 0,
   `align` tinyint(1) unsigned NOT NULL DEFAULT 1,
@@ -2826,6 +2605,10 @@ CREATE TABLE `sessions` (
   `remote_addr` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `access` int(10) unsigned DEFAULT NULL,
   `data` mediumblob DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `user_agent` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `start_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `transactions` int(10) unsigned NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Used for Database based Session Storage';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2859,7 +2642,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES ('0',''),('1',''),('10',''),('100',''),('101',''),('102',''),('103',''),('104',''),('105',''),('106',''),('107',''),('108',''),('11',''),('12',''),('13',''),('14',''),('15',''),('16',''),('17',''),('18',''),('19',''),('2',''),('20',''),('21',''),('22',''),('23',''),('24',''),('25',''),('26',''),('27',''),('28',''),('29',''),('3',''),('30',''),('31',''),('32',''),('33',''),('34',''),('35',''),('36',''),('37',''),('38',''),('39',''),('4',''),('40',''),('41',''),('42',''),('43',''),('44',''),('45',''),('46',''),('47',''),('48',''),('49',''),('5',''),('50',''),('51',''),('52',''),('53',''),('54',''),('55',''),('56',''),('57',''),('58',''),('59',''),('6',''),('60',''),('61',''),('62',''),('63',''),('64',''),('65',''),('66',''),('67',''),('68',''),('69',''),('7',''),('70',''),('71',''),('72',''),('73',''),('74',''),('75',''),('76',''),('77',''),('78',''),('79',''),('8',''),('80',''),('81',''),('82',''),('83',''),('84',''),('85',''),('86',''),('87',''),('88',''),('89',''),('9',''),('90',''),('91',''),('92',''),('93',''),('94',''),('95',''),('96',''),('97',''),('98',''),('99',''),('admin_user','1'),('auth_cache_enabled','on'),('auth_method','1'),('autocomplete_enabled','1'),('autocomplete_rows','30'),('automation_email',''),('automation_fromemail',''),('automation_fromname',''),('automation_graphs_enabled',''),('automation_tree_enabled',''),('availability_method','2'),('axis_size','7'),('base_url','http://localhost/cacti/'),('boost_parallel','1'),('boost_png_cache_directory','/var/www/html/cacti/cache/boost/'),('boost_png_cache_enable',''),('boost_poller_mem_limit','1024'),('boost_redirect',''),('boost_rrd_update_enable',''),('boost_rrd_update_interval','60'),('boost_rrd_update_max_records','1000000'),('boost_rrd_update_max_records_per_select','50000'),('boost_rrd_update_max_runtime','1200'),('boost_rrd_update_string_length','2000'),('boost_rrd_update_system_enable',''),('concurrent_processes','1'),('cron_interval','60'),('data_source_trace',''),('date','2020-03-07 17:00:02'),('default_date_format','4'),('default_datechar','1'),('default_graph_height','150'),('default_graph_width','500'),('default_graphs_new_dropdown','-2'),('default_has',''),('default_image_format','1'),('default_interface_speed','1000'),('default_poller','1'),('default_site','1'),('default_template','3'),('deletion_verification','on'),('device_threads','1'),('disable_cache_replication',''),('drag_and_drop','on'),('ds_preselected_delete','on'),('dsstats_daily_interval','60'),('dsstats_enable','on'),('dsstats_hourly_duration','60'),('dsstats_last_daily_run_time','2020-03-07 16:57:06'),('dsstats_last_major_run_time','2020-03-07 16:57:06'),('dsstats_major_update_time','12:00am'),('dsstats_poller_mem_limit','1024'),('enable_snmp_agent','on'),('extended_paths',''),('font_method','1'),('force_https',''),('graph_auth_method','1'),('graph_watermark','Generated by Cacti®'),('graphs_auto_unlock',''),('grds_creation_method','0'),('guest_user','0'),('hide_console',''),('hide_form_description',''),('i18n_auto_detection','1'),('i18n_default_language','en-US'),('i18n_language_support','1'),('install_automation_mode','false'),('install_automation_override','false'),('install_automation_range','192.168.1.0/24'),('install_complete','1583627181.9052'),('install_error',''),('install_eula','1'),('install_has_tables','1'),('install_has_templates','1'),('install_language','en-US'),('install_mode','1'),('install_next','0'),('install_prev','0'),('install_profile','3'),('install_progress','100'),('install_rrdtool_version','1.4.0'),('install_snmp_option_max_oids','10'),('install_snmp_option_snmp_auth_protocol','MD5'),('install_snmp_option_snmp_community','public'),('install_snmp_option_snmp_context',''),('install_snmp_option_snmp_engine_id',''),('install_snmp_option_snmp_password',''),('install_snmp_option_snmp_port','161'),('install_snmp_option_snmp_priv_passphrase',''),('install_snmp_option_snmp_priv_protocol','DES'),('install_snmp_option_snmp_retries','3'),('install_snmp_option_snmp_security_level','authPriv'),('install_snmp_option_snmp_timeout','500'),('install_snmp_option_snmp_username',''),('install_snmp_option_snmp_version','2'),('install_started','1583627103.9528'),('install_step','98'),('install_table_aggregate_graph_templates','aggregate_graph_templates'),('install_table_aggregate_graph_templates_graph','aggregate_graph_templates_graph'),('install_table_aggregate_graph_templates_item','aggregate_graph_templates_item'),('install_table_aggregate_graphs','aggregate_graphs'),('install_table_aggregate_graphs_graph_item','aggregate_graphs_graph_item'),('install_table_aggregate_graphs_items','aggregate_graphs_items'),('install_table_automation_devices','automation_devices'),('install_table_automation_graph_rule_items','automation_graph_rule_items'),('install_table_automation_graph_rules','automation_graph_rules'),('install_table_automation_ips','automation_ips'),('install_table_automation_match_rule_items','automation_match_rule_items'),('install_table_automation_networks','automation_networks'),('install_table_automation_processes','automation_processes'),('install_table_automation_snmp','automation_snmp'),('install_table_automation_snmp_items','automation_snmp_items'),('install_table_automation_templates','automation_templates'),('install_table_automation_tree_rule_items','automation_tree_rule_items'),('install_table_automation_tree_rules','automation_tree_rules'),('install_table_cdef','cdef'),('install_table_cdef_items','cdef_items'),('install_table_color_template_items','color_template_items'),('install_table_color_templates','color_templates'),('install_table_colors','colors'),('install_table_data_debug','data_debug'),('install_table_data_input','data_input'),('install_table_data_input_data','data_input_data'),('install_table_data_input_fields','data_input_fields'),('install_table_data_local','data_local'),('install_table_data_source_profiles','data_source_profiles'),('install_table_data_source_profiles_cf','data_source_profiles_cf'),('install_table_data_source_profiles_rra','data_source_profiles_rra'),('install_table_data_source_purge_action','data_source_purge_action'),('install_table_data_source_purge_temp','data_source_purge_temp'),('install_table_data_source_stats_daily','data_source_stats_daily'),('install_table_data_source_stats_hourly','data_source_stats_hourly'),('install_table_data_source_stats_hourly_cache','data_source_stats_hourly_cache'),('install_table_data_source_stats_hourly_last','data_source_stats_hourly_last'),('install_table_data_source_stats_monthly','data_source_stats_monthly'),('install_table_data_source_stats_weekly','data_source_stats_weekly'),('install_table_data_source_stats_yearly','data_source_stats_yearly'),('install_table_data_template','data_template'),('install_table_data_template_data','data_template_data'),('install_table_data_template_rrd','data_template_rrd'),('install_table_external_links','external_links'),('install_table_graph_local','graph_local'),('install_table_graph_template_input','graph_template_input'),('install_table_graph_template_input_defs','graph_template_input_defs'),('install_table_graph_templates','graph_templates'),('install_table_graph_templates_gprint','graph_templates_gprint'),('install_table_graph_templates_graph','graph_templates_graph'),('install_table_graph_templates_item','graph_templates_item'),('install_table_graph_tree','graph_tree'),('install_table_graph_tree_items','graph_tree_items'),('install_table_host','host'),('install_table_host_graph','host_graph'),('install_table_host_snmp_cache','host_snmp_cache'),('install_table_host_snmp_query','host_snmp_query'),('install_table_host_template','host_template'),('install_table_host_template_graph','host_template_graph'),('install_table_host_template_snmp_query','host_template_snmp_query'),('install_table_plugin_config','plugin_config'),('install_table_plugin_db_changes','plugin_db_changes'),('install_table_plugin_hooks','plugin_hooks'),('install_table_plugin_realms','plugin_realms'),('install_table_poller','poller'),('install_table_poller_command','poller_command'),('install_table_poller_data_template_field_mappings','poller_data_template_field_mappings'),('install_table_poller_item','poller_item'),('install_table_poller_output','poller_output'),('install_table_poller_output_boost','poller_output_boost'),('install_table_poller_output_boost_processes','poller_output_boost_processes'),('install_table_poller_output_realtime','poller_output_realtime'),('install_table_poller_reindex','poller_reindex'),('install_table_poller_resource_cache','poller_resource_cache'),('install_table_poller_time','poller_time'),('install_table_reports','reports'),('install_table_reports_items','reports_items'),('install_table_sessions','sessions'),('install_table_settings','settings'),('install_table_settings_tree','settings_tree'),('install_table_settings_user','settings_user'),('install_table_settings_user_group','settings_user_group'),('install_table_sites','sites'),('install_table_snmp_query','snmp_query'),('install_table_snmp_query_graph','snmp_query_graph'),('install_table_snmp_query_graph_rrd','snmp_query_graph_rrd'),('install_table_snmp_query_graph_rrd_sv','snmp_query_graph_rrd_sv'),('install_table_snmp_query_graph_sv','snmp_query_graph_sv'),('install_table_snmpagent_cache','snmpagent_cache'),('install_table_snmpagent_cache_notifications','snmpagent_cache_notifications'),('install_table_snmpagent_cache_textual_conventions','snmpagent_cache_textual_conventions'),('install_table_snmpagent_managers','snmpagent_managers'),('install_table_snmpagent_managers_notifications','snmpagent_managers_notifications'),('install_table_snmpagent_mibs','snmpagent_mibs'),('install_table_snmpagent_notifications_log','snmpagent_notifications_log'),('install_table_user_auth','user_auth'),('install_table_user_auth_cache','user_auth_cache'),('install_table_user_auth_group','user_auth_group'),('install_table_user_auth_group_members','user_auth_group_members'),('install_table_user_auth_group_perms','user_auth_group_perms'),('install_table_user_auth_group_realm','user_auth_group_realm'),('install_table_user_auth_perms','user_auth_perms'),('install_table_user_auth_realm','user_auth_realm'),('install_table_user_domains','user_domains'),('install_table_user_domains_ldap','user_domains_ldap'),('install_table_user_log','user_log'),('install_table_vdef','vdef'),('install_table_vdef_items','vdef_items'),('install_table_version','version'),('install_template_Cacti_Stats_xml_gz','Cacti_Stats.xml.gz'),('install_template_Cisco_Router_xml_gz','Cisco_Router.xml.gz'),('install_template_Generic_SNMP_Device_xml_gz','Generic_SNMP_Device.xml.gz'),('install_template_Local_Linux_Machine_xml_gz','Local_Linux_Machine.xml.gz'),('install_template_NetSNMP_Device_xml_gz','NetSNMP_Device.xml.gz'),('install_template_Windows_Device_xml_gz','Windows_Device.xml.gz'),('install_theme','modern'),('install_updated','1583627181.8891'),('install_version','1.2.9'),('ldap_encryption','0'),('ldap_group_member_type','1'),('ldap_group_require',''),('ldap_mode','0'),('ldap_port','389'),('ldap_port_ssl','636'),('ldap_referrals','0'),('ldap_version','3'),('legend_size','8'),('log_destination','1'),('log_perror','on'),('log_pstats',''),('log_pwarn',''),('log_refresh_interval','60'),('log_validation',''),('log_verbosity','2'),('logrotate_enabled','on'),('logrotate_frequency','1'),('logrotate_lastrun','1583626867'),('logrotate_retain','7'),('max_data_query_field_length','40'),('max_display_rows','1000'),('max_get_size','10'),('max_threads','1'),('max_title_length','110'),('max_tree_width','300'),('min_tree_width','170'),('notify_admin',''),('num_rows_log','500'),('num_rows_table','30'),('oid_increasing_check_disable',''),('path_boost_log',''),('path_cactilog','/var/www/html/cacti/log/cacti.log'),('path_php_binary','/usr/bin/php'),('path_rrdtool','/usr/bin/rrdtool'),('path_snmpbulkwalk','/usr/bin/snmpbulkwalk'),('path_snmpget','/usr/bin/snmpget'),('path_snmpgetnext','/usr/bin/snmpgetnext'),('path_snmptrap','/usr/bin/snmptrap'),('path_snmpwalk','/usr/bin/snmpwalk'),('path_spine','/usr/local/spine/bin/spine'),('path_spine_config','/usr/local/spine/etc/spine.conf'),('path_stderrlog','/var/www/html/cacti/log/cacti_stderr.log'),('path_webroot','/var/www/html/cacti'),('php_servers','1'),('ping_failure_count','2'),('ping_method','2'),('ping_port','23'),('ping_recovery_count','3'),('ping_retries','1'),('ping_timeout','400'),('poller_debug',''),('poller_enabled','on'),('poller_interval','60'),('poller_lastrun_1','1583629201'),('poller_replicate_data_input_crc','4ea0d514f0a9054adff28b4c7eee26dbe5f8d280'),('poller_replicate_data_input_fields_crc','5521e13056a5e8a719b8ddc1cfe488d200da7725'),('poller_replicate_data_source_cache_crc_1','c6fe6d69b86a26d8fb94fc5a793de69dd571a33a'),('poller_replicate_device_cache_crc_1','a95977a1483b0ba795c169ced9b794388b05164f'),('poller_replicate_snmp_query_crc','0a138dbc63c5df327571913769e66e9461481b31'),('poller_sync_interval','1800'),('poller_type','2'),('process_leveling','on'),('realtime_cache_path','/var/www/html/cacti/cache/realtime/'),('realtime_enabled','on'),('realtime_gwindow','60'),('realtime_interval','10'),('reindex_method','1'),('remote_agent_timeout','5'),('reports_allow_ln',''),('reports_default_image_format','1'),('reports_log_verbosity','2'),('reports_max_attach','10485760'),('rrd_archive',''),('rrd_autoclean','on'),('rrd_autoclean_method','1'),('rrdp_fingerprint',''),('rrdp_fingerprint_backup',''),('rrdp_load_balancing',''),('rrdp_port','40301'),('rrdp_port_backup','40301'),('rrdp_server',''),('rrdp_server_backup',''),('rrdtool_version','1.4.0'),('rsa_fingerprint','5c:4a:78:db:57:bc:f6:a4:b0:3a:e2:3b:ce:41:a8:b0'),('rsa_private_key','-----BEGIN RSA PRIVATE KEY----- MIIEpAIBAAKCAQEAwv8C0VUeFwHNFKyEliu27X6kk5UzQswS8oCKEXzBgEUckLyI Zqd3S/Zi6f3kkJ3D/3ReG6WunpRebBOzxrmaVZHyCmoNZj9Vub29VKFyXU1AWW1Q R6+elpJHc7GH2+GV9z7QBU0hEBFRgm9U//IZA7HaW51kutajpVelu6fZaVIAKOyY 6DyhMUcHERv38pvGmqM7hLQiNo6YyJCrYcXlJJn4L4WPfLZ/Rf0VQ31sAuF5LnrZ YExGcycpw6XCcB7zaf/bKDSUDh+dob0YpNiGWfU6JKT32tQcnJHceoen0nv8ytkt n2LJofZEQfLl5HUcU+tIkWznz4nLpsSaqnk2JQIDAQABAoIBAAFS8/Tx7ANh+r+C MGBIqbRRINLzt2Zjtlk5MDbQLwws6/W7of14c6HraV6HX87vk04fvyfW5ymifkWj mJvn1LlyBT+22qJwGafqNuflNL6XcLFqwZnLAnupQJzzfqWqkXcdURJIJMpUI8aL 9PrL7QmOYpoupmlyXagYwUJV8G77oYXcWQ/NoNZhlgAtBhxyWyH3qBjq6uIdsvp9 fu8x5aGPGHISHryXyU6TWrLhAmIZJskc3TdDA71jlFBFgKM2xoLcUo07EAw085h0 pwQfQDOgjwMYIlwKgB9UqIcxFrKFX3osaKDrFaVMA5nwb9PR+qb8QeSEThjg6hFb qD1YT90CgYEA4X72YXunl39twS4AkPmxqp1kpqxRsJtWiEHgxh5TIuyzXUSzxKdr SHlYX6lq1lwFmxhwvtSyUUh1cZSMoKwE6JrsvjGLMIjHCXq9vtH5TTG2eT+cw0BR r0aFJkfboNdZXU82lpm5qDzkVLfVPwDJ0o2QzeHu7EtQUp6Ud/Ka3e8CgYEA3V/T K0GdTGv/BZe7KkwPvpuRYncnTetsXFqxYI0uZnyEOr/sXbHmmPbVc090O0VUKwWO zfXlUY4Iwgyv6GarK88rnO7UX+oFRtSW9CD05c/KLdKJ9TjK0Yg5qjQLAy24MnDF OHzoqYRUuhC1qQrmRTFoWyzKJEF8PHiGqMHoASsCgYAd+cq22sFEmmP0sjDRFOBR VerzXSTe3Ud7hYZjz9QtaFnPpDphgf/4+miNDvBs3n7AR1d1hsDNnVw/ZQfss/FT GoUuI1flc8lBsVdX7oG9iUZAh/xG2F4DdtRsalD/6KCwjr8q9fSAMNgJiwaGAYzS uI7vT4F7V+etk/cYmt+LcQKBgQC46Q/kc9xGN3c/Xqwx+nK0ThG0Y77q8RkEU6UR 9xuo850nzaRL5wus/ZDxzo5R6+kQPoY4N4sjAjcCj8Jnp0qXP2c4oK24qCtcLLsi lFy7kUNZ3yDpOlT/jIBOUUZZk1jmmRfDxWI6JpT3DnoPB1GsvkZi0hjPC/wQLsSc NcvrHQKBgQCjpXKZzdnM6WTeq/9g4sAKZAR4tkD1mrY6d0wcCFyYA2YyCL1mXz2u BRcHXqc7AkEc+aTH7J/GKtaq9FIjiAEd+bB4S/xqyGcJcifzI48BGp/D59Tn6gEC YycZIhowbgQHaNUrfsPbD0FiNWVUH4J1kuJ4PZmqy9LP1Dy/fXNo1A== -----END RSA PRIVATE KEY-----'),('rsa_public_key','-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwv8C0VUeFwHNFKyEliu2 7X6kk5UzQswS8oCKEXzBgEUckLyIZqd3S/Zi6f3kkJ3D/3ReG6WunpRebBOzxrma VZHyCmoNZj9Vub29VKFyXU1AWW1QR6+elpJHc7GH2+GV9z7QBU0hEBFRgm9U//IZ A7HaW51kutajpVelu6fZaVIAKOyY6DyhMUcHERv38pvGmqM7hLQiNo6YyJCrYcXl JJn4L4WPfLZ/Rf0VQ31sAuF5LnrZYExGcycpw6XCcB7zaf/bKDSUDh+dob0YpNiG WfU6JKT32tQcnJHceoen0nv8ytktn2LJofZEQfLl5HUcU+tIkWznz4nLpsSaqnk2 JQIDAQAB -----END PUBLIC KEY-----'),('script_timeout','25'),('secpass_expireaccount','0'),('secpass_expirepass','0'),('secpass_forceold',''),('secpass_history','0'),('secpass_lockfailed','0'),('secpass_minlen','8'),('secpass_reqmixcase','on'),('secpass_reqnum','on'),('secpass_reqspec','on'),('secpass_unlocktime','60'),('selected_theme','modern'),('selective_debug',''),('selective_device_debug',''),('selective_plugin_debug',''),('sess_allowed_templates_lastchange','1583628707'),('settings_dns_primary',''),('settings_dns_secondary',''),('settings_dns_timeout','500'),('settings_from_email',''),('settings_from_name',''),('settings_how','0'),('settings_ping_mail','0'),('settings_sendmail_path',''),('settings_smtp_host','localhost'),('settings_smtp_port','25'),('settings_smtp_secure','none'),('settings_smtp_timeout','10'),('settings_smtp_username',''),('settings_test_email',''),('settings_wordwrap','120'),('snmp_auth_protocol','MD5'),('snmp_bulk_walk_size','10'),('snmp_community','public'),('snmp_context',''),('snmp_engine_id',''),('snmp_password',''),('snmp_port','161'),('snmp_priv_passphrase',''),('snmp_priv_protocol','DES'),('snmp_retries','3'),('snmp_security_level','authPriv'),('snmp_timeout','500'),('snmp_username',''),('snmp_version','2'),('spikekill_avgnan','last'),('spikekill_backupdir','/var/www/html/cacti/cache/spikekill/'),('spikekill_basetime','12:00am'),('spikekill_batch','0'),('spikekill_deviations','10'),('spikekill_method','2'),('spikekill_number','5'),('spikekill_outliers','5'),('spikekill_percent','1000'),('spikekill_purge','7856352'),('spine_log_level','0'),('stats_dsstats_HOURLY','Time:0.0951 RRDUser:0.0000 RRDSystem:0.0000 RRDReal:0.0000'),('stats_poller','Time:1.4263 Method:spine Processes:1 Threads:1 Hosts:1 HostsPerProcess:1 DataSources:30 RRDsProcessed:29'),('stats_recache_1','Poller:1 RecacheTime:0.0 DevicesRecached:0'),('storage_location','0'),('strip_domain',''),('title_size','10'),('unit_size','7'),('user_template','0');
+INSERT INTO `settings` VALUES ('0',''),('1',''),('10',''),('100',''),('101',''),('102',''),('103',''),('104',''),('105',''),('106',''),('107',''),('108',''),('11',''),('12',''),('13',''),('14',''),('15',''),('16',''),('17',''),('18',''),('19',''),('2',''),('20',''),('21',''),('22',''),('23',''),('24',''),('25',''),('26',''),('27',''),('28',''),('29',''),('3',''),('30',''),('31',''),('32',''),('33',''),('34',''),('35',''),('36',''),('37',''),('38',''),('39',''),('4',''),('40',''),('41',''),('42',''),('43',''),('44',''),('45',''),('46',''),('47',''),('48',''),('49',''),('5',''),('50',''),('51',''),('52',''),('53',''),('54',''),('55',''),('56',''),('57',''),('58',''),('59',''),('6',''),('60',''),('61',''),('62',''),('63',''),('64',''),('65',''),('66',''),('67',''),('68',''),('69',''),('7',''),('70',''),('71',''),('72',''),('73',''),('74',''),('75',''),('76',''),('77',''),('78',''),('79',''),('8',''),('80',''),('81',''),('82',''),('83',''),('84',''),('85',''),('86',''),('87',''),('88',''),('89',''),('9',''),('90',''),('91',''),('92',''),('93',''),('94',''),('95',''),('96',''),('97',''),('98',''),('99',''),('active_profiles','1'),('admin_user','1'),('auth_cache_enabled','on'),('auth_method','1'),('autocomplete_enabled','1'),('autocomplete_rows','30'),('automation_email',''),('automation_fromemail',''),('automation_fromname',''),('automation_graphs_enabled',''),('automation_tree_enabled',''),('availability_method','2'),('axis_size','7'),('base_url','http://localhost/cacti/'),('boost_parallel','1'),('boost_png_cache_directory','/var/www/html/cacti/cache/boost/'),('boost_png_cache_enable',''),('boost_poller_mem_limit','1024'),('boost_redirect',''),('boost_rrd_update_enable',''),('boost_rrd_update_interval','60'),('boost_rrd_update_max_records','1000000'),('boost_rrd_update_max_records_per_select','50000'),('boost_rrd_update_max_runtime','1200'),('boost_rrd_update_string_length','2000'),('boost_rrd_update_system_enable',''),('commands_timeout','300'),('concurrent_processes','1'),('content_security_alternate_sources',''),('content_security_policy_script',''),('cron_interval','60'),('data_source_trace',''),('date','2020-03-07 17:00:02'),('default_date_format','4'),('default_datechar','1'),('default_graph_height','150'),('default_graph_width','500'),('default_graphs_new_dropdown','-2'),('default_has',''),('default_image_format','1'),('default_interface_speed','1000'),('default_poller','1'),('default_site','1'),('default_template','3'),('default_test_source',''),('deletion_verification','on'),('device_threads','1'),('disable_cache_replication',''),('drag_and_drop','on'),('ds_preselected_delete','on'),('dsstats_daily_interval','60'),('dsstats_enable','on'),('dsstats_hourly_duration','60'),('dsstats_last_daily_run_time','2020-03-07 16:57:06'),('dsstats_last_major_run_time','2020-03-07 16:57:06'),('dsstats_major_update_time','12:00am'),('dsstats_parallel','1'),('dsstats_poller_mem_limit','1024'),('dsstats_timeout','300'),('enable_rrdtool_gradient_support',''),('enable_snmp_agent','on'),('extended_paths',''),('extended_paths_hashes','100'),('extended_paths_type','device'),('font_method','1'),('force_https',''),('graph_auth_method','1'),('graph_dateformat','D d M H:i:s T Y'),('graph_watermark','Generated by Cacti®'),('graphs_auto_unlock',''),('grds_creation_method','0'),('guest_user','0'),('hide_console',''),('hide_form_description',''),('i18n_auto_detection','1'),('i18n_default_language','en-US'),('i18n_language_handler','0'),('i18n_language_support','1'),('ldap_bind_timeout','5'),('ldap_debug',''),('ldap_encryption','0'),('ldap_group_member_type','1'),('ldap_group_require',''),('ldap_mode','0'),('ldap_network_timeout','2'),('ldap_port','389'),('ldap_port_ssl','636'),('ldap_referrals','0'),('ldap_tls_certificate','0'),('ldap_version','3'),('legend_size','8'),('local_documentation',''),('log_destination','1'),('log_perror','on'),('log_pstats',''),('log_pwarn',''),('log_refresh_interval','60'),('log_validation',''),('log_verbosity','2'),('logrotate_enabled','on'),('logrotate_frequency','1'),('logrotate_lastrun','1583626867'),('logrotate_retain','7'),('maintenance_timeout','300'),('max_data_query_field_length','40'),('max_display_rows','1000'),('max_get_size','10'),('max_threads','1'),('max_title_length','110'),('max_tree_width','300'),('min_tree_width','170'),('notify_admin',''),('num_rows_log','500'),('num_rows_table','30'),('oid_increasing_check_disable',''),('path_basic_mapfile',''),('path_boost_log',''),('path_cactilog','/var/www/html/cacti/log/cacti.log'),('path_php_binary','/usr/bin/php'),('path_rrdtool','/usr/bin/rrdtool'),('path_snmpbulkwalk','/usr/bin/snmpbulkwalk'),('path_snmpget','/usr/bin/snmpget'),('path_snmpgetnext','/usr/bin/snmpgetnext'),('path_snmptrap','/usr/bin/snmptrap'),('path_snmpwalk','/usr/bin/snmpwalk'),('path_spine','/usr/local/spine/bin/spine'),('path_spine_config','/usr/local/spine/etc/spine.conf'),('path_stderrlog','/var/www/html/cacti/log/cacti_stderr.log'),('path_webroot','/var/www/html/cacti'),('php_servers','1'),('ping_failure_count','2'),('ping_method','2'),('ping_port','23'),('ping_recovery_count','3'),('ping_retries','1'),('ping_timeout','400'),('poller_debug',''),('poller_enabled','on'),('poller_interval','60'),('poller_lastrun_1','1675729981'),('poller_replicate_data_input_crc','4ea0d514f0a9054adff28b4c7eee26dbe5f8d280'),('poller_replicate_data_input_fields_crc','5521e13056a5e8a719b8ddc1cfe488d200da7725'),('poller_replicate_data_source_cache_crc_1','c6fe6d69b86a26d8fb94fc5a793de69dd571a33a'),('poller_replicate_device_cache_crc_1','a95977a1483b0ba795c169ced9b794388b05164f'),('poller_replicate_snmp_query_crc','0a138dbc63c5df327571913769e66e9461481b31'),('poller_sync_interval','1800'),('poller_type','2'),('process_leveling','on'),('realtime_cache_path','/var/www/html/cacti/cache/realtime/'),('realtime_enabled','on'),('realtime_gwindow','60'),('realtime_interval','10'),('reindex_method','1'),('remote_agent_timeout','5'),('reports_allow_ln',''),('reports_default_image_format','1'),('reports_log_verbosity','2'),('reports_max_attach','10485760'),('reports_timeout','300'),('rrd_archive',''),('rrd_autoclean','on'),('rrd_autoclean_method','1'),('rrdp_fingerprint',''),('rrdp_fingerprint_backup',''),('rrdp_load_balancing',''),('rrdp_port','40301'),('rrdp_port_backup','40301'),('rrdp_server',''),('rrdp_server_backup',''),('rrdtool_version','1.7.2'),('rrdtool_watermark',''),('rsa_fingerprint','5c:4a:78:db:57:bc:f6:a4:b0:3a:e2:3b:ce:41:a8:b0'),('rsa_private_key','-----BEGIN RSA PRIVATE KEY----- MIIEpAIBAAKCAQEAwv8C0VUeFwHNFKyEliu27X6kk5UzQswS8oCKEXzBgEUckLyI Zqd3S/Zi6f3kkJ3D/3ReG6WunpRebBOzxrmaVZHyCmoNZj9Vub29VKFyXU1AWW1Q R6+elpJHc7GH2+GV9z7QBU0hEBFRgm9U//IZA7HaW51kutajpVelu6fZaVIAKOyY 6DyhMUcHERv38pvGmqM7hLQiNo6YyJCrYcXlJJn4L4WPfLZ/Rf0VQ31sAuF5LnrZ YExGcycpw6XCcB7zaf/bKDSUDh+dob0YpNiGWfU6JKT32tQcnJHceoen0nv8ytkt n2LJofZEQfLl5HUcU+tIkWznz4nLpsSaqnk2JQIDAQABAoIBAAFS8/Tx7ANh+r+C MGBIqbRRINLzt2Zjtlk5MDbQLwws6/W7of14c6HraV6HX87vk04fvyfW5ymifkWj mJvn1LlyBT+22qJwGafqNuflNL6XcLFqwZnLAnupQJzzfqWqkXcdURJIJMpUI8aL 9PrL7QmOYpoupmlyXagYwUJV8G77oYXcWQ/NoNZhlgAtBhxyWyH3qBjq6uIdsvp9 fu8x5aGPGHISHryXyU6TWrLhAmIZJskc3TdDA71jlFBFgKM2xoLcUo07EAw085h0 pwQfQDOgjwMYIlwKgB9UqIcxFrKFX3osaKDrFaVMA5nwb9PR+qb8QeSEThjg6hFb qD1YT90CgYEA4X72YXunl39twS4AkPmxqp1kpqxRsJtWiEHgxh5TIuyzXUSzxKdr SHlYX6lq1lwFmxhwvtSyUUh1cZSMoKwE6JrsvjGLMIjHCXq9vtH5TTG2eT+cw0BR r0aFJkfboNdZXU82lpm5qDzkVLfVPwDJ0o2QzeHu7EtQUp6Ud/Ka3e8CgYEA3V/T K0GdTGv/BZe7KkwPvpuRYncnTetsXFqxYI0uZnyEOr/sXbHmmPbVc090O0VUKwWO zfXlUY4Iwgyv6GarK88rnO7UX+oFRtSW9CD05c/KLdKJ9TjK0Yg5qjQLAy24MnDF OHzoqYRUuhC1qQrmRTFoWyzKJEF8PHiGqMHoASsCgYAd+cq22sFEmmP0sjDRFOBR VerzXSTe3Ud7hYZjz9QtaFnPpDphgf/4+miNDvBs3n7AR1d1hsDNnVw/ZQfss/FT GoUuI1flc8lBsVdX7oG9iUZAh/xG2F4DdtRsalD/6KCwjr8q9fSAMNgJiwaGAYzS uI7vT4F7V+etk/cYmt+LcQKBgQC46Q/kc9xGN3c/Xqwx+nK0ThG0Y77q8RkEU6UR 9xuo850nzaRL5wus/ZDxzo5R6+kQPoY4N4sjAjcCj8Jnp0qXP2c4oK24qCtcLLsi lFy7kUNZ3yDpOlT/jIBOUUZZk1jmmRfDxWI6JpT3DnoPB1GsvkZi0hjPC/wQLsSc NcvrHQKBgQCjpXKZzdnM6WTeq/9g4sAKZAR4tkD1mrY6d0wcCFyYA2YyCL1mXz2u BRcHXqc7AkEc+aTH7J/GKtaq9FIjiAEd+bB4S/xqyGcJcifzI48BGp/D59Tn6gEC YycZIhowbgQHaNUrfsPbD0FiNWVUH4J1kuJ4PZmqy9LP1Dy/fXNo1A== -----END RSA PRIVATE KEY-----'),('rsa_public_key','-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwv8C0VUeFwHNFKyEliu2 7X6kk5UzQswS8oCKEXzBgEUckLyIZqd3S/Zi6f3kkJ3D/3ReG6WunpRebBOzxrma VZHyCmoNZj9Vub29VKFyXU1AWW1QR6+elpJHc7GH2+GV9z7QBU0hEBFRgm9U//IZ A7HaW51kutajpVelu6fZaVIAKOyY6DyhMUcHERv38pvGmqM7hLQiNo6YyJCrYcXl JJn4L4WPfLZ/Rf0VQ31sAuF5LnrZYExGcycpw6XCcB7zaf/bKDSUDh+dob0YpNiG WfU6JKT32tQcnJHceoen0nv8ytktn2LJofZEQfLl5HUcU+tIkWznz4nLpsSaqnk2 JQIDAQAB -----END PUBLIC KEY-----'),('script_timeout','25'),('secpass_expireaccount','0'),('secpass_expirepass','0'),('secpass_forceold',''),('secpass_history','0'),('secpass_lockfailed','0'),('secpass_minlen','8'),('secpass_reqmixcase','on'),('secpass_reqnum','on'),('secpass_reqspec','on'),('secpass_unlocktime','60'),('selected_theme','modern'),('selective_debug',''),('selective_device_debug',''),('selective_plugin_debug',''),('sess_allowed_templates_lastchange','1583628707'),('settings_dns_primary',''),('settings_dns_secondary',''),('settings_dns_timeout','500'),('settings_from_email',''),('settings_from_name',''),('settings_how','0'),('settings_ping_mail','0'),('settings_sendmail_path','/usr/sbin/sendmail'),('settings_smtp_host','localhost'),('settings_smtp_port','25'),('settings_smtp_secure','none'),('settings_smtp_timeout','10'),('settings_smtp_username',''),('settings_test_email',''),('settings_wordwrap','120'),('snmp_auth_protocol','MD5'),('snmp_bulk_walk_size','10'),('snmp_community','public'),('snmp_context',''),('snmp_engine_id',''),('snmp_password',''),('snmp_port','161'),('snmp_priv_passphrase',''),('snmp_priv_protocol','DES'),('snmp_retries','3'),('snmp_security_level','authPriv'),('snmp_timeout','500'),('snmp_username',''),('snmp_version','2'),('spikekill_avgnan','last'),('spikekill_backupdir','/var/www/html/cacti/cache/spikekill/'),('spikekill_basetime','12:00am'),('spikekill_batch','0'),('spikekill_deviations','10'),('spikekill_method','2'),('spikekill_number','5'),('spikekill_outliers','5'),('spikekill_percent','1000'),('spikekill_purge','7856352'),('spikekill_timeout','3600'),('spine_log_level','0'),('stats_dsstats_HOURLY','Time:0.0951 RRDUser:0.0000 RRDSystem:0.0000 RRDReal:0.0000'),('stats_poller','Time:1.4263 Method:spine Processes:1 Threads:1 Hosts:1 HostsPerProcess:1 DataSources:30 RRDsProcessed:29'),('stats_recache_1','Poller:1 RecacheTime:0.0 DevicesRecached:0'),('storage_location','0'),('strip_domain',''),('title_size','10'),('total_snmp_ports','1'),('unit_size','7'),('user_template','0');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2872,7 +2655,7 @@ DROP TABLE IF EXISTS `settings_tree`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `settings_tree` (
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `graph_tree_item_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `graph_tree_item_id` int(10) unsigned NOT NULL DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`,`graph_tree_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3047,11 +2830,10 @@ DROP TABLE IF EXISTS `snmp_query_graph_rrd`;
 CREATE TABLE `snmp_query_graph_rrd` (
   `snmp_query_graph_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
   `data_template_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
-  `data_template_rrd_id` mediumint(8) unsigned NOT NULL DEFAULT 0,
+  `data_template_rrd_id` int(10) unsigned NOT NULL DEFAULT 0,
   `snmp_field_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`snmp_query_graph_id`,`data_template_id`,`data_template_rrd_id`),
-  KEY `data_template_rrd_id` (`data_template_rrd_id`),
-  KEY `snmp_query_graph_id` (`snmp_query_graph_id`)
+  KEY `data_template_rrd_id` (`data_template_rrd_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3170,8 +2952,7 @@ CREATE TABLE `snmpagent_cache_notifications` (
   `mib` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence_id` smallint(6) NOT NULL,
-  PRIMARY KEY (`name`,`mib`,`attribute`,`sequence_id`),
-  KEY `name` (`name`)
+  PRIMARY KEY (`name`,`mib`,`attribute`,`sequence_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Notifcations and related attributes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3198,7 +2979,6 @@ CREATE TABLE `snmpagent_cache_textual_conventions` (
   `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `description` varchar(5000) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`name`,`mib`,`type`),
-  KEY `name` (`name`),
   KEY `mib` (`mib`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Textual conventions';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3263,8 +3043,7 @@ CREATE TABLE `snmpagent_managers_notifications` (
   `notification` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mib` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`manager_id`,`notification`,`mib`),
-  KEY `mib` (`mib`),
-  KEY `manager_id_notification` (`manager_id`,`notification`)
+  KEY `mib` (`mib`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='snmp notifications to receivers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3379,7 +3158,7 @@ CREATE TABLE `user_auth` (
 
 LOCK TABLES `user_auth` WRITE;
 /*!40000 ALTER TABLE `user_auth` DISABLE KEYS */;
-INSERT INTO `user_auth` VALUES (1,'admin','f10b480defde9a69030b3d0683e19549',0,'Administrator','','','on','on','on','on','on',2,1,1,1,1,'on',-1,-1,'-1','',0,0,1339587029),(3,'guest','43e9a4ab75570f5b',0,'Guest Account','','on','on','on','on','on','3',1,1,1,1,1,'',-1,-1,'-1','',0,0,0);
+INSERT INTO `user_auth` VALUES (1,'admin','$2y$10$Gt09.Galssvi4os3qYgJ4uXX5hnSUCgnbORJEsDVKvbl072ppo3KO',0,'Administrator','','','on','on','on','on','on',2,1,1,1,1,'on',-1,-1,'-1','',0,0,1339587029),(3,'guest','43e9a4ab75570f5b',0,'Guest Account','','on','on','on','on','on','3',1,1,1,1,1,'',-1,-1,'-1','',0,0,0);
 /*!40000 ALTER TABLE `user_auth` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3567,7 +3346,7 @@ CREATE TABLE `user_auth_realm` (
 
 LOCK TABLES `user_auth_realm` WRITE;
 /*!40000 ALTER TABLE `user_auth_realm` DISABLE KEYS */;
-INSERT INTO `user_auth_realm` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(7,1),(7,3),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(101,1),(102,1),(1043,1);
+INSERT INTO `user_auth_realm` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(7,1),(7,3),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(101,1),(1043,1);
 /*!40000 ALTER TABLE `user_auth_realm` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3620,7 +3399,7 @@ CREATE TABLE `user_domains_ldap` (
   `group_attrib` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `group_member_type` tinyint(3) unsigned NOT NULL,
   `search_base` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `search_filter` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `search_filter` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `specific_dn` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `specific_password` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cn_full_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '',
@@ -3662,7 +3441,7 @@ CREATE TABLE `user_log` (
 
 LOCK TABLES `user_log` WRITE;
 /*!40000 ALTER TABLE `user_log` DISABLE KEYS */;
-INSERT INTO `user_log` VALUES ('admin',0,'2020-03-08 00:20:03',3,'10.0.2.2'),('admin',1,'2020-03-08 00:19:54',1,'10.0.2.2'),('admin',1,'2020-03-08 00:44:52',1,'10.0.2.2');
+INSERT INTO `user_log` VALUES ('admin',0,'2020-03-08 00:20:03',3,'10.0.2.2'),('admin',1,'2020-03-08 00:19:54',1,'10.0.2.2'),('admin',1,'2020-03-08 00:44:52',1,'10.0.2.2'),('admin',1,'2023-02-07 00:32:02',1,'10.0.2.2');
 /*!40000 ALTER TABLE `user_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3741,7 +3520,7 @@ CREATE TABLE `version` (
 
 LOCK TABLES `version` WRITE;
 /*!40000 ALTER TABLE `version` DISABLE KEYS */;
-INSERT INTO `version` VALUES ('1.2.9');
+INSERT INTO `version` VALUES ('1.2.22');
 /*!40000 ALTER TABLE `version` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -3754,4 +3533,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-07 17:01:00
+-- Dump completed on 2023-02-06 16:33:28
