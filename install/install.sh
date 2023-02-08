@@ -76,6 +76,15 @@ elif grep -q "AlmaLinux" /etc/os-release; then
 		os_name=AlmaLinux
 		webserver=httpd
 	fi
+elif grep -q "Rocky Linux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=rockylinux
+		os_name=RockyLinux
+		webserver=httpd
+	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
@@ -201,7 +210,7 @@ printinfo "Updating $os_name, this may take a while..."
 #    exit 1
 #fi
 case $os_dist in
-	almalinux)
+	almalinux | rockylinux)
 		sudo yum -y -q update; sudo yum -y -q upgrade
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong updating Raspbian, exiting..."
@@ -267,7 +276,7 @@ case $os_name in
 			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
-	AlmaLinux)
+	AlmaLinux | RockyLinux)
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
 		printinfo "Setting up packages, this may take a while too..."
 		sudo dnf update -q 
@@ -344,7 +353,7 @@ case $os_dist in
 			fi
 		fi
 	;;
-	almalinux)
+	almalinux | rockylinux)
 	printinfo "Checking Cacti user groups..."
 	groups | grep -q wheel
 		if [ $? -ne 0 ];then
@@ -450,7 +459,7 @@ case $os_dist in
 		mycnf_path=/etc/my.cnf
 		dbserver=mysql
 	;;
-	almalinux)
+	almalinux | rockylinux)
 		mycnf_path=/etc/my.cnf
 		dbserver=mysql
 	;;
@@ -530,7 +539,7 @@ case $os_dist in
 		sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
 		sudo systemctl restart firewalld
 	;;
-	almalinux)
+	almalinux | rockylinux)
 		phpini_path=/etc/php.ini
 		printinfo "Allowing http/s access through firewall..."
 		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
