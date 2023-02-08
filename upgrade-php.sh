@@ -86,6 +86,30 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		webserver=apache2
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
+elif grep -q "AlmaLinux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
+		exit
+	else
+		os_dist=almalinux
+		os_name=AlmaLinux
+		webserver=httpd
+		pkg_mgr=dnf
+		remi=remi-release-9.rpm
+	fi
+elif grep -q "Rocky Linux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
+		exit
+	else
+		os_dist=rockylinux
+		os_name=RockyLinux
+		webserver=httpd
+		pkg_mgr=dnf
+		remi=remi-release-9.rpm
+	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
@@ -96,7 +120,6 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_name=CentOS7
 		webserver=httpd
 		pkg_mgr=yum
-		os_dist=centos
 		remi=remi-release-7.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
@@ -112,7 +135,6 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		os_name=CentOS8
 		webserver=httpd
 		pkg_mgr=yum
-		os_dist=centos
 		remi=remi-release-8.rpm
 		php_version=remi-7.4
 	fi	
