@@ -102,6 +102,7 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_dist=centos
 		os_name=CentOS7
 		webserver=httpd
+		printwarn "CentOS7 will be end of support in 2024, you should consider an alternative such as AlmaLinux or Rocky Linux. Both alternatives are supported for this Cacti script."
 	fi
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
