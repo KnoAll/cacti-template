@@ -138,22 +138,6 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		remi=remi-release-8.rpm
 		php_version=remi-7.4
 	fi	
-elif grep -q "AlmaLinux 9.1" /etc/os-release; then
-  #printerror "Sorry, AlmaLinux not supported for PHP upgrade yet, cannot proceed..."
-  printinfo
- # exit
-	if [[ `whoami` != "cacti" ]]; then
-		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
-		printinfo
-		exit
-	else
-		os_dist=almalinux
-		os_name=AlmaLinux9
-		webserver=httpd
-		pkg_mgr=dnf
-		#remi=remi-release-8.rpm
-		php_version=8.0
-	fi
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	printinfo
