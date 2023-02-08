@@ -210,24 +210,24 @@ printinfo "Updating $os_name, this may take a while..."
 #    exit 1
 #fi
 case $os_dist in
-	almalinux | rockylinux)
-		sudo yum -y -q update; sudo yum -y -q upgrade
+	almalinux|rockylinux)
+		sudo dnf -y -q update; sudo dnf -y -q upgrade
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong updating Raspbian, exiting..."
+			printerror "Something went wrong updating $os_name, exiting..."
 			exit 1
 		fi
 	;;
 	centos)
 		sudo yum -y -q update; sudo yum -y -q upgrade
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong updating Raspbian, exiting..."
+			printerror "Something went wrong updating $os_name, exiting..."
 			exit 1
 		fi
 	;;
 	raspbian)
 		sudo yum -y -q update; sudo yum -y -q upgrade
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong updating Raspbian, exiting..."
+			printerror "Something went wrong updating $os_name, exiting..."
 		exit 1
 		fi
 	;;
