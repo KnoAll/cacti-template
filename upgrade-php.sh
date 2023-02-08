@@ -70,6 +70,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
+		pkg_mgr=apt
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
@@ -84,6 +85,7 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
+		pkg_mgr=apt
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "AlmaLinux 9" /etc/os-release; then
@@ -211,13 +213,13 @@ upgradeAsk () {
 
 upgradePHP() {
 		printinfo "Setting up repo"
-		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo yum install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
+		sudo $pkg_mgr install -y -q http://rpms.remirepo.net/enterprise/$remi
+		sudo $pkg_mgr install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
-			CentOS8 )
-				sudo dnf -y -q module reset php
-				sudo dnf module -y -q enable php:$php_version
+			CentOS8|AlmaLinux|RockyLinux )
+				sudo $pkg_mgr -y -q module reset php
+				sudo $pkg_mgr module -y -q enable php:$php_version
 				sudo dnf -y -q install php
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
@@ -227,13 +229,13 @@ upgradePHP() {
 				fi
 			;;
 			* )
-				sudo yum-config-manager --enable remi-$php_version
-				sudo yum -y -q update
+				sudo $pkg_mgr-config-manager --enable remi-$php_version
+				sudo $pkg_mgr -y -q update
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
 				else
 					printwarn "Restarting webserver..."
-					sudo systemctl restart httpd
+					sudo systemctl restart $webserver
 					php_ver=v$( php -r 'echo PHP_VERSION;' )
 					printinfo "PHP upgraded to $php_ver"
 				fi
