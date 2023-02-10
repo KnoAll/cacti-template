@@ -20,6 +20,34 @@ printerror() {
 printNotices() {
 	notices=$(curl -s http://kevinnoall.com/notices.txt) && printinfo "$notices" && printinfo
 }
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+	php|-php|--php)
+	branch="php"
+        ;;
+        *) break
+    esac
+    shift
+done
+
+# error handling
+#set -eE
+exit_trap() {
+		local lc="$BASH_COMMAND" rc=$?
+		if [ $rc -ne 0 ]; then
+		printerror "Command [$lc] on $LINENO exited with code [$rc]"
+		fi
+}
+trap exit_trap EXIT
+
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
