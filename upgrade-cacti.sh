@@ -143,7 +143,7 @@ function check-smokeping () {
 		smokever=nosmoke
 		printinfo
 	else
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch $2
 		smokeping_onoff
 	fi
 }
@@ -192,7 +192,7 @@ function upgrade-plugins() {
 	case "$plugup" in
 		y | Y | yes | YES| Yes ) 
 			printinfo
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch $2
 		;;
 		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
@@ -234,7 +234,7 @@ if version_ge $cactiver $upgrade_version; then
 		printinfo
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $2
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
@@ -242,7 +242,7 @@ if version_ge $cactiver $upgrade_version; then
         else
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $2
 		phpStatus=$?
 		case "$phpStatus" in
 		167 )
@@ -466,7 +466,7 @@ sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' $config_path
 }
 
 function update-permissions () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh) $1 $2
 }
 
 function upgrade-spine () {
@@ -556,7 +556,7 @@ upgrade-cacti $2
 update-php
 update-mysqld
 # upgrade-spine $2
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
 cron enable
 upgrade-plugins
 update-permissions
