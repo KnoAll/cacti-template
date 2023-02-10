@@ -39,13 +39,13 @@ esac
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
 #determine the os pkg version
-if which dnf >/dev/null; then
+if [ -f /usr/bin/dnf ]; then
 	pkg_mgr=dnf
 	os_dist=almalinux
-elif which apt >/dev/null; then
+elif [ -f /usr/bin/apt ]; then
 	pkg_mgr=apt
 	os_dist=raspbian
-elif which yum >/dev/null; then
+elif [ -f /usr/bin/yum ]; then
 	pkg_mgr=yum
 	os_dist=centos
 else
