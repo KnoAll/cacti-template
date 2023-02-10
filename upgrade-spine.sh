@@ -95,7 +95,7 @@ while :; do
     case $1 in
         debug|-debug|--debug)
                 trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		checkSpine
+		# checkSpine
         ;;
         dev|-dev|--dev)
                 branch="dev"
