@@ -38,25 +38,51 @@ esac
 #get the version of cacti that is installed
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
-#check that spine is installed, if so get the version
-test -f /usr/local/spine/bin/spine
-	if [ $? -ne 0 ];then
-		printerror "Spine does not appear to be installed, exiting."
-		exit 1
-	else
-		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-	fi
-
-if which yum >/dev/null; then
-	pkg_mgr=yum
-	os_dist=centos
+#determine the os pkg version
+if which dnf >/dev/null; then
+	pkg_mgr=dnf
+	os_dist=almalinux
 elif which apt >/dev/null; then
 	pkg_mgr=apt
 	os_dist=raspbian
+elif which yum >/dev/null; then
+	pkg_mgr=yum
+	os_dist=centos
 else
 	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
 	exit 1
 fi
+
+function checkSpine() {
+	#check that spine is installed, if so get the version
+	test -f /usr/local/spine/bin/spine
+		if [ $? -ne 0 ];then
+			printerror "Spine does not appear to be installed, exiting."
+			exit 1
+		else
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+		fi
+}
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		checkSpine
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+		checkSpine
+        ;;
+	install)
+		spinever=1.2.21
+		install_spine=1
+	;;
+        *) break
+    esac
+    shift
+done
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
@@ -75,6 +101,7 @@ function upgrade-spine () {
 		wget -q https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
 		if [ $? -ne 0 ];then
 				printerror "Spine download error cannot install, exiting. You will need to manually upgrade Spine."
+				rm -rf *spine*
 				exit 1
 		else
 			tar -xzf cacti-spine-*.tar.gz
@@ -82,11 +109,22 @@ function upgrade-spine () {
 			cd cacti-spine-*
 		fi
 	fi
-	if [[ $pkg_mgr == "yum" ]]; then
-		sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
-	else
-		sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf
-	fi
+	
+	case $pkg_mgr in
+		yum)
+			printinfo "Setting up yum dependencies"
+			sudo yum install -y -q gcc glibc glibc-common gd gd-devel net-snmp-devel
+		;;
+		dnf)
+			printinfo "Setting up dnf dependencies"
+			sudo dnf --enablerepo=crb install -y -q mysql-devel help2man		
+		;;
+		apt)
+			printinfo "Setting up apt dependencies"
+			sudo -S $pkg_mgr install -y -qq gcc glibc-doc build-essential gdb autoconf		
+		;;
+	esac
+
 	./bootstrap
 		if [ $? -ne 0 ];then
 			printerror "Spine bootstrap error, exiting. You will need to manually upgrade Spine."
@@ -120,6 +158,13 @@ function pick-version() {
 		upgrade-spine
 }
 
+function copyConfig() {
+	sudo cp /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
+	sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
+	sudo systemctl start snmpd
+	sudo systemctl enable snmpd
+}
+
 case "$1" in
 	--pick-version)
 		if [ -z "$2" ]; then
@@ -142,6 +187,7 @@ case "$1" in
 				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
 				exit 1
 			fi
+		copyConfig
 		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		printinfo "Spine Upgraded to v$spinever"
 		exit 0

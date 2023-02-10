@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh) dev
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/alma/install/install.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -41,6 +41,7 @@ EOF
   echo "Welcome to the Kevin's Cacti script!"
   echo
 }
+
 welcomeMessage
 
 if [[ `whoami` == "root" ]]; then
@@ -66,6 +67,33 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		webserver=apache2
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
+elif grep -q "AlmaLinux" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=almalinux
+		os_name=AlmaLinux
+		webserver=httpd
+	fi
+elif grep -q "Rocky Linux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		exit 1
+	else
+		os_dist=rockylinux
+		os_name=RockyLinux
+		webserver=httpd
+	fi
+#elif grep -q "CentOS Linux 8" /etc/os-release; then
+#	if [[ `whoami` != "cacti" ]]; then
+#		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+#		exit 1
+#	else
+#		os_dist=centos
+#		os_name=CentOS8
+#		webserver=httpd
+#	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
 		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
@@ -74,16 +102,8 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_dist=centos
 		os_name=CentOS7
 		webserver=httpd
+		printwarn "CentOS7 will be end of support in 2024, you should consider an alternative such as AlmaLinux or Rocky Linux. Both alternatives are supported for this Cacti script."
 	fi
-elif grep -q "CentOS Linux 8" /etc/os-release; then
-	if [[ `whoami` != "cacti" ]]; then
-		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
-		exit 1
-	else
-		os_dist=centos
-		os_name=CentOS8
-		webserver=httpd
-	fi	
 else
 	printerror "We don't appear to be on a supported OS. Exiting..."
 	exit 1
@@ -92,7 +112,7 @@ fi
 if [[ $1 == "dev" ]]; then
 	param1=$1
 	param2=$2
-	branch=dev
+	branch=alma
 	printwarn "Now on DEV script."
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
@@ -105,7 +125,7 @@ fi
 # get the Cacti version
 # get ready for dynamic update
 #prod_version=( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.14
+prod_version=1.2.22
 test -f /var/www/html/cacti/include/cacti_version
 if [ $? -ne 1 ];then
 	printerror "Cacti is already installed, cannot proceed..."
@@ -171,27 +191,53 @@ wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
 			fi
 }
 
-printinfo "Welcome to Kevin's CentOS7/8/RaspberryPi Cacti install script!"
+printinfo "Welcome to Kevin's Cacti install script!"
 
-printwarn "Updating $os_name, this may take a while..."
-if [[ $os_dist == "raspbian" ]]; then
-	sudo apt -y -qq update; sudo apt -y -qq upgrade
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong updating Raspbian, exiting..."
+printinfo "Updating $os_name, this may take a while..."
+#if [[ $os_dist == "raspbian" ]]; then
+#	sudo yum -y -q update; sudo yum -y -q upgrade
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong updating Raspbian, exiting..."
+#		exit 1
+#	fi
+#elif [[ $os_dist == "centos" ]]; then
+#	sudo yum -y -q update; sudo yum -y -q upgrade
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong updating CentOS, exiting..."
+#		exit 1
+#	fi
+#else
+#    printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
+#    exit 1
+#fi
+case $os_dist in
+	almalinux|rockylinux)
+		sudo dnf -y -q update; sudo dnf -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating $os_name, exiting..."
+			exit 1
+		fi
+	;;
+	centos)
+		sudo yum -y -q update; sudo yum -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating $os_name, exiting..."
+			exit 1
+		fi
+	;;
+	raspbian)
+		sudo yum -y -q update; sudo yum -y -q upgrade
+		if [ $? -ne 0 ];then
+			printerror "Something went wrong updating $os_name, exiting..."
 		exit 1
-	fi
-elif [[ $os_dist == "centos" ]]; then
-	sudo yum -y -q update; sudo yum -y -q upgrade
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong updating CentOS, exiting..."
+		fi
+	;;
+	*)
+		printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
 		exit 1
-	fi
-else
-    printerror "Uh-oh. We don't appear to be on a supported OS. Exiting..."
-    exit 1
-fi
-
-printwarn "Installing prerequisites, this may take a while too..."
+	;;
+esac
+printinfo "Installing prerequisites, this may take a while too..."
 case $os_name in 
 	Raspbian)
 		sudo apt -y -qq install autoconf dos2unix unattended-upgrades php libapache2-mod-php php-mbstring php-gmp mariadb-server mariadb-client php-mysql php-curl php-net-socket php-gd php-intl php-pear php-imap php-memcache php-pspell php-recode php-tidy php-xmlrpc php-snmp php-mbstring php-gettext php-gmp php-json php-xml php-common snmp snmpd snmp-mibs-downloader rrdtool php-ldap php-snmp sendmail gcc libssl-dev libmariadbclient-dev libperl-dev libsnmp-dev help2man default-libmysqlclient-dev git
@@ -206,6 +252,7 @@ case $os_name in
 	CentOS7)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
+		sudo yum install -y -q epel-release
 		sudo yum install -y -q httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix help2man openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
@@ -218,7 +265,7 @@ case $os_name in
 	CentOS8)
 		curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
-		printinfo "Setting up packages"
+		printinfo "Setting up packages, this may take a while too..."
 		sudo yum install -y -q make httpd php php-mysqlnd MariaDB-server MariaDB-shared rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel MariaDB-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong installing prerequisites, exiting..."
@@ -230,35 +277,98 @@ case $os_name in
 			sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
 		fi	
 	;;
+	AlmaLinux | RockyLinux)
+		sudo sed -i 's/enforcing/permissive/g' /etc/selinux/config
+		printinfo "Setting up packages, this may take a while too..."
+		sudo dnf update -q 
+		sudo dnf install -q -y make httpd php php-mysqlnd mariadb-server rrdtool net-snmp net-snmp-utils autoconf automake libtool dos2unix openssl-devel net-snmp-devel nano wget git php-gd php-mbstring php-snmp php-ldap php-posix php-json php-simplexml php-gmp rsync
+			if [ $? -ne 0 ];then
+			printerror "Something went wrong installing packages, exiting..."
+			exit 1
+		else
+			printinfo "Enabling webserver and mysql server..."
+			sudo systemctl start httpd && sudo systemctl enable httpd && sudo systemctl start mariadb && sudo systemctl enable mariadb
+			#printinfo "Setting up help2man"
+			# sudo dnf --enablerepo=powertools install -y help2man || sudo dnf --enablerepo=PowerTools install -y help2man
+			printinfo "Securing MariaDB server, please follow prompts..."
+			sudo mysql_secure_installation
+			printinfo "Setting up php..."
+			sudo dnf install -q -y php-fpm php-mysqlnd php-gd php-cli php-curl php-mbstring php-bcmath php-zip php-opcache php-xml php-json php-intl
+		fi
+	;;
 esac
 
-if [[ $os_dist == "raspbian" ]]; then
+#if [[ $os_dist == "raspbian" ]]; then
+#	printinfo "Setting up Cacti user, get ready to enter a password!!"
+#	sudo adduser cacti 
+#	if [ $? -ne 0 ];then
+#		printerror "Something went wrong setting up Cacti user, exiting..."
+#		exit 1
+#	else
+#		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+#		if [ $? -ne 0 ];then
+#			printerror "Something went wrong adding Cacti user groups, exiting..."
+#			exit 1
+#		fi
+#	fi
+#elif [[ $os_dist == "centos" ]]; then
+#	printinfo "Checking Cacti user groups..."
+#	groups | grep -q wheel
+#	if [ $? -ne 0 ];then
+#		printerror "Cacti is not in the suoders group, cannot proceed..."
+#		exit 1
+#	else
+#		sudo usermod -a -G apache cacti
+#		if [ $? -ne 0 ];then
+#			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+#			exit 1
+#		fi
+#	fi
+#fi
+case $os_dist in 
+	raspbian)
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
 	sudo adduser cacti 
-	if [ $? -ne 0 ];then
-		printerror "Something went wrong setting up Cacti user, exiting..."
-		exit 1
-	else
-		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong adding Cacti user groups, exiting..."
+			printerror "Something went wrong setting up Cacti user, exiting..."
 			exit 1
+		else
+			sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user groups, exiting..."
+				exit 1
+			fi
 		fi
-	fi
-elif [[ $os_dist == "centos" ]]; then
+	;;
+	centos)
 	printinfo "Checking Cacti user groups..."
 	groups | grep -q wheel
-	if [ $? -ne 0 ];then
-		printerror "Cacti is not in the suoders group, cannot proceed..."
-		exit 1
-	else
-		sudo usermod -a -G apache cacti
 		if [ $? -ne 0 ];then
-			printerror "Something went wrong adding Cacti user to apache group, exiting..."
+			printerror "Cacti is not in the suoders group, cannot proceed..."
 			exit 1
+		else
+			sudo usermod -a -G apache cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user to apache group, exiting..."
+				exit 1
+			fi
 		fi
-	fi
-fi
+	;;
+	almalinux | rockylinux)
+	printinfo "Checking Cacti user groups..."
+	groups | grep -q wheel
+		if [ $? -ne 0 ];then
+			printerror "Cacti is not in the suoders group, cannot proceed..."
+			exit 1
+		else
+			sudo usermod -a -G apache cacti
+			if [ $? -ne 0 ];then
+				printerror "Something went wrong adding Cacti user to apache group, exiting..."
+				exit 1
+			fi
+		fi
+	;;
+esac
 
 func_dbask () {
           printinfo "Enter 1 to use an untouched Cacti DB or 2 to use Kevin's tweaked DB: "
@@ -271,7 +381,7 @@ func_dbask () {
 			printerror "Something went wrong importing Cacti database, exiting..."
 			exit 1
 		else
-		printinfo "Imported Cacti db. The default username/password is admin and admin."
+		printwarn "Imported Cacti db. The default username/password is admin and admin."
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-cacti&write=0 )
 		printwarn "This script sets up 1m polling. When finishing install in the Web UI, be sure to select 1m polling and 1m cron"
 		fi
@@ -283,7 +393,7 @@ func_dbask () {
 			printerror "Something went wrong importing Cacti database, exiting..."
 			exit 1
 		else
-		printinfo "The default username/password is admin and Cactipw1! (including the exclamation)."
+		printwarn "The default username/password is admin and Cactipw1! (including the exclamation)."
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=db-kevin&write=0 )
 		fi
 	else
@@ -333,13 +443,29 @@ elif [[ $os_dist == "centos" ]]; then
 fi
 
 printinfo "Updating mysql for Cacti v1.2.x"
-if [[ $os_dist == "raspbian" ]]; then
-	mycnf_path=/etc/mysql/my.cnf
-	dbserver=mysql
-elif [[ $os_dist == "centos" ]]; then
-	mycnf_path=/etc/my.cnf
-	dbserver=mariadb
-fi
+#if [[ $os_dist == "raspbian" ]]; then
+#	mycnf_path=/etc/mysql/my.cnf
+#	dbserver=mysql
+#elif [[ $os_dist == "centos" ]]; then
+#	mycnf_path=/etc/my.cnf
+#	dbserver=mariadb
+#fi
+
+case $os_dist in 
+	raspbian)
+		mycnf_path=/etc/mysql/my.cnf
+		dbserver=mysql
+	;;
+	centos)
+		mycnf_path=/etc/my.cnf
+		dbserver=mysql
+	;;
+	almalinux | rockylinux)
+		mycnf_path=/etc/my.cnf
+		dbserver=mysql
+	;;
+esac
+
 grep -q -w "mysqld" $mycnf_path
 if [ $? -ne 0 ];then
 	#Fugly but works for now...
@@ -403,6 +529,24 @@ elif [[ $os_dist == "centos" ]]; then
 	sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
 	sudo systemctl restart firewalld
 fi
+case $os_dist in 
+	raspbian)
+		phpini_path=/etc/php/$verphp/apache2/php.ini
+		phpcliini_path=/etc/php/$verphp/cli/php.ini
+	;;
+	centos)
+		phpini_path=/etc/php.ini
+		printinfo "Allowing http/s access through firewall..."
+		sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --add-service=https --permanent
+		sudo systemctl restart firewalld
+	;;
+	almalinux | rockylinux)
+		phpini_path=/etc/php.ini
+		printinfo "Allowing http/s access through firewall..."
+		sudo firewall-cmd --permanent --add-service={http,https} && sudo firewall-cmd --reload
+		#sudo systemctl restart firewalld
+	;;
+esac
 grep -q -w "memory_limit = 128M" $phpini_path
 	if [ $? -ne 0 ];then
 		grep -q -w "memory_limit = 400M" $phpini_path
@@ -463,7 +607,8 @@ sudo systemctl restart $webserver
 }
 update-php
 
-installSpine
+#installSpine
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 install
 
 printinfo "Setting up Plugins..."
 # plugins
@@ -525,6 +670,11 @@ case $os_name in
 	;;
 	CentOS8)
 		func_smokeask
+		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
+		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
+	;;
+	AlmaLinux|RockyLinux)
+		#func_smokeask
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
 		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
