@@ -83,8 +83,8 @@ function checkSpine() {
 	#check that spine is installed, if so get the version
 	test -f /usr/local/spine/bin/spine
 		if [ $? -ne 0 ];then
-			printerror "Spine does not appear to be installed, exiting."
-			exit 1
+			printerror "Spine does not appear to be installed..."
+			# exit 1
 		else
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		fi
@@ -95,7 +95,7 @@ while :; do
     case $1 in
         debug|-debug|--debug)
                 trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		# checkSpine
+		checkSpine
         ;;
         dev|-dev|--dev)
                 branch="dev"
@@ -105,7 +105,9 @@ while :; do
 		spinever=1.2.21
 		install_spine=1
 	;;
-        *) break
+        *) 
+		checkSpine
+		break
     esac
     shift
 done
