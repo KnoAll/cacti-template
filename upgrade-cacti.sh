@@ -123,15 +123,18 @@ else
 	printinfo
 fi
 
-if which yum >/dev/null; then
-	pkg_mgr=yum
-	os_dist=centos
-elif which apt >/dev/null; then
+if [ -f /usr/bin/dnf ]; then
+	pkg_mgr=dnf
+	os_dist=alma-rocky
+elif [ -f /usr/bin/apt ]; then
 	pkg_mgr=apt
 	os_dist=raspbian
+elif [ -f /usr/bin/yum ]; then
+	pkg_mgr=yum
+	os_dist=centos
 else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
+	printerror "You seem to be on something other than CentOS or Alma/Rocky Linux, cannot proceed..."
+	exit 1
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
