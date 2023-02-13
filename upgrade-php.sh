@@ -70,6 +70,7 @@ elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
+		pkg_mgr=apt
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
 	fi
 elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
@@ -84,7 +85,32 @@ elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 		os_dist=raspbian
 		os_name=Raspbian
 		webserver=apache2
+		pkg_mgr=apt
 		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
+	fi
+elif grep -q "AlmaLinux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
+		exit
+	else
+		os_dist=almalinux
+		os_name=AlmaLinux
+		webserver=httpd
+		pkg_mgr=dnf
+		remi=remi-release-9.rpm
+	fi
+elif grep -q "Rocky Linux 9" /etc/os-release; then
+	if [[ `whoami` != "cacti" ]]; then
+		printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+		printinfo
+		exit
+	else
+		os_dist=rockylinux
+		os_name=RockyLinux
+		webserver=httpd
+		pkg_mgr=dnf
+		remi=remi-release-9.rpm
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -96,7 +122,6 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		os_name=CentOS7
 		webserver=httpd
 		pkg_mgr=yum
-		os_dist=centos
 		remi=remi-release-7.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
@@ -112,7 +137,6 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		os_name=CentOS8
 		webserver=httpd
 		pkg_mgr=yum
-		os_dist=centos
 		remi=remi-release-8.rpm
 		php_version=remi-7.4
 	fi	
@@ -189,13 +213,13 @@ upgradeAsk () {
 
 upgradePHP() {
 		printinfo "Setting up repo"
-		sudo yum install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo yum install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
+		sudo $pkg_mgr install -y -q http://rpms.remirepo.net/enterprise/$remi
+		sudo $pkg_mgr install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
-			CentOS8 )
-				sudo dnf -y -q module reset php
-				sudo dnf module -y -q enable php:$php_version
+			CentOS8|AlmaLinux|RockyLinux )
+				sudo $pkg_mgr -y -q module reset php
+				sudo $pkg_mgr module -y -q enable php:$php_version
 				sudo dnf -y -q install php
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
@@ -205,13 +229,13 @@ upgradePHP() {
 				fi
 			;;
 			* )
-				sudo yum-config-manager --enable remi-$php_version
-				sudo yum -y -q update
+				sudo $pkg_mgr-config-manager --enable remi-$php_version
+				sudo $pkg_mgr -y -q update
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
 				else
 					printwarn "Restarting webserver..."
-					sudo systemctl restart httpd
+					sudo systemctl restart $webserver
 					php_ver=v$( php -r 'echo PHP_VERSION;' )
 					printinfo "PHP upgraded to $php_ver"
 				fi
