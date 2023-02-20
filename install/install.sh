@@ -112,7 +112,7 @@ fi
 if [[ $1 == "dev" ]]; then
 	param1=$1
 	param2=$2
-	branch=alma
+	branch=dev
 	printwarn "Now on DEV script."
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
