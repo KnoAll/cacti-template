@@ -379,6 +379,7 @@ func_dbask () {
 		#sudo mysql cacti < /var/www/html/cacti/cacti.sql
 		if [ $? -ne 0 ];then
 			printerror "Something went wrong importing Cacti database, exiting..."
+			sudo mysql -u root -e "drop database cacti";
 			exit 1
 		else
 		printwarn "Imported Cacti db. The default username/password is admin and admin."
