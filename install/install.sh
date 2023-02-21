@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/alma/install/install.sh) dev
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/install.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -112,7 +112,7 @@ fi
 if [[ $1 == "dev" ]]; then
 	param1=$1
 	param2=$2
-	branch=alma
+	branch=dev
 	printwarn "Now on DEV script."
 	if [[ $2 == "develop" ]]; then
 		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
