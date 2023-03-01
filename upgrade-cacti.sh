@@ -26,11 +26,13 @@ for var in "$@"; do
     case $var in
         debug|-debug|--debug)
                 trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		printwarn gonnadebug
+		printwarn nowDEBUGGING
         ;;
         dev|-dev|--dev)
-                branch="dev"
-		printwarn gonnadev
+		param1=$1
+		param2=$2
+		branch=dev
+		printwarn "Now on DEV branch."
         ;;
 	php|-php|--php)
 	branch="php"
@@ -79,20 +81,10 @@ if [[ -z $cactiver ]];then
 	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
 fi
-if [[ $1 == "dev" || $1 == "--switch-dev" ]]; then
-	param1=$1
-	param2=$2
-	branch=dev
-	printwarn "Now on DEV branch."
-	if [[ $2 == "develop" ]]; then
-		prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/develop/include/cacti_version )
-		printwarn "Switching to DEVELOP version v$prod_version via git..."
-	fi
-else
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
-	printinfo
-	branch=master
-fi
+counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+printinfo
+branch=master
+
 
 # get latest version of cacti-upgrade script
 if grep -q v1.2.18 cacti-upgrade.sh; then
