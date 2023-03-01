@@ -526,7 +526,7 @@ upgrade-plugins
 update-permissions
 compress-delete
 
-if [[ $1 == "dev" ]]; then
+if [[ $branch == "dev" ]]; then
 	printinfo
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
