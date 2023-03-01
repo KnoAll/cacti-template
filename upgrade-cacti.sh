@@ -35,11 +35,14 @@ for var in "$@"; do
 		printwarn "Now on DEV branch."
         ;;
 	php|-php|--php)
-	branch="php"
+		branch="php"
         ;;
-        *) break
+        *) 
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+		printinfo
+		branch=master
+		break
     esac
-#    shift
 done
 
 # error handling
@@ -81,10 +84,6 @@ if [[ -z $cactiver ]];then
 	printerror "Cacti is either not installed or we were not able to determine it's version. Cannot proceed..."
 	exit 1
 fi
-counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
-printinfo
-branch=master
-
 
 # get latest version of cacti-upgrade script
 if grep -q v1.2.18 cacti-upgrade.sh; then
