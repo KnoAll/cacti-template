@@ -518,13 +518,16 @@ upgrade-plugins
 update-permissions
 compress-delete
 
+printerror $branch
 if [[ $branch == dev ]]; then
 	printinfo
+	printerror $branch
 else
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
 	printinfo
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$os_dist&write=0 )
-	printinfo	
+	printinfo
+	printerror $branch
 fi
 
 check-smokeping
