@@ -22,20 +22,22 @@ printNotices() {
 }
 
 #ingest options
-while :; do
-    case $1 in
+for var in "$@"; do
+    case $var in
         debug|-debug|--debug)
                 trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		printwarn gonnadebug
         ;;
         dev|-dev|--dev)
                 branch="dev"
+		printwarn gonnadev
         ;;
 	php|-php|--php)
 	branch="php"
         ;;
         *) break
     esac
-    shift
+#    shift
 done
 
 # error handling
