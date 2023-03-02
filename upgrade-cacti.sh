@@ -22,28 +22,26 @@ printNotices() {
 }
 
 #ingest options
-for var in "$@"; do
-    case $var in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		printwarn "Now DEBUGGING"
-        ;;
-        dev|-dev|--dev)
-		param1=$1
-		param2=$2
-		branch=dev
-		printwarn "Now on DEV branch."
-        ;;
-	php|-php|--php)
-		branch="php"
-        ;;
-        *) 
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
-		printinfo
-		branch=master
-		break
-    esac
-done
+if [[ "$&" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev)
+			param1=$1
+			param2=$2
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		*) 
+	    esac
+	done
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-upgrade&write=0 )
+	printinfo
+fi
 
 # error handling
 #set -eE
