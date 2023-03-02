@@ -35,9 +35,6 @@ if [[ "$&" > 0 ]]; then
 			branch=dev
 			printwarn "Now on DEV branch."
 		;;
-		php|-php|--php)
-			branch="php"
-		;;
 		*) 
 	    esac
 	done
