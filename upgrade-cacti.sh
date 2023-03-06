@@ -7,6 +7,8 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 errorcount=0
 branch=master
+param1=$1
+param2=$2
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
@@ -30,8 +32,6 @@ if [[ "$&" > 0 ]]; then
 			printwarn "Now DEBUGGING"
 		;;
 		dev|-dev|--dev)
-			param1=$1
-			param2=$2
 			branch=dev
 			printwarn "Now on DEV branch."
 		;;
@@ -509,7 +509,7 @@ update-cactidir
 upgrade-cacti $2
 update-php
 update-mysqld
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $1 $2
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $param1 $param2
 cron enable
 upgrade-plugins
 update-permissions
