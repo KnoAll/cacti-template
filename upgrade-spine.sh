@@ -27,9 +27,6 @@ while :; do
         dev|-dev|--dev)
                 branch="dev"
         ;;
-	php|-php|--php)
-	branch="php"
-        ;;
         *) break
     esac
     shift
@@ -188,12 +185,11 @@ function pick-version() {
 
 function copyConfig() {
 	if [ -f /usr/local/spine/etc/spine.conf ]; then
-		printinfo
+		printerror confExists
 	else
+		printerror confNotExist
 		sudo cp /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 		sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-		sudo systemctl start snmpd
-		sudo systemctl enable snmpd
 	fi
 }
 
