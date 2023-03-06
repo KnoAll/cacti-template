@@ -185,9 +185,8 @@ function pick-version() {
 
 function copyConfig() {
 	if [ -f /usr/local/spine/etc/spine.conf ]; then
-		printerror confExists
+		printinfo
 	else
-		printerror confNotExist
 		sudo cp /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
 		sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
 	fi
