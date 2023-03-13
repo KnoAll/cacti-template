@@ -70,13 +70,11 @@ backupData() {
 			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 			if [[ $? -ne 0 ]];then
 				printerror "Error backing up alternate Cacti db cactimain, DATABASE NOT BACKED UP! You should back up manually."
-			else
-				printwarn "Alternate Cacti db cactimain backed up..."
 			fi
 		else
 		gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 		if [[ $? -ne 0 ]];then
-			printerror "Cacti database NOT BACKED UP!
+			printerror "Cacti database NOT BACKED UP!"
 		else
 			printinfo "Cacti DB backed up."
 		fi
