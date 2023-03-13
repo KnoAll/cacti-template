@@ -66,6 +66,8 @@ backupData() {
                 mkdir cacti_$cactiver
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 		if [[ -e ~/$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz ]];then
+			printinfo "Cacti DB backed up."
+		else
 			printerror "trying to backup cactimain"
 			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 			if [[ -e ~/$cactiver/mysql.cactimain_$(date +\%Y\%m\%d).sql.gz ]];then
@@ -73,8 +75,6 @@ backupData() {
 			else
 				printwarn "Alternate Cacti db cactimain backed up..."
 			fi
-		else
-			printinfo "Cacti DB backed up."
 		fi
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
