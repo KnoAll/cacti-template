@@ -73,10 +73,11 @@ backupData() {
 			fi
 		else
 		gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-		if [[ $? -ne 0 ]];then
-			printerror "Cacti database NOT BACKED UP!"
-		else
-			printinfo "Cacti DB backed up."
+			if [[ $? -ne 0 ]];then
+				printerror "Cacti database NOT BACKED UP!"
+			else
+				printinfo "Cacti DB backed up."
+			fi
 		fi
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
