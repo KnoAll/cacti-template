@@ -73,17 +73,17 @@ backupData() {
 			else
 				gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 				if [[ $? -ne 0 ]];then
-					printerror "Cacti database NOT BACKED UP!"
+					printerror "Cacti db NOT BACKED UP!"
 				else
-					printinfo "Cacti DB backed up."
+					printinfo "Cacti db backed up."
 				fi				
 			fi
 		else
 		gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 			if [[ $? -ne 0 ]];then
-				printerror "Cacti database NOT BACKED UP!"
+				printerror "Cacti database NOT BACKED UP! You should backup the db manually."
 			else
-				printinfo "Cacti DB backed up."
+				printinfo "Cacti db backed up."
 			fi
 		fi
 		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
@@ -96,6 +96,7 @@ backupData() {
 		echo $cactiver > cacti_$cactiver/.cacti-backup
 		printinfo "Compressing files..."
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
+		printinfo "Removing temp files..."
 		rm -rf cacti_$cactiver
 		printinfo "Cacti v$cactiver backed up into ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
 }
