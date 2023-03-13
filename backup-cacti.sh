@@ -68,13 +68,12 @@ backupData() {
 		if [ $? -ne 0 ];then
 			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 			if [ $? -ne 0 ];then
-				printerror "Error backing up Cacti db, cannot continue, exiting"
-				exit 1
+				printerror "Error backing up Cacti db, DATABASE NOT BACKED UP! You should back up manually."
 			else
 				printwarn "Alternate Cacti db cactimain backed up..."
 			fi
 		else
-			printerror "Error backing up Cacti db, cannot continue, exiting"
+			printerror "Error backing up Cacti db, DATABASE NOT BACKED UP! You should back up manually."
 		fi
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
