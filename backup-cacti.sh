@@ -64,11 +64,9 @@ backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
-		#set -o pipefail
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-		#mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 		if [[ $? -ne 0 ]];then
-			printerror "trying to backup cactimain"
+			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
 			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 			if [[ $? -ne 0 ]];then
 				printerror "Error backing up alternate Cacti db cactimain, DATABASE NOT BACKED UP! You should back up manually."
@@ -88,7 +86,7 @@ backupData() {
 				printinfo "Cacti DB backed up."
 			fi
 		fi
-		#set +o pipefail
+		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/scripts ~/cacti_$cactiver/
@@ -96,8 +94,10 @@ backupData() {
 		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
 		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
 		echo $cactiver > cacti_$cactiver/.cacti-backup
+		printinfo "Compressing files..."
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
 		rm -rf cacti_$cactiver
+		printinfo "Cacti v$cactiver backed up into ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
 }
 
 backupData
