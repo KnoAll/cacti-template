@@ -64,7 +64,7 @@ backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
-                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > mysql.cacti_$(date +\%Y\%m\%d).sql
+                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 		if [[ $? -ne 0 ]];then
 			printerror "trying to backup cactimain"
 			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
