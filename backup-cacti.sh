@@ -11,7 +11,7 @@ exit_trap() {
 		rm -rf cacti_$cactiver
 		fi
 }
-trap exit_trap EXIT
+#trap exit_trap EXIT
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
