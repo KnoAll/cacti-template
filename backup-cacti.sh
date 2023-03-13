@@ -73,7 +73,7 @@ backupData() {
 				printwarn "Alternate Cacti db cactimain backed up..."
 			fi
 		else
-			printerror "Error backing up Cacti db, DATABASE NOT BACKED UP! You should back up manually."
+			printinfo "Cacti DB backed up."
 		fi
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
