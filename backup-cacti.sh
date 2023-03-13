@@ -64,7 +64,7 @@ backupData() {
                 printinfo "Grabbing Cacti db and data and packaging..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
-		set -o pipefail
+		#set -o pipefail
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 		#mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
 		if [[ $? -ne 0 ]];then
@@ -88,7 +88,7 @@ backupData() {
 				printinfo "Cacti DB backed up."
 			fi
 		fi
-		set +o pipefail
+		#set +o pipefail
                 cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
 		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/scripts ~/cacti_$cactiver/
