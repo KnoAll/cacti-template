@@ -2,7 +2,7 @@
 #bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
 
 # error handling
-set -eE
+#set -eE
 exit_trap() {
 		local lc="$BASH_COMMAND" rc=$?
 		if [ $rc -ne 0 ]; then
