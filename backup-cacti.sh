@@ -61,7 +61,7 @@ while :; do
 done
 
 backupData() {
-                printinfo "Grabbing Cacti db and data and packaging..."
+                printinfo "Grabbing Cacti db..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
                 mkdir cacti_$cactiver
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
@@ -75,7 +75,7 @@ backupData() {
 				if [[ $? -ne 0 ]];then
 					printerror "Cacti db NOT BACKED UP!"
 				else
-					printinfo "Cacti db backed up."
+					printinfo
 				fi				
 			fi
 		else
@@ -94,6 +94,7 @@ backupData() {
 		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
 		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
 		echo $cactiver > cacti_$cactiver/.cacti-backup
+		printinfo
 		printinfo "Compressing files..."
                 tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
 		printinfo "Removing temp files..."
