@@ -75,7 +75,7 @@ backupData() {
 				if [[ $? -ne 0 ]];then
 					printerror "Cacti db NOT BACKED UP!"
 				else
-					printinfo
+					printinfo "Cacti db backed up."
 				fi				
 			fi
 		else
