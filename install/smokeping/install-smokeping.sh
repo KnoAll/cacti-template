@@ -50,8 +50,7 @@ case $(whoami) in
 		exit 1
                 ;;
         cacti)
-		if [ -f ~/cacti-upgrade.sh ]
-		then
+		if [ -f ~/cacti-upgrade.sh ]; then
 			if grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 				os_dist=raspbian
 				os_name=Raspbian
@@ -80,6 +79,7 @@ case $(whoami) in
 					os_name=RockyLinux
 					webserver=httpd
 				fi
+			fi
 		else
 			printerror "You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"	
 		fi
