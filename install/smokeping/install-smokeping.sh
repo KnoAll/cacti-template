@@ -17,6 +17,27 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+#ingest options
+if [[ "$&" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev)
+			param1=$1
+			param2=$2
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		*)
+			branch=master
+		;;
+	    esac
+	done
+fi
+
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
@@ -40,6 +61,24 @@ case $(whoami) in
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
 			fi
+			elif grep -q "AlmaLinux" /etc/os-release; then
+				if [[ `whoami` != "cacti" ]]; then
+					printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+					exit 1
+				else
+					os_dist=almalinux
+					os_name=AlmaLinux
+					webserver=httpd
+				fi
+			elif grep -q "Rocky Linux 9" /etc/os-release; then
+				if [[ `whoami` != "cacti" ]]; then
+					printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
+					exit 1
+				else
+					os_dist=rockylinux
+					os_name=RockyLinux
+					webserver=httpd
+				fi
 		else
 			printerror "You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"	
 		fi
@@ -48,16 +87,6 @@ case $(whoami) in
 		printerror "Uh-oh. You are not logged in as the cacti user. Exiting..."
 		exit 1
                 ;;
-esac
-case $1 in
-	dev)
-		param1=$1
-		param2=$2
-		branch=dev
-	;;
-	*)
-		branch=master
-	;;
 esac
 
 # get the Smokeping version
@@ -102,10 +131,13 @@ case $os_dist in
 	raspbian)
 		sudo apt install -y librrds-perl dnsutils daemon python3-pip libnet-ssleay-perl
 		sudo a2enmod -q  cgi
-		;;
+	;;
 	centos)
 		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
-		;;
+	;;
+	almalinux|rockylinux
+		sudo dnf install -y perl-core perl-rrdtool bind-utils
+	;;
 	*)
 		printinfo "Uh-oh. Sorry, unsupported OS Exiting..."
 		exit 1
