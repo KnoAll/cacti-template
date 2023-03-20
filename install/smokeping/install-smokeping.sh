@@ -100,7 +100,7 @@ if [ -f /opt/smokeping/bin/smokeping ];then
 	exit 1
 fi
 printinfo "Welcome to Kevin's SmokePing install script!"
-sudo printinfo ""
+sudo printinfo
 
 function upgrade-fping () {
                 printinfo "Checking fping version..."
@@ -207,7 +207,9 @@ fi
 }
 
 function update-permissions () {
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+	printinfo "Checking Permissions"
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+	printinfo
 }
 
 upgrade-fping
