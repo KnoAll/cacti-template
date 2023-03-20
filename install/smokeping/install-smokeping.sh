@@ -135,7 +135,7 @@ case $os_dist in
 	centos)
 		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
 	;;
-	almalinux|rockylinux
+	almalinux|rockylinux)
 		sudo dnf install -y perl-core perl-rrdtool bind-utils
 	;;
 	*)
