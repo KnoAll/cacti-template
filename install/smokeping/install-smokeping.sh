@@ -62,7 +62,6 @@ case $(whoami) in
 				os_name=CentOS7
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
-			fi
 			elif grep -q "AlmaLinux" /etc/os-release; then
 				if [[ `whoami` != "cacti" ]]; then
 					printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
