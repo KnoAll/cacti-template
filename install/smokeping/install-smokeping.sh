@@ -178,17 +178,27 @@ else
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
 case $os_dist in
 	centos)
-		printinfo ""
+		printinfo
+		sudo mv smokeping-init.d /etc/init.d/smokeping			
+		sudo chmod +x /etc/init.d/smokeping
+		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+		sudo mv smokeping.conf $webconf/smokeping.conf
+		sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
 	;;
 	raspbian)
 		sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
+		sudo mv smokeping-init.d /etc/init.d/smokeping			
+		sudo chmod +x /etc/init.d/smokeping
+		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+		sudo mv smokeping.conf $webconf/smokeping.conf
+		sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
+	;;
+	almalinux|rockylinux)
+		sudo mv smokeping-init.d /etc/systemd/system/smokeping.service
+		sudo systemctl enable smokeping && sudo systemctl start smokeping && sudo systemctl status smokeping
 	;;
 esac
-			sudo mv smokeping-init.d /etc/init.d/smokeping			
-			sudo chmod +x /etc/init.d/smokeping
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
-			sudo mv smokeping.conf $webconf/smokeping.conf
-			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service			
+			
 		fi
 	fi
 fi
