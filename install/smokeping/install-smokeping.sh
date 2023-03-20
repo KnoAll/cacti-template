@@ -200,7 +200,7 @@ printinfo "Updating SmokePing config..."
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	sudo printinfo ""
+	sudo printinfo
 	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
 	mv smokeping.config /opt/smokeping/etc/config
 fi
