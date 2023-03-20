@@ -17,6 +17,8 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+
 #ingest options
 if [[ "$&" > 0 ]]; then
 	for var in "$@"; do
