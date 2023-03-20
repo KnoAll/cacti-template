@@ -17,8 +17,6 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
-trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-
 #ingest options
 if [[ "$&" > 0 ]]; then
 	for var in "$@"; do
@@ -92,8 +90,8 @@ esac
 
 # get the Smokeping version
 #upgrade_version=2.006011
-prod_version=2.007003
-web_version=2.7.3
+prod_version=2.008002
+web_version=2.8.2
 dev_version=
 
 if [ -f /opt/smokeping/bin/smokeping ];then
