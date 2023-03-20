@@ -137,7 +137,7 @@ case $os_dist in
 		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
 	;;
 	almalinux|rockylinux)
-		sudo dnf install -y perl-core perl-rrdtool bind-utils
+		sudo dnf install -y -q perl-core perl-rrdtool bind-utils
 	;;
 	*)
 		printinfo "Uh-oh. Sorry, unsupported OS Exiting..."
