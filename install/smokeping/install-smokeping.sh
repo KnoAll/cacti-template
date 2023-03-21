@@ -40,6 +40,8 @@ printerror "ingest options"
 		;;
 	    esac
 	done
+else
+printerror NARP
 fi
 
 case $(whoami) in
