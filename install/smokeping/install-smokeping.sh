@@ -171,7 +171,7 @@ else
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
 			if [ $? -ne 0 ];then
 				printerror "Error downloading SmokePing startup script."
-				printerror "$branch, $os_dist, $webserver, $webconf
+				printerror "$branch, $os_dist, $webserver, $webconf"
 			fi
 case $os_dist in
 	centos)
