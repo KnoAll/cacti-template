@@ -169,6 +169,9 @@ else
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+			if [ $? -ne 0 ];then
+				printerror "Error downloading SmokePing startup script."
+			fi
 case $os_dist in
 	centos)
 		printinfo
