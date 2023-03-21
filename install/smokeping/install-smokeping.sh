@@ -60,23 +60,15 @@ case $(whoami) in
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
 			elif grep -q "AlmaLinux" /etc/os-release; then
-				if [[ `whoami` != "cacti" ]]; then
-					printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
-					exit 1
-				else
-					os_dist=almalinux
-					os_name=AlmaLinux
-					webserver=httpd
-				fi
+				os_dist=almalinux
+				os_name=AlmaLinux
+				webserver=httpd
+				webconf=/etc/httpd/conf.d
 			elif grep -q "Rocky Linux 9" /etc/os-release; then
-				if [[ `whoami` != "cacti" ]]; then
-					printerror "Uh-oh. You are not logged in as the default cacti user. Exiting..."
-					exit 1
-				else
-					os_dist=rockylinux
-					os_name=RockyLinux
-					webserver=httpd
-				fi
+				os_dist=rockylinux
+				os_name=RockyLinux
+				webserver=httpd
+				webconf=/etc/httpd/conf.d
 			fi
 		else
 			printerror "You don't seem to have installed using Kevin's script/appliance, sorry exiting! http://www.kevinnoall.com"	
