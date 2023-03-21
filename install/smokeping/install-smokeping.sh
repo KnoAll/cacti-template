@@ -19,29 +19,23 @@ printerror() {
 
 #ingest options
 if [[ "$#" > 0 ]]; then
-printerror "ingest options"
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
-			printerror "debug"
 			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
 			printwarn "Now DEBUGGING"
 		;;
 		dev|-dev|--dev)
-			printerror "dev branch"
 			param1=$1
 			param2=$2
 			branch=dev
 			printwarn "Now on DEV branch."
 		;;
 		*)
-			printerror "branch master"
 			branch=master
 		;;
 	    esac
 	done
-else
-printerror NARP
 fi
 
 case $(whoami) in
@@ -71,7 +65,6 @@ case $(whoami) in
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
 			elif grep -q "Rocky Linux 9" /etc/os-release; then
-				printerror "rockylinux"
 				os_dist=rockylinux
 				os_name=RockyLinux
 				webserver=httpd
