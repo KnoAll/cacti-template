@@ -204,8 +204,7 @@ if [ -f  /opt/smokeping/etc/config ]; then
 else
 	sudo echo
 	printinfo
-	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
-	sudo mv smokeping.config /opt/smokeping/etc/config
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config && sudo mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
