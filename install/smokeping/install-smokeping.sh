@@ -158,7 +158,7 @@ else
 			rm smokeping-$web_version.tar.gz
 			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
-			make install -s
+			sudo make install -s
 			cd
 			rm -rf smokeping-$web_version
 			mkdir /opt/smokeping/var
