@@ -18,8 +18,8 @@ printerror() {
 }
 
 #ingest options
-printerror "ingest options"
 if [[ "$&" > 0 ]]; then
+printerror "ingest options"
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
