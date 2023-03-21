@@ -160,12 +160,12 @@ else
 			./configure --prefix=/opt/smokeping
 			sudo make install -s
 			cd
-			rm -rf smokeping-$web_version
-			mkdir /opt/smokeping/var
-			mkdir /opt/smokeping/data			
-			mkdir /opt/smokeping/htdocs/cache
+			sudo rm -rf smokeping-$web_version
+			sudo mkdir /opt/smokeping/var
+			sudo mkdir /opt/smokeping/data			
+			sudo mkdir /opt/smokeping/htdocs/cache
 			update-config
-			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
+			sudo chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
 			echo -e "\033[32m Restarting services..."
 			echo -e -n "\033[0m"
 			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
@@ -205,7 +205,7 @@ else
 	sudo echo
 	printinfo
 	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
-	mv smokeping.config /opt/smokeping/etc/config
+	sudo mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
