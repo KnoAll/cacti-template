@@ -4,7 +4,7 @@ Description=SmokePing
 
 [Service]
 ExecStart=/opt/smokeping/bin/smokeping
-ExecReload=/opt/smokeping/bin/smokeping --restart
+ExecReload=/opt/smokeping/bin/smokeping --reload
 RemainAfterExit=true
 
 [Install]
