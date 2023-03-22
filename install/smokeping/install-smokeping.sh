@@ -36,6 +36,8 @@ if [[ "$#" > 0 ]]; then
 		;;
 	    esac
 	done
+else
+	branch=master
 fi
 
 case $(whoami) in
