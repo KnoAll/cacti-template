@@ -199,12 +199,11 @@ case $os_dist in
 		sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
 	;;
 	almalinux|rockylinux)
-		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
 		if [ $? -ne 0 ];then
 			printerror "Error downloading SmokePing startup script."
 			printerror "$branch, $os_dist, $webserver, $webconf"
 		fi
-		https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/smokeping.config
 		sudo mv smokeping-init.d /etc/systemd/system/smokeping.service
 		sudo systemctl enable smokeping && sudo systemctl start smokeping && sudo systemctl status smokeping
 	;;
