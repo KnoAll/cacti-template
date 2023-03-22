@@ -234,7 +234,7 @@ update-permissions
 install-smokeping
 update-permissions
 case $param1 in
-	dev)
+	dev|debug)
 	;;
 	*)
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=smokeping-install-$os_dist&write=0 )
