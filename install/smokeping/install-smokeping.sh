@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/install/smokeping/install-smokeping.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -17,6 +17,29 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
+#ingest options
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev)
+			param1=$1
+			param2=$2
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		*)
+			branch=master
+		;;
+	    esac
+	done
+else
+	branch=master
+fi
+
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
@@ -27,8 +50,7 @@ case $(whoami) in
 		exit 1
                 ;;
         cacti)
-		if [ -f ~/cacti-upgrade.sh ]
-		then
+		if [ -f ~/cacti-upgrade.sh ]; then
 			if grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
 				os_dist=raspbian
 				os_name=Raspbian
@@ -37,6 +59,16 @@ case $(whoami) in
 			elif grep -q "CentOS Linux 7" /etc/os-release; then
 				os_dist=centos
 				os_name=CentOS7
+				webserver=httpd
+				webconf=/etc/httpd/conf.d
+			elif grep -q "AlmaLinux" /etc/os-release; then
+				os_dist=almalinux
+				os_name=AlmaLinux
+				webserver=httpd
+				webconf=/etc/httpd/conf.d
+			elif grep -q "Rocky Linux 9" /etc/os-release; then
+				os_dist=rockylinux
+				os_name=RockyLinux
 				webserver=httpd
 				webconf=/etc/httpd/conf.d
 			fi
@@ -49,21 +81,11 @@ case $(whoami) in
 		exit 1
                 ;;
 esac
-case $1 in
-	dev)
-		param1=$1
-		param2=$2
-		branch=dev
-	;;
-	*)
-		branch=master
-	;;
-esac
 
 # get the Smokeping version
 #upgrade_version=2.006011
-prod_version=2.007003
-web_version=2.7.3
+prod_version=2.008002
+web_version=2.8.2
 dev_version=
 
 if [ -f /opt/smokeping/bin/smokeping ];then
@@ -71,7 +93,8 @@ if [ -f /opt/smokeping/bin/smokeping ];then
 	exit 1
 fi
 printinfo "Welcome to Kevin's SmokePing install script!"
-sudo printinfo ""
+sudo echo
+printinfo
 
 function upgrade-fping () {
                 printinfo "Checking fping version..."
@@ -102,10 +125,13 @@ case $os_dist in
 	raspbian)
 		sudo apt install -y librrds-perl dnsutils daemon python3-pip libnet-ssleay-perl
 		sudo a2enmod -q  cgi
-		;;
+	;;
 	centos)
 		sudo yum install -y -q perl-core perl-IO-Socket-SSL perl-Module-Build perl-rrdtool bind-utils
-		;;
+	;;
+	almalinux|rockylinux)
+		sudo dnf install -y -q perl-core perl-rrdtool bind-utils sendmail
+	;;
 	*)
 		printinfo "Uh-oh. Sorry, unsupported OS Exiting..."
 		exit 1
@@ -134,30 +160,53 @@ else
 			rm smokeping-$web_version.tar.gz
 			cd smokeping-$web_version
 			./configure --prefix=/opt/smokeping
-			make install -s
+			sudo make install -s
 			cd
-			rm -rf smokeping-$web_version
-			mkdir /opt/smokeping/var
-			mkdir /opt/smokeping/data			
-			mkdir /opt/smokeping/htdocs/cache
+			sudo rm -rf smokeping-$web_version
+			sudo mkdir /opt/smokeping/var
+			sudo mkdir /opt/smokeping/data			
+			sudo mkdir /opt/smokeping/htdocs/cache
 			update-config
-			chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-			echo -e "\033[32m Restarting services..."
-			echo -e -n "\033[0m"
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
-case $os_dist in
-	centos)
-		printinfo ""
-	;;
-	raspbian)
-		sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
-	;;
-esac
-			sudo mv smokeping-init.d /etc/init.d/smokeping			
-			sudo chmod +x /etc/init.d/smokeping
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
-			sudo mv smokeping.conf $webconf/smokeping.conf
-			sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service			
+			sudo chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
+			printinfo "Restarting services..."
+
+			case $os_dist in
+				centosLEGACY)
+					printinfo
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+						if [ $? -ne 0 ];then
+							printerror "Error downloading SmokePing startup script."
+							printerror "$branch, $os_dist, $webserver, $webconf"
+						fi
+					sudo mv smokeping-init.d /etc/init.d/smokeping			
+					sudo chmod +x /etc/init.d/smokeping
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+					sudo mv smokeping.conf $webconf/smokeping.conf
+					sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
+				;;
+				raspbian)
+					printinfo
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+						if [ $? -ne 0 ];then
+							printerror "Error downloading SmokePing startup script."
+							printerror "$branch, $os_dist, $webserver, $webconf"
+						fi
+					sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
+					sudo mv smokeping-init.d /etc/init.d/smokeping			
+					sudo chmod +x /etc/init.d/smokeping
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+					sudo mv smokeping.conf $webconf/smokeping.conf
+					sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
+				;;
+				almalinux|centos|rockylinux)
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.service
+					sudo mv smokeping.service /etc/systemd/system/smokeping.service
+					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
+					sudo mv smokeping.conf $webconf/smokeping.conf
+					sudo systemctl enable smokeping && sudo systemctl start smokeping && sudo systemctl restart $webserver
+				;;
+			esac
+			
 		fi
 	fi
 fi
@@ -168,14 +217,16 @@ printinfo "Updating SmokePing config..."
 if [ -f  /opt/smokeping/etc/config ]; then
 	 sudo sed -i 's/smokeping\/cache/smokeping\/htdocs\/cache/g' /opt/smokeping/etc/config
 else
-	sudo printinfo ""
-	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config
-	mv smokeping.config /opt/smokeping/etc/config
+	sudo echo
+	printinfo
+	wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.config && sudo mv smokeping.config /opt/smokeping/etc/config
 fi
 }
 
 function update-permissions () {
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+	printinfo "Checking Permissions"
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+	printinfo
 }
 
 upgrade-fping

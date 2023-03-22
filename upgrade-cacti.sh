@@ -24,7 +24,7 @@ printNotices() {
 }
 
 #ingest options
-if [[ "$&" > 0 ]]; then
+if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
@@ -313,11 +313,14 @@ function update-php () {
 }
 
 function update-mysqld () {
-	if [[ $pkg_mgr == "yum" ]]; then
-		mycnf_path=/etc/my.cnf
-	else
-		mycnf_path=/etc/mysql/my.cnf
-	fi
+	case "$pkg_mgr" in
+		dnf|yum)
+			mycnf_path=/etc/my.cnf
+		;;
+		apt)
+			mycnf_path=/etc/mysql/my.cnf
+		;;
+	esac
 	if version_ge $prod_version 1.2.0; then
 		if version_ge $cactiver 1.2.0; then
 			printinfo
