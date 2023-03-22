@@ -203,7 +203,7 @@ else
 					sudo mv smokeping.service /etc/systemd/system/smokeping.service
 					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
 					sudo mv smokeping.conf $webconf/smokeping.conf
-					sudo systemctl enable smokeping && sudo systemctl start smokeping
+					sudo systemctl enable smokeping && sudo systemctl start smokeping && sudo systemctl restart $webserver
 				;;
 			esac
 			
