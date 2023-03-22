@@ -168,16 +168,16 @@ else
 			sudo mkdir /opt/smokeping/htdocs/cache
 			update-config
 			sudo chmod 620 /opt/smokeping/etc/smokeping_secrets.dist
-			echo -e "\033[32m Restarting services..."
-			echo -e -n "\033[0m"
-			wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+			printinfo "Restarting services..."
+
+case $os_dist in
+	centos)
+		printinfo
+		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
 			if [ $? -ne 0 ];then
 				printerror "Error downloading SmokePing startup script."
 				printerror "$branch, $os_dist, $webserver, $webconf"
 			fi
-case $os_dist in
-	centos)
-		printinfo
 		sudo mv smokeping-init.d /etc/init.d/smokeping			
 		sudo chmod +x /etc/init.d/smokeping
 		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
@@ -185,6 +185,12 @@ case $os_dist in
 		sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
 	;;
 	raspbian)
+		printinfo
+		wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
+			if [ $? -ne 0 ];then
+				printerror "Error downloading SmokePing startup script."
+				printerror "$branch, $os_dist, $webserver, $webconf"
+			fi
 		sudo sed -i 's/etc\/rc.d\/init.d\/functions/lib\/lsb\/init-functions/g' smokeping-init.d
 		sudo mv smokeping-init.d /etc/init.d/smokeping			
 		sudo chmod +x /etc/init.d/smokeping
