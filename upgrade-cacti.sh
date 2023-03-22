@@ -24,7 +24,7 @@ printNotices() {
 }
 
 #ingest options
-if [[ "$&" > 0 ]]; then
+if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
