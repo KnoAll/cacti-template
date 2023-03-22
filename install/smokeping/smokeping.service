@@ -5,6 +5,7 @@ Description=SmokePing
 [Service]
 ExecStart=/opt/smokeping/bin/smokeping
 ExecReload=/opt/smokeping/bin/smokeping --restart
+RemainAfterExit=true
 
 [Install]
 WantedBy=multi-user.target
