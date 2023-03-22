@@ -171,7 +171,7 @@ else
 			printinfo "Restarting services..."
 
 			case $os_dist in
-				centos)
+				centosLEGACY)
 					printinfo
 					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping-init.d
 						if [ $? -ne 0 ];then
@@ -198,7 +198,7 @@ else
 					sudo mv smokeping.conf $webconf/smokeping.conf
 					sudo systemctl enable smokeping.service	&& sudo systemctl restart smokeping.service && sudo systemctl restart $webserver.service
 				;;
-				almalinux|rockylinux)
+				almalinux|centos|rockylinux)
 					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.service
 					sudo mv smokeping.service /etc/systemd/system/smokeping.service
 					wget -q https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/install/smokeping/smokeping.conf
