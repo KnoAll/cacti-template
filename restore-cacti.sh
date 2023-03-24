@@ -141,11 +141,11 @@ unpack-check() {
 			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
 		fi
-	restoreFolder=$( find . -type f -name '.cacti-backup' | sed -r 's|/[^/]+$||' )
+	restoreFolder=$( find . -type f -name '/"$storepath"/.cacti-backup' | sed -r 's|/[^/]+$||' )
 		if [[ -z $restoreFolder ]];then
-			restoreFolder=$( find . -type f -name 'cacti_version' | sed -r 's|/[^/]+$||' | sed -r 's|/[^/]+$||' )
+			restoreFolder=$( find . -type f -name '/"$storepath"/cacti_version' | sed -r 's|/[^/]+$||' | sed -r 's|/[^/]+$||' )
 			if [[ -z $restoreFolder ]];then
-				restoreFolder=$( find . -type f -name 'mysql.cacti_*.sql.gz' | sed -r 's|/[^/]+$||' )
+				restoreFolder=$( find . -type f -name '/"$storepath"/mysql.cacti_*.sql.gz' | sed -r 's|/[^/]+$||' )
 				if [[ -z $restoreFolder ]];then
 					printerror "Backup file not usable. Leaving unpacked files in $restoreFolder in place."
 					exit 1
