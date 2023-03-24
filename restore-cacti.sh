@@ -100,12 +100,12 @@ selectBackup() {
 			exit 1
 		fi
 		files=$( ls backup_cacti-*.tar.gz )
-		select filename in $files
+
 		# set the prompt used by select, replacing "#?"
 		PS3="Use number to select a file or 'stop' to cancel: "
 
 		# allow the user to choose a file
-
+		select filename in $files
 		do
 		    # leave the loop if the user says 'stop'
 		    if [[ "$REPLY" == stop ]]; then break;
