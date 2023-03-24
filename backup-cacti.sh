@@ -56,7 +56,6 @@ printwarn $storepath
 printwarn $storepath
 		;;
 	esac
-	backupData
 }
 
 backupData() {
