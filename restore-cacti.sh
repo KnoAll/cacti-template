@@ -76,7 +76,7 @@ check-cacti() {
 
 selectBackup() {
 		cd $storepath
-		if [[ -f backup_cacti-*.tar.gz ]]; then
+		if $( test -f backup_cacti-*.tar.gz ); then
 			printinfo "The following Cacti Backup archives were found; select one:"
 			files=$( ls backup_cacti-*.tar.gz )
 		else
