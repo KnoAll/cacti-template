@@ -94,7 +94,7 @@ backupData() {
 		echo $cactiver > /"$storepath"/cacti_$cactiver/.cacti-backup
 		printinfo
 		printinfo "Compressing files..."
-                tar -pczf /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
+                tar -pczf /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/ cacti_$cactiver
 		printinfo "Removing temp files..."
 		rm -rf /"$storepath"/cacti_$cactiver
 		printinfo "Cacti v$cactiver backed up into /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
