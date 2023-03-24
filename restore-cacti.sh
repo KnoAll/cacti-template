@@ -98,7 +98,8 @@ selectBackup() {
 		PS3="Use number to select a file or 'stop' to cancel: "
 
 		# allow the user to choose a file
-		select filename in "$storepath"backup_cacti-*.tar.gz
+		cd $storepath
+		select filename in backup_cacti-*.tar.gz
 		do
 		    # leave the loop if the user says 'stop'
 		    if [[ "$REPLY" == stop ]]; then break;
