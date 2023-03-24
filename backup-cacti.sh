@@ -49,12 +49,12 @@ case $(whoami) in
 esac
 
 function locationAsk() {
-	read -p "Backup will be stored in home directory, do you want to select a different location? [y/N] " yn
+	read -p "Backup will be stored in $storepath, do you want to select a different location? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
-printwarn $storepath
 			read -p "Enter the full path of an already existing directory: " storepath
-printwarn $storepath
+			printwarn "Backup directory now $storepath..."
+			printinfo
 		;;
 	esac
 }
