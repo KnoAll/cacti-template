@@ -247,6 +247,7 @@ if [[ "$#" > 0 ]]; then
 	    esac
 	done
 else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
 	branch=master
 fi
 
@@ -260,9 +261,6 @@ if [ -f  /"$storepath"/$restoreFolder/config.php ]; then
 fi
 #fix-permissions
 cleanup-after
-
-# counter
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
 	
 if [ $errorcount -ne 0 ];then
 	printerror "Restoring Cacti did not complete successfully, you may be in an unstable state."
