@@ -33,23 +33,6 @@ printwarn $storepath
 	esac
 }
 
-#ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	php|-php|--php)
-	branch="php"
-        ;;
-        *) break
-    esac
-    shift
-done
-
 # error handling
 #set -eE
 exit_trap() {
@@ -58,7 +41,7 @@ exit_trap() {
 		printerror "Command [$lc] on $LINENO exited with code [$rc]"
 		fi
 }
-trap exit_trap EXIT
+#trap exit_trap EXIT
 
 case $(whoami) in
         root)
@@ -239,6 +222,31 @@ cleanup-after () {
 	printinfo "Cleaning up source files..."
 	rm -rf /"$storepath"/$restoreFolder
 }
+
+
+#ingest options
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev)
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		--pick-location)
+			locationAsk
+		;;
+		*)
+			branch=master
+		;;
+	    esac
+	done
+else
+	branch=master
+fi
 
 check-cacti
 selectBackup
