@@ -19,6 +19,8 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 errorcount=0
 branch=master
+# Path to store the backup files
+storepath=~/
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
@@ -46,6 +48,59 @@ case $(whoami) in
                 ;;
 esac
 
+function locationAsk() {
+	read -p "Backup will be stored in $storepath, do you want to select a different location? [y/N] " yn
+	case "$yn" in
+		y | Y | yes | YES| Yes ) 
+			read -p "Enter the full path of an already existing directory: " storepath
+			printinfo "Backup directory now $storepath..."
+			printinfo
+		;;
+	esac
+}
+
+backupData() {
+                printinfo "Grabbing Cacti db..."
+                cactiver=$( cat /var/www/html/cacti/include/cacti_version )
+                mkdir /"$storepath"/cacti_$cactiver
+                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > /"$storepath"/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
+		if [[ $? -ne 0 ]];then
+			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
+			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain > /"$storepath"/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
+			if [[ $? -ne 0 ]];then
+				printerror "Error backing up alternate Cacti db cactimain, DATABASE NOT BACKED UP! You should back up manually."
+			else
+				gzip /"$storepath"/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
+				if [[ $? -ne 0 ]];then
+					printerror "Cacti db NOT BACKED UP!"
+				else
+					printinfo "Cacti db backed up."
+				fi				
+			fi
+		else
+		gzip /"$storepath"/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
+			if [[ $? -ne 0 ]];then
+				printerror "Cacti database NOT BACKED UP! You should backup the db manually."
+			else
+				printinfo "Cacti db backed up."
+			fi
+		fi
+		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
+                cp -R /var/www/html/cacti/rra /"$storepath"/cacti_$cactiver/rra
+		rsync -raq /var/www/html/cacti/resource /"$storepath"/cacti_$cactiver/
+		rsync -raq /var/www/html/cacti/scripts /"$storepath"/cacti_$cactiver/
+		rsync -raq /var/www/html/cacti/include/themes /"$storepath"/cacti_$cactiver/
+		cp /var/www/html/cacti/include/config.php /"$storepath"/cacti_$cactiver
+		cp /usr/local/spine/etc/spine.conf /"$storepath"/cacti_$cactiver
+		echo $cactiver > /"$storepath"/cacti_$cactiver/.cacti-backup
+		printinfo
+		printinfo "Compressing files..."
+                tar -pczf /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/ cacti_$cactiver
+		printinfo "Removing temp files..."
+		rm -rf /"$storepath"/cacti_$cactiver
+		printinfo "Cacti v$cactiver backed up into /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
+}
+
 #ingest options
 while :; do
     case $1 in
@@ -55,52 +110,14 @@ while :; do
         dev|-dev|--dev)
                 branch="dev"
         ;;
+	--pick-location)
+		locationAsk
+	branch="dev"
+        ;;
         *) break
     esac
     shift
 done
-
-backupData() {
-                printinfo "Grabbing Cacti db..."
-                cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-                mkdir cacti_$cactiver
-                mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-		if [[ $? -ne 0 ]];then
-			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
-			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-			if [[ $? -ne 0 ]];then
-				printerror "Error backing up alternate Cacti db cactimain, DATABASE NOT BACKED UP! You should back up manually."
-			else
-				gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-				if [[ $? -ne 0 ]];then
-					printerror "Cacti db NOT BACKED UP!"
-				else
-					printinfo "Cacti db backed up."
-				fi				
-			fi
-		else
-		gzip ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
-			if [[ $? -ne 0 ]];then
-				printerror "Cacti database NOT BACKED UP! You should backup the db manually."
-			else
-				printinfo "Cacti db backed up."
-			fi
-		fi
-		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
-                cp -R /var/www/html/cacti/rra ~/cacti_$cactiver/rra
-		rsync -raq /var/www/html/cacti/resource ~/cacti_$cactiver/
-		rsync -raq /var/www/html/cacti/scripts ~/cacti_$cactiver/
-		rsync -raq /var/www/html/cacti/include/themes ~/cacti_$cactiver/
-		cp /var/www/html/cacti/include/config.php ~/cacti_$cactiver
-		cp /usr/local/spine/etc/spine.conf ~/cacti_$cactiver
-		echo $cactiver > cacti_$cactiver/.cacti-backup
-		printinfo
-		printinfo "Compressing files..."
-                tar -pczf ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C ~/ cacti_$cactiver
-		printinfo "Removing temp files..."
-		rm -rf cacti_$cactiver
-		printinfo "Cacti v$cactiver backed up into ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
-}
 
 backupData
 exit 0

@@ -6,8 +6,8 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
-errorcount=0
 branch=master
+storepath=~/
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
@@ -21,22 +21,16 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$@"
 }
 
-#ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	php|-php|--php)
-	branch="php"
-        ;;
-        *) break
-    esac
-    shift
-done
+function locationAsk() {
+	read -p "Backups are by default stored in $storepath, do you want to select a different location? [y/N] " yn
+	case "$yn" in
+		y | Y | yes | YES| Yes ) 
+			read -p "Enter the full path of an already existing directory: " storepath
+			printinfo "Backup directory now $storepath..."
+			printinfo
+		;;
+	esac
+}
 
 # error handling
 #set -eE
@@ -46,7 +40,7 @@ exit_trap() {
 		printerror "Command [$lc] on $LINENO exited with code [$rc]"
 		fi
 }
-trap exit_trap EXIT
+#trap exit_trap EXIT
 
 case $(whoami) in
         root)
@@ -80,13 +74,20 @@ check-cacti() {
 }
 
 selectBackup() {
-		printinfo "The following Cacti Backup archives were found; select one:"
+		cd $storepath
+		if $( test -f backup_cacti-*.tar.gz ); then
+			printinfo "The following Cacti Backup archives were found; select one:"
+			files=$( ls backup_cacti-*.tar.gz )
+		else
+			printerror "No Cacti backup files found, exiting..."
+			exit 1
+		fi
 
 		# set the prompt used by select, replacing "#?"
 		PS3="Use number to select a file or 'stop' to cancel: "
 
 		# allow the user to choose a file
-		select filename in backup_cacti-*.tar.gz
+		select filename in $files
 		do
 		    # leave the loop if the user says 'stop'
 		    if [[ "$REPLY" == stop ]]; then break;
@@ -115,7 +116,7 @@ backup-data() {
 	case "$yn" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/backup-cacti.sh) $1;;
 		* ) 
 		printwarn "Skipping backup of existing Cacti."
 		;;
@@ -124,7 +125,8 @@ backup-data() {
 
 unpack-check() {
 	printinfo "Unpacking backup..."
-	tar -xzf ~/$backupfile
+	cd $storepath
+	tar -xzf /"$storepath"/$backupfile
 		if [ $? -ne 0 ];then
 			printerror "Backup unpack error cannot restore, exiting..."
 			exit 1
@@ -153,9 +155,9 @@ unpack-check() {
 		fi
 
 # check for version to be restored
-	restoreVersion=$( cat $restoreFolder/.cacti-backup )
+	restoreVersion=$( cat /"$storepath"/$restoreFolder/.cacti-backup )
 		if [[ -z $restoreVersion ]];then
-			restoreVersion=$( cat $restoreFolder/include/cacti_version )
+			restoreVersion=$( cat /"$storepath"/$restoreFolder/include/cacti_version )
 			if [[ -z $restoreVersion ]];then
 				printerror "Cannot verify backup for automated restore, leaving unpacked files in $restoreFolder in place. You can check Kevin's FAQ for info."
 				exit 1
@@ -184,12 +186,12 @@ unpack-check() {
 
 drop-restore () {
 	printinfo "Restoring Cacti DB..."
-	gunzip $restoreFolder/mysql.cacti_*.sql.gz
+	gunzip /"$storepath"/$restoreFolder/mysql.cacti_*.sql.gz
 	if [ $? -ne 0 ];then
 		printerror "Backup DB not usable, cannot restore, exiting..."
 		exit 1
 	else
-		sudo mysql -p cacti < $restoreFolder/mysql.cacti_*.sql
+		sudo mysql -p cacti < /"$storepath"/$restoreFolder/mysql.cacti_*.sql
 		if [ $? -ne 0 ];then
 			printerror "Backup DB did not restore properly, exiting..."
 			exit 1
@@ -200,47 +202,65 @@ drop-restore () {
 replace-rra () {
 	printinfo "Restoring RRA data..."
 	rm -rf /var/www/html/cacti/rra
-	mv $restoreFolder/rra /var/www/html/cacti/
+	mv /"$storepath"/$restoreFolder/rra /var/www/html/cacti/
 }
 
 restore-config () {
 	printinfo "Restoring Config..."
-	mv $restoreFolder/config.php /var/www/html/cacti/include/
-	sudo mv $restoreFolder/spine.conf /usr/local/spine/etc/
+	mv /"$storepath"/$restoreFolder/config.php /var/www/html/cacti/include/
+	sudo mv /"$storepath"/$restoreFolder/spine.conf /usr/local/spine/etc/
 }
 
 # Check file permissions
 fix-permissions () {
 	printinfo "Checking file permissions..."
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
 }
 
 # Cleaup files
 cleanup-after () {
 	printinfo "Cleaning up source files..."
-	rm -rf $restoreFolder
+	rm -rf /"$storepath"/$restoreFolder
 }
 
 check-cacti
+
+#ingest options
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev)
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		--pick-location)
+			locationAsk
+		;;
+		*)
+			branch=master
+		;;
+	    esac
+	done
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
+	branch=master
+fi
+
 selectBackup
-backup-data
 unpack-check
+backup-data
 drop-restore
 replace-rra
-if [ -f  $restoreFolder/config.php ]; then
+if [ -f  /"$storepath"/$restoreFolder/config.php ]; then
 	restore-config	
 fi
 #fix-permissions
 cleanup-after
-
-# counter
-	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=restore-data&write=0 )
 	
-if [ $errorcount -ne 0 ];then
-	printerror "Restoring Cacti did not complete successfully, you may be in an unstable state."
-	exit 1
-else
-	printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
-fi
+printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
 
-exit $errorcount
+exit
