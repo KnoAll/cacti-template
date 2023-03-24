@@ -22,12 +22,12 @@ printerror() {
 }
 
 function locationAsk() {
-	read -p "Backups are by default stored in the home directory, do you want to select a different location? [y/N] " yn
+	read -p "Backups are by default stored in $storepath, do you want to select a different location? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
-printwarn $storepath
 			read -p "Enter the full path of an already existing directory: " storepath
-printwarn $storepath
+			printinfo "Backup directory now $storepath..."
+			printinfo
 		;;
 	esac
 }
