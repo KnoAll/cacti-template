@@ -19,6 +19,7 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 errorcount=0
 branch=master
+storepath=~/
 
 printinfo() {
 	printf "${tan}::: ${green}%s${reset}\n" "$@"
@@ -106,8 +107,9 @@ function locationAsk() {
 	read -p "Backup will be stored in home directory, do you want to select a different location? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
+printwarn $storepath
 			read -p "Enter the full path: " storepath
-			printwarn $storepath
+printwarn $storepath
 		;;
 	esac
 }
