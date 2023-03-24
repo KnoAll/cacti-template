@@ -95,11 +95,11 @@ selectBackup() {
 		cd $storepath
 		if [[ -f backup_cacti-*.tar.gz ]]; then
 			printinfo "The following Cacti Backup archives were found; select one:"
+			files=$( ls backup_cacti-*.tar.gz )
 		else
 			printerror "No Cacti backup files found, exiting..."
 			exit 1
 		fi
-		files=$( ls backup_cacti-*.tar.gz )
 
 		# set the prompt used by select, replacing "#?"
 		PS3="Use number to select a file or 'stop' to cancel: "
