@@ -56,6 +56,7 @@ printwarn $storepath
 printwarn $storepath
 		;;
 	esac
+	backupData
 }
 
 backupData() {
@@ -109,11 +110,14 @@ while :; do
         dev|-dev|--dev)
                 branch="dev"
         ;;
+	--pick-location)
+		locationAsk
+	branch="dev"
+        ;;
         *) break
     esac
     shift
 done
 
-locationAsk
 backupData
 exit 0
