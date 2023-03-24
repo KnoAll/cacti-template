@@ -107,6 +107,7 @@ function locationAsk() {
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
 			read -p "Enter the full path: " storepath
+			printwarn $storepath
 		;;
 	esac
 }
