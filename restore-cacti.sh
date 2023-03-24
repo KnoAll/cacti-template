@@ -251,8 +251,8 @@ else
 fi
 
 selectBackup
-backup-data
 unpack-check
+backup-data
 drop-restore
 replace-rra
 if [ -f  /"$storepath"/$restoreFolder/config.php ]; then
