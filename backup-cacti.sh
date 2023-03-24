@@ -58,20 +58,6 @@ printwarn $storepath
 	esac
 }
 
-#ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-        *) break
-    esac
-    shift
-done
-
 backupData() {
                 printinfo "Grabbing Cacti db..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
@@ -113,6 +99,20 @@ backupData() {
 		rm -rf cacti_$cactiver
 		printinfo "Cacti v$cactiver backed up into ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
 }
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+        ;;
+        *) break
+    esac
+    shift
+done
 
 locationAsk
 backupData
