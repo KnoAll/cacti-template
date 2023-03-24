@@ -52,7 +52,7 @@ function locationAsk() {
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
 printwarn $storepath
-			read -p "Enter the full path: " storepath
+			read -p "Enter the full path of an already existing directory: " storepath
 printwarn $storepath
 		;;
 	esac
