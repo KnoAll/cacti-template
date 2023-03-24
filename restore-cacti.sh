@@ -116,7 +116,7 @@ backup-data() {
 	case "$yn" in
 		y | Y | yes | YES| Yes ) printinfo "Ok, let's go!"
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/backup-cacti.sh) $1;;
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/backup-cacti.sh) $1;;
 		* ) 
 		printwarn "Skipping backup of existing Cacti."
 		;;
@@ -214,7 +214,7 @@ restore-config () {
 # Check file permissions
 fix-permissions () {
 	printinfo "Checking file permissions..."
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/master/update-permissions.sh)
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
 }
 
 # Cleaup files
