@@ -6,7 +6,6 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
-errorcount=0
 branch=master
 storepath=~/
 
@@ -262,11 +261,6 @@ fi
 #fix-permissions
 cleanup-after
 	
-if [ $errorcount -ne 0 ];then
-	printerror "Restoring Cacti did not complete successfully, you may be in an unstable state."
-	exit 1
-else
-	printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
-fi
+printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
 
-exit $errorcount
+exit
