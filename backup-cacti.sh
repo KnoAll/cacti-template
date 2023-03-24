@@ -53,7 +53,7 @@ function locationAsk() {
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
 			read -p "Enter the full path of an already existing directory: " storepath
-			printwarn "Backup directory now $storepath..."
+			printinfo "Backup directory now $storepath..."
 			printinfo
 		;;
 	esac
