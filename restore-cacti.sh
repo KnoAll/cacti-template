@@ -223,6 +223,7 @@ cleanup-after () {
 	rm -rf /"$storepath"/$restoreFolder
 }
 
+check-cacti
 
 #ingest options
 if [[ "$#" > 0 ]]; then
@@ -248,7 +249,6 @@ else
 	branch=master
 fi
 
-check-cacti
 selectBackup
 backup-data
 unpack-check
