@@ -102,5 +102,15 @@ backupData() {
 		printinfo "Cacti v$cactiver backed up into ~/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
 }
 
+function locationAsk() {
+	read -p "Backup will be stored in home directory, do you want to select a different location? [y/N] " yn
+	case "$yn" in
+		y | Y | yes | YES| Yes ) 
+			read -p "Enter the full path: " storepath
+		;;
+	esac
+}
+
+locationAsk
 backupData
 exit 0
