@@ -92,15 +92,20 @@ check-cacti() {
 }
 
 selectBackup() {
-		printinfo "The following Cacti Backup archives were found; select one:"
-
+		cd $storepath
+		if [[ -f backup_cacti-*.tar.gz ]]; then
+			printinfo "The following Cacti Backup archives were found; select one:"
+		else
+			printerror "No Cacti backup files found, exiting..."
+			exit 1
+		fi
+		files=$( ls backup_cacti-*.tar.gz )
+		select filename in $files
 		# set the prompt used by select, replacing "#?"
 		PS3="Use number to select a file or 'stop' to cancel: "
 
 		# allow the user to choose a file
-		cd $storepath
-		files=$( ls backup_cacti-*.tar.gz )
-		select filename in $files
+
 		do
 		    # leave the loop if the user says 'stop'
 		    if [[ "$REPLY" == stop ]]; then break;
