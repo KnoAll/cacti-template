@@ -99,7 +99,7 @@ selectBackup() {
 
 		# allow the user to choose a file
 		cd $storepath
-		select filename in backup_cacti-*.tar.gz
+		select filename in ( ls /"$storepath"/backup_cacti-*.tar.gz )
 		do
 		    # leave the loop if the user says 'stop'
 		    if [[ "$REPLY" == stop ]]; then break;
