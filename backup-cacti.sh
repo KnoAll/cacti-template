@@ -19,6 +19,7 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 errorcount=0
 branch=master
+# Path to store the backup files
 storepath=~/
 
 printinfo() {
