@@ -64,7 +64,7 @@ done
 backupData() {
                 printinfo "Grabbing Cacti db..."
                 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
-                mkdir cacti_$cactiver
+                mkdir "$storepath"cacti_$cactiver
                 mysqldump --user=cacti --password=cacti -l --add-drop-table cacti > ~/cacti_$cactiver/mysql.cacti_$(date +\%Y\%m\%d).sql
 		if [[ $? -ne 0 ]];then
 			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
