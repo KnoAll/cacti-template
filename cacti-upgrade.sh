@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/cacti-upgrade.sh)
-scriptver=v1.2.18
+scriptver=v1.2.24
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -102,6 +102,7 @@ case $1 in
 	--help | --h | --H | -h | help | -? | --? )
 		printinfo "Switches available in this script:"
 		printinfo "--backup-data	Backup Cacti data (only) and compress to home directory"
+		printinfo "--pick-location	Used with --backup-data or --restore-data, allows selection of alternate storate location"
 		printinfo "--fix-permissions	Fix file permissions if graphs not created properly"
 		printinfo "--restore-data	Restore Cacti from previous backup"
 		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"

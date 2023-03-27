@@ -84,7 +84,7 @@ if [[ -z $cactiver ]];then
 fi
 
 # get latest version of cacti-upgrade script
-if grep -q v1.2.18 cacti-upgrade.sh; then
+if grep -q v1.2.24 cacti-upgrade.sh; then
 	printinfo
 else
 	printinfo "Upgrading cacti-upgrade.sh"
