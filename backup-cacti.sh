@@ -116,9 +116,6 @@ if [[ "$#" > 0 ]]; then
 		--pick-location)
 			locationAsk
 		;;
-		*)
-			branch=master
-		;;
 	    esac
 	done
 else
