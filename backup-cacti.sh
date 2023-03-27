@@ -102,22 +102,29 @@ backupData() {
 }
 
 #ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	--pick-location)
-		locationAsk
-	branch="dev"
-        ;;
-        *) break
-    esac
-    shift
-done
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING"
+		;;
+		dev|-dev|--dev|--switch-dev)
+			branch=dev
+			printwarn "Now on DEV branch."
+		;;
+		--pick-location)
+			locationAsk
+		;;
+		*)
+			branch=master
+		;;
+	    esac
+	done
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=backup-data&write=0 )
+	branch=master
+fi
 
 backupData
 exit 0
