@@ -2,7 +2,7 @@
 SmokePing can be installed as part of the Cacti install. If you already have an installed Cacti from my script and want to add SmokePing, please visit [SmokePing installation script](smokeping) to install SmokePing
 
 # Cacti network grapher installation
-:warning: **[This assumes you have a brand-new, clean, un-used/updated version of AlmaLinux 9.1 or RockyLinux 9.1] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
+:warning: **[This assumes you have a brand-new, clean, un-used/updated version of AlmaLinux or RockyLinux] You must not have made any changes to the OS. If you have installed Cacti or any other software via your own method or adjusted the OS this will break your Cacti install!! :warning:
 
 As of the writing of this script, the current cacti release is v1.2.23. I will keep this script updated to follow the official Cacti releases, and you can use the cacti-upgrade.sh moving forward.
 
@@ -14,7 +14,7 @@ If you run into trouble with the script please [submit an issue](../../../issues
 
 ## Initial install Setup Instructions
 
-Based on a clean AlmaLinux/RockyLinux 9.1 default install. This is updated from being Legacy Centos7/8 which are no longer viable in this install script due to being sunsetted by RedHat.
+Based on a clean, current AlmaLinux/RockyLinux default install. This is updated from being Legacy Centos7/8 which are no longer viable in this install script due to being sunsetted by RedHat.
 
 #### AlmaLinux/RockyLinux requirements: You must have already setup a 'cacti' user with sudoer rights. This script will kick out if not running under that user.
 
