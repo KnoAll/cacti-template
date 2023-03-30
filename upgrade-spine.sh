@@ -215,11 +215,6 @@ if [[ "$#" > 0 ]]; then
 	;;
 	    esac
 	done
-	if [ "$branch" = dev ];then
-		printinfo
-	else
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
-	fi
 else
 	if version_lt $spinever $cactiver ; then
 	upgrade-spine
@@ -235,4 +230,10 @@ else
 		printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
 		exit 0
 	fi
+fi
+
+if [ "$branch" = dev ];then
+	printinfo
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
 fi
