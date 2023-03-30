@@ -206,7 +206,7 @@ if [[ "$#" > 0 ]]; then
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 			printinfo "Spine Upgraded to v$spinever"
 		fi
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+
 	;;
 	--help | --h | --H | -h | help | -? | --? )
 		printinfo "Switches available in this script:"
@@ -215,6 +215,11 @@ if [[ "$#" > 0 ]]; then
 	;;
 	    esac
 	done
+	if [ "$branch" = dev ];then
+		printinfo
+	else
+		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+	fi
 else
 	if version_lt $spinever $cactiver ; then
 	upgrade-spine
