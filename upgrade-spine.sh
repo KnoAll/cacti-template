@@ -192,7 +192,9 @@ function copyConfig() {
 	fi
 }
 
-case "$1" in
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
 	--pick-version)
 		if [ -z "$2" ]; then
 			pick-version
@@ -207,21 +209,21 @@ case "$1" in
 		printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
 		printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
 	;;
-	* ) 
-		if version_lt $spinever $cactiver ; then
-		upgrade-spine
-			if [ $? -ne 0 ];then
-				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
-				exit 1
-			fi
-		copyConfig
-		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-		printinfo "Spine Upgraded to v$spinever"
-		exit 0
-		else
-			printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
-			exit 0
+	    esac
+	done
+else
+	if version_lt $spinever $cactiver ; then
+	upgrade-spine
+		if [ $? -ne 0 ];then
+			printerror "Spine install error, exiting. You will need to manually upgrade Spine."
+			exit 1
 		fi
-	;;
-esac
-
+	copyConfig
+	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+	printinfo "Spine Upgraded to v$spinever"
+	exit 0
+	else
+		printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
+		exit 0
+	fi
+fi
