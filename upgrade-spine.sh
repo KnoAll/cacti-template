@@ -179,8 +179,8 @@ function upgrade-spine () {
 }
 
 function pick-version() {
-		read -p "What version of Spine do you want to install? " cactiver
-		upgrade-spine
+	read -p "What version of Spine do you want to install? " cactiver
+	upgrade-spine
 }
 
 function copyConfig() {
@@ -195,24 +195,23 @@ function copyConfig() {
 if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
-	--pick-version)
-		if [ -z "$2" ]; then
-			pick-version
-			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-			printinfo "Spine Upgraded to v$spinever"
-		else
-			cactiver=$2
-			upgrade-spine
-			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-			printinfo "Spine Upgraded to v$spinever"
-		fi
-
-	;;
-	--help | --h | --H | -h | help | -? | --? )
-		printinfo "Switches available in this script:"
-		printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
-		printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
-	;;
+		--pick-version)
+			if [ -z "$2" ]; then
+				pick-version
+				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+				printinfo "Spine Upgraded to v$spinever"
+			else
+				cactiver=$2
+				upgrade-spine
+				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+				printinfo "Spine Upgraded to v$spinever"
+			fi
+		;;
+		--help | --h | --H | -h | help | -? | --? )
+			printinfo "Switches available in this script:"
+			printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
+			printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
+		;;
 	    esac
 	done
 else
