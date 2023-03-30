@@ -198,9 +198,13 @@ if [[ "$#" > 0 ]]; then
 	--pick-version)
 		if [ -z "$2" ]; then
 			pick-version
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+			printinfo "Spine Upgraded to v$spinever"
 		else
 			cactiver=$2
 			upgrade-spine
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+			printinfo "Spine Upgraded to v$spinever"
 		fi
 		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
 	;;
