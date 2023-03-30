@@ -225,7 +225,6 @@ else
 	copyConfig
 	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 	printinfo "Spine Upgraded to v$spinever"
-	exit 0
 	else
 		printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
 		exit 0
