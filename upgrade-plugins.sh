@@ -33,19 +33,10 @@ fi
 
 cd /var/www/html/cacti/plugins
 
-for dir in ./*/
-do
-  cd ${dir}
-  git status >/dev/null 2>&1
-  # check if exit status of above was 0, indicating we're in a git repo
+for dir in ./*/; do
+	cd ${dir}
+	git status >/dev/null 2>&1
+	# check if exit status of above was 0, indicating we're in a git repo
 	[ $(echo $?) -eq 0 ] && echo "Updating ${dir%*/}..." && git pull
-  
-  cd ..
+	cd ..
 done
-
-function update-syslog-config () {
-printinfo "Updating syslog plugin config..."
-cd /var/www/html/
-cp cacti/plugins/syslog/config.php.dist cacti/plugins/syslog/config.php
-sed -i 's/cactiuser/cacti/g' cacti/plugins/syslog/config.php
-}
