@@ -3,21 +3,18 @@
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 
 #ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	php|-php|--php)
-	branch="php"
-        ;;
-        *) break
-    esac
-    shift
-done
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		;;
+		dev|-dev|--dev)
+			branch="dev"
+		;;
+	    esac
+	done
+fi
 
 # error handling
 #set -eE
@@ -28,7 +25,6 @@ exit_trap() {
 		fi
 }
 trap exit_trap EXIT
-
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -248,5 +244,3 @@ upgradePHP() {
 upgradeAsk
 
 printinfo
-
-exit 0
