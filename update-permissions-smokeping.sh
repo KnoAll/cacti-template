@@ -19,21 +19,18 @@ printerror() {
 }
 
 #ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	php|-php|--php)
-	branch="php"
-        ;;
-        *) break
-    esac
-    shift
-done
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		;;
+		dev|-dev|--dev)
+			branch="dev"
+		;;
+	    esac
+	done
+fi
 
 # error handling
 #set -eE
