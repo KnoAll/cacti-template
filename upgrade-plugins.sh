@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-plugins.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-plugins.sh) dev
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
-errorcount=0
 branch=master
 
 printinfo() {
@@ -19,46 +18,18 @@ printerror() {
 }
 
 #ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-	php|-php|--php)
-	branch="php"
-        ;;
-        *) break
-    esac
-    shift
-done
-
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-trap exit_trap EXIT
-
-case $1 in
-	dev)
-		branch=dev
-	;;
-	develop)
-		branch=develop
-	;;
-	--switch-dev)
-	;;
-	*)
-		branch=master
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=upgrade-plugins&write=0 )
-	;;
-esac
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		;;
+		dev|-dev|--dev)
+			branch="dev"
+		;;
+	    esac
+	done
+fi
 
 cd /var/www/html/cacti/plugins
 
@@ -68,8 +39,6 @@ do
   git status >/dev/null 2>&1
   # check if exit status of above was 0, indicating we're in a git repo
 	[ $(echo $?) -eq 0 ] && echo "Updating ${dir%*/}..." && git pull
-#[ $(printinfo $?) -eq 0 ] && echo "Updating ${dir%*/}..." && git checkout master && git pull
-#[ $(printinfo "$?") -eq 0 ] && echo "Updating ${dir%*/}..." && git pull
   
   cd ..
 done
