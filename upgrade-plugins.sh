@@ -40,3 +40,4 @@ for dir in ./*/; do
 	[ $(echo $?) -eq 0 ] && printinfo "Updating ${dir%*/}..." && git pull
 	cd ..
 done
+printinfo
