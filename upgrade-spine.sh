@@ -179,8 +179,8 @@ function upgrade-spine () {
 }
 
 function pick-version() {
-		read -p "What version of Spine do you want to install? " cactiver
-		upgrade-spine
+	read -p "What version of Spine do you want to install? " cactiver
+	upgrade-spine
 }
 
 function copyConfig() {
@@ -192,36 +192,46 @@ function copyConfig() {
 	fi
 }
 
-case "$1" in
-	--pick-version)
-		if [ -z "$2" ]; then
-			pick-version
-		else
-			cactiver=$2
-			upgrade-spine
-		fi
-		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
-	;;
-	--help | --h | --H | -h | help | -? | --? )
-		printinfo "Switches available in this script:"
-		printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
-		printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
-	;;
-	* ) 
-		if version_lt $spinever $cactiver ; then
-		upgrade-spine
-			if [ $? -ne 0 ];then
-				printerror "Spine install error, exiting. You will need to manually upgrade Spine."
-				exit 1
+if [[ "$#" > 0 ]]; then
+	for var in "$@"; do
+	    case $var in
+		--pick-version)
+			if [ -z "$2" ]; then
+				pick-version
+				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+				printinfo "Spine Upgraded to v$spinever"
+			else
+				cactiver=$2
+				upgrade-spine
+				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+				printinfo "Spine Upgraded to v$spinever"
 			fi
-		copyConfig
-		spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-		printinfo "Spine Upgraded to v$spinever"
-		exit 0
-		else
-			printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
-			exit 0
+		;;
+		--help | --h | --H | -h | help | -? | --? )
+			printinfo "Switches available in this script:"
+			printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
+			printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
+		;;
+	    esac
+	done
+else
+	if version_lt $spinever $cactiver ; then
+	upgrade-spine
+		if [ $? -ne 0 ];then
+			printerror "Spine install error, exiting. You will need to manually upgrade Spine."
+			exit 1
 		fi
-	;;
-esac
+	copyConfig
+	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+	printinfo "Spine Upgraded to v$spinever"
+	else
+		printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
+		exit 0
+	fi
+fi
 
+if [ "$branch" = dev ];then
+	printinfo
+else
+	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+fi
