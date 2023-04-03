@@ -12,8 +12,7 @@ printinfo() {
 		printf "${tan}::: ${green}%s${reset}\n" "$@"
 	else
 		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R) $@"
-	fi
-	
+	fi	
 }
 printwarn() {
 	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R) $@"
