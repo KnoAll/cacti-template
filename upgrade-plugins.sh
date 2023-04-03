@@ -8,7 +8,7 @@ reset=$(tput sgr0)
 branch=master
 
 printinfo() {
-	printf "${tan}::: ${green}%s${reset}\n" "$@"
+	printf "${tan}::: echo "$(date +%F_%R): ${green}%s${reset}\n" "$@"
 }
 printwarn() {
 	printf "${tan}*** WARNING: %s${reset}\n" "$@"
