@@ -32,13 +32,17 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 
 printinfo() {
-	printf "${tan}::: ${green}%s${reset}\n" "$@"
+	if [ -z "$1" ]; then
+		printf "${tan}::: ${green}%s${reset}\n" "$@"
+	else
+		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R): $@"
+	fi	
 }
 printwarn() {
-	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R): $@"
 }
 printerror() {
-	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R): $@"
 }
 
 #installed cacti version
