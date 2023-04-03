@@ -16,10 +16,18 @@ printinfo() {
 	
 }
 printwarn() {
-	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+	if [ -z "$1" ]; then
+		printf "${tan}*** WARNING: %s${reset}\n" "$@"
+	else
+		printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R) $@"
+	fi
 }
 printerror() {
-	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+	if [ -z "$1" ]; then
+		printf "${red}!!! ERROR: %s${reset}\n" "$@"
+	else
+		printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R) $@"
+	fi
 }
 
 #ingest options
