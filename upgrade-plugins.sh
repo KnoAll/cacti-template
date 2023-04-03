@@ -16,7 +16,6 @@ printinfo() {
 }
 printwarn() {
 	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R) $@"
-
 }
 printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R) $@"
