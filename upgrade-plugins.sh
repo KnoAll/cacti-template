@@ -9,9 +9,9 @@ branch=master
 
 printinfo() {
 	if [ -z "$1" ]; then
-		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R) $@"
-	else
 		printf "${tan}::: ${green}%s${reset}\n" "$@"
+	else
+		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R) $@"
 	fi
 	
 }
