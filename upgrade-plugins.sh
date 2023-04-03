@@ -11,14 +11,14 @@ printinfo() {
 	if [ -z "$1" ]; then
 		printf "${tan}::: ${green}%s${reset}\n" "$@"
 	else
-		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R) $@"
+		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R): $@"
 	fi	
 }
 printwarn() {
-	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R) $@"
+	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R): $@"
 }
 printerror() {
-	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R) $@"
+	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R): $@"
 }
 
 #ingest options
