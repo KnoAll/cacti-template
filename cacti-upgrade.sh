@@ -111,9 +111,10 @@ case $1 in
 		printinfo "--restore-data	Restore Cacti from previous backup"
 		printinfo "--upgrade-mysql	DEV ONLY, NOT STABLE - Upgrade MYSQL/MariaDB on the server"
 		printinfo "--upgrade-php	Upgrade PHP on the server"
-		printinfo "--upgrade-script	Upgrade script file on the server"
+		printinfo "--upgrade-script	Upgrade this script"
 		printinfo "--upgrade-smokeping	Upgrade SmokePing version"		
-		printinfo "--upgrade-spine	Upgrade Spine on the server"
+		printinfo "--upgrade-spine	Upgrade Spine on the server. Use with --pick-version to downgrade to a specific version"
+		printinfo "--pick-version	Must be used with --upgrade-spine. Usage --upgrade-spine --pick-version 1.x.x"
 	;;
 	*)
 		welcomeMessage
