@@ -261,33 +261,6 @@ case $os_name in
 	;;
 esac
 
-#if [[ $os_dist == "raspbian" ]]; then
-#	printinfo "Setting up Cacti user, get ready to enter a password!!"
-#	sudo adduser cacti 
-#	if [ $? -ne 0 ];then
-#		printerror "Something went wrong setting up Cacti user, exiting..."
-#		exit 1
-#	else
-#		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
-#		if [ $? -ne 0 ];then
-#			printerror "Something went wrong adding Cacti user groups, exiting..."
-#			exit 1
-#		fi
-#	fi
-#elif [[ $os_dist == "centos" ]]; then
-#	printinfo "Checking Cacti user groups..."
-#	groups | grep -q wheel
-#	if [ $? -ne 0 ];then
-#		printerror "Cacti is not in the suoders group, cannot proceed..."
-#		exit 1
-#	else
-#		sudo usermod -a -G apache cacti
-#		if [ $? -ne 0 ];then
-#			printerror "Something went wrong adding Cacti user to apache group, exiting..."
-#			exit 1
-#		fi
-#	fi
-#fi
 case $os_dist in 
 	raspbian)
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
@@ -572,7 +545,7 @@ sudo systemctl restart $webserver
 update-php
 
 # Install Spine...
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 install
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) --pick-version $prod_version
 printinfo
 
 printinfo "Setting up Plugins..."
