@@ -606,13 +606,8 @@ case $os_name in
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
 		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
-	CentOS8)
-		func_smokeask
-		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
-		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
-	;;
 	AlmaLinux|RockyLinux)
-		#func_smokeask
+		func_smokeask
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
 		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
