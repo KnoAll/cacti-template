@@ -38,7 +38,7 @@ C:::::C       CCCCCCa::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt
         CCCCCCCCCCCCC  aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  iiiiiiii
 EOF
   echo -n "${reset}"
-  echo "Welcome to the Kevin's Cacti script!"
+  echo "Welcome to Kevin's Cacti script!"
   echo
 }
 
