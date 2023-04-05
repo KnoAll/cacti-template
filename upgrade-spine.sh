@@ -82,6 +82,7 @@ function upgrade-spine () {
 		printinfo "Bootstrapping spine..."
 		./bootstrap
 	else
+		printinfo "Getting Spine"
 		wget -q https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
 		if [ $? -ne 0 ];then
 				printerror "Spine download error cannot install, exiting. You will need to manually upgrade Spine."
@@ -114,21 +115,25 @@ function upgrade-spine () {
 			printerror "Spine bootstrap error, exiting. You will need to manually upgrade Spine."
 			exit 1
 		fi
+		printinfo
 	./configure
 		if [ $? -ne 0 ];then
 			printerror "Spine configure error, exiting. You will need to manually upgrade Spine."
 			exit 1
-		fi	
+		fi
+		printinfo
 	make 
 		if [ $? -ne 0 ];then
 			printerror "Spine make error, exiting. You will need to manually upgrade Spine."
 			exit 1
 		fi
+		printinfo
 	sudo -S make install
 		if [ $? -ne 0 ];then
 			printerror "Spine make install error, exiting. You will need to manually upgrade Spine."
 			exit 1
 		fi
+		printinfo "Cleaning up..."
 	cd /usr/local/spine/bin
 	sudo -S chown root:root spine
 	sudo -S chmod +s spine
@@ -156,9 +161,11 @@ function copyConfig() {
 for var in "$@"; do
     case $var in
 	debug|-debug|--debug)
+		printwarn "Now DEBUGGING!"
 		trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
 	;;
 	dev|-dev|--dev)
+		printwarn "Switching to DEV branch..."
 		branch="dev"
 	;;
 	install)
