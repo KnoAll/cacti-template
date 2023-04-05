@@ -72,7 +72,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function upgrade-spine () {
-	printinfo "Upgrading Spine from v$spinever to v$cactiver..."
+	printinfo "Installing Spine v$cactiver..."
 	cd
 	if [[ $1 == "develop" ]]; then
 		printinfo "Cloning from Git..."
@@ -205,7 +205,7 @@ upgrade-spine
 	fi
 copyConfig
 spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-printinfo "Spine Upgraded to v$spinever"
+printinfo "Installed Spine v$spinever"
 else
 	printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
 	exit 0
