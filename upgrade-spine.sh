@@ -22,16 +22,6 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R): $@"
 }
 
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-#trap exit_trap EXIT
-
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
@@ -163,53 +153,50 @@ function copyConfig() {
 
 
 #ingest options
-#if [[ "$#" > 0 ]]; then
-	for var in "$@"; do
-	    case $var in
-		debug|-debug|--debug)
-			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-			checkSpine
-		;;
-		dev|-dev|--dev)
-			branch="dev"
-			checkSpine
-		;;
-		install)
-			spinever=1.2.24
-		;;
-		--pick-version)
-			if [ -z "$2" ]; then
-				pick-version
-				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-				printinfo "Spine Upgraded to v$spinever"
-				if [ "$branch" = dev ];then
-					printinfo
-				else
-					counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
-				fi
-				exit 0
+for var in "$@"; do
+    case $var in
+	debug|-debug|--debug)
+		trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+	;;
+	dev|-dev|--dev)
+		branch="dev"
+	;;
+	install)
+		spinever=1.2.24
+	;;
+	--pick-version)
+		if [ -z "$2" ]; then
+			pick-version
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+			printinfo "Installed Spine v$spinever"
+			if [ "$branch" = dev ];then
+				printinfo
 			else
-				cactiver=$2
-				upgrade-spine
-				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-				printinfo "Spine Upgraded to v$spinever"
-				if [ "$branch" = dev ];then
-					printinfo
-				else
-					counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
-				fi
-				exit 0
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
 			fi
-		;;
-		--help | --h | --H | -h | help | -? | --? )
-			printinfo "Switches available in this script:"
-			printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
-			printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
-		;;
-	    esac
-	done
-#fi
+			exit 0
+		else
+			cactiver=$2
+			upgrade-spine
+			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+			printinfo "Installed Spine v$spinever"
+			if [ "$branch" = dev ];then
+				printinfo
+			else
+				counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+			fi
+			exit 0
+		fi
+	;;
+	--help | --h | --H | -h | help | -? | --? )
+		printinfo "Switches available in this script:"
+		printinfo "--pick-version	Enter the version number of Spine to be installed. Format is number only, example: 1.2.3"
+		printinfo "	with --pick-version, optional version number argument also available. Example: --pick-version 1.2.3"
+	;;
+    esac
+done
 
+checkSpine
 if version_lt $spinever $cactiver ; then
 upgrade-spine
 	if [ $? -ne 0 ];then
