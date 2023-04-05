@@ -15,7 +15,7 @@ This is all still actively being worked on, so you may see changes to how things
 If you run into trouble with the script please [submit an issue](../../issues/) in the GitHub system above.
 
 ## Initial Upgrade Setup Instructions
-Based on a Kevin's CentOS7 Cacti Template virtual appliance v1.1.6 or greater, this script will upgrade to the current release:
+Based on a Kevin's CentOS/AlmaLinux/RockyLinux Cacti Template virtual appliance v1.1.6 or greater, this script will upgrade to the current release:
 Run this from the command line...
 
 ```bash
