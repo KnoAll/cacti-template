@@ -165,27 +165,29 @@ function copyConfig() {
 #ingest options
 while :; do
     case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		checkSpine
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-		checkSpine
-        ;;
-	install)
-		spinever=1.2.21
-		install_spine=1
-	;;
+
+
+
         *) 
 		checkSpine
 		break
     esac
     shift
 done
-if [[ "$#" > 0 ]]; then
+#if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
+		debug|-debug|--debug)
+			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			checkSpine
+		;;
+		dev|-dev|--dev)
+			branch="dev"
+			checkSpine
+		;;
+		install)
+			spinever=1.2.24
+		;;
 		--pick-version)
 			if [ -z "$2" ]; then
 				pick-version
@@ -205,20 +207,20 @@ if [[ "$#" > 0 ]]; then
 		;;
 	    esac
 	done
-else
-	if version_lt $spinever $cactiver ; then
-	upgrade-spine
-		if [ $? -ne 0 ];then
-			printerror "Spine install error, exiting. You will need to manually upgrade Spine."
-			exit 1
-		fi
-	copyConfig
-	spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
-	printinfo "Spine Upgraded to v$spinever"
-	else
-		printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
-		exit 0
+#fi
+
+if version_lt $spinever $cactiver ; then
+upgrade-spine
+	if [ $? -ne 0 ];then
+		printerror "Spine install error, exiting. You will need to manually upgrade Spine."
+		exit 1
 	fi
+copyConfig
+spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+printinfo "Spine Upgraded to v$spinever"
+else
+	printwarn "Spine v$spinever already matches Cacti v$cactiver, exiting..."
+	exit 0
 fi
 
 if [ "$branch" = dev ];then
