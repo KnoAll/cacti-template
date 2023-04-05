@@ -154,43 +154,6 @@ installask () {
 }
 installask
 
-installSpine() {
-printinfo "Setting up Spine..."
-# spine
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-			if [ $? -ne 0 ];then
-				printerror "downloading Spine, you will need to use cmd.php..."
-			else
-				tar xzf cacti-spine-$prod_version.tar.gz
-				if [ $? -ne 0 ];then
-					printerror "unpacking Spine, you will need to use cmd.php..."
-				fi
-				rm cacti-spine-$prod_version.tar.gz
-				cd cacti-spine-$prod_version
-				./bootstrap
-				if [ $? -ne 0 ];then
-					printerror "bootstrapping Spine, you will need to use cmd.php..."
-				fi
-				./configure
-				if [ $? -ne 0 ];then
-					printerror "configuring Spine, you will need to use cmd.php..."
-				fi
-				make
-				if [ $? -ne 0 ];then
-					printerror "making Spine, you will need to use cmd.php..."
-				fi
-				sudo make install
-				if [ $? -ne 0 ];then
-					printerror "installing Spine, you will need to use cmd.php..."
-				fi
-				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
-				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
-				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-				cd
-				rm -rf cacti-spine-$prod_version
-			fi
-}
-
 printinfo "Welcome to Kevin's Cacti install script!"
 
 printinfo "Updating $os_name, this may take a while..."
@@ -608,8 +571,9 @@ sudo systemctl restart $webserver
 }
 update-php
 
-#installSpine
+# Install Spine...
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 install
+printinfo
 
 printinfo "Setting up Plugins..."
 # plugins
