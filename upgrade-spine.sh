@@ -82,7 +82,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function upgrade-spine () {
-	printwarn "Upgrading Spine from v$spinever to v$cactiver..."
+	printinfo "Upgrading Spine from v$spinever to v$cactiver..."
 	cd
 	if [[ $1 == "develop" ]]; then
 		printinfo "Cloning from Git..."
