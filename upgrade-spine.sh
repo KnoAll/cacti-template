@@ -163,17 +163,6 @@ function copyConfig() {
 
 
 #ingest options
-while :; do
-    case $1 in
-
-
-
-        *) 
-		checkSpine
-		break
-    esac
-    shift
-done
 #if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
