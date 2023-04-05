@@ -193,11 +193,23 @@ done
 				pick-version
 				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 				printinfo "Spine Upgraded to v$spinever"
+				if [ "$branch" = dev ];then
+					printinfo
+				else
+					counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+				fi
+				exit 0
 			else
 				cactiver=$2
 				upgrade-spine
 				spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 				printinfo "Spine Upgraded to v$spinever"
+				if [ "$branch" = dev ];then
+					printinfo
+				else
+					counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=spine-upgrade&write=0 )
+				fi
+				exit 0
 			fi
 		;;
 		--help | --h | --H | -h | help | -? | --? )
