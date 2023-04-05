@@ -28,6 +28,11 @@ Subsequent updates can be run by simply
 ```
 from the cacti user's home directory.
 
+### Get help on the script for options, etc...
+```bash
+./cacti-upgrade --help
+```
+
 The script will:
 * download the cacti-upgrade.sh script
 * check for proper user
