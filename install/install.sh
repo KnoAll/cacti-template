@@ -8,13 +8,17 @@ tan=$(tput setaf 3)
 reset=$(tput sgr0)
 
 printinfo() {
-	printf "${tan}::: ${green}%s${reset}\n" "$@"
+	if [ -z "$1" ]; then
+		printf "${tan}::: ${green}%s${reset}\n" "$@"
+	else
+		printf "${tan}::: ${green}%s${reset}\n" "$(date +%a_%R): $@"
+	fi	
 }
 printwarn() {
-	printf "${tan}*** WARNING: %s${reset}\n" "$@"
+	printf "${tan}*** WARNING: %s${reset}\n" "$(date +%a_%R): $@"
 }
 printerror() {
-	printf "${red}!!! ERROR: %s${reset}\n" "$@"
+	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R): $@"
 }
 
 welcomeMessage() {
@@ -38,7 +42,7 @@ C:::::C       CCCCCCa::::a    a:::::ac::::::c     ccccccc      t:::::t    tttttt
         CCCCCCCCCCCCC  aaaaaaaaaa  aaaa   cccccccccccccccc          ttttttttttt  iiiiiiii
 EOF
   echo -n "${reset}"
-  echo "Welcome to the Kevin's Cacti script!"
+  echo "Welcome to Kevin's Cacti script!"
   echo
 }
 
@@ -154,43 +158,6 @@ installask () {
 }
 installask
 
-installSpine() {
-printinfo "Setting up Spine..."
-# spine
-wget -q https://www.cacti.net/downloads/spine/cacti-spine-$prod_version.tar.gz
-			if [ $? -ne 0 ];then
-				printerror "downloading Spine, you will need to use cmd.php..."
-			else
-				tar xzf cacti-spine-$prod_version.tar.gz
-				if [ $? -ne 0 ];then
-					printerror "unpacking Spine, you will need to use cmd.php..."
-				fi
-				rm cacti-spine-$prod_version.tar.gz
-				cd cacti-spine-$prod_version
-				./bootstrap
-				if [ $? -ne 0 ];then
-					printerror "bootstrapping Spine, you will need to use cmd.php..."
-				fi
-				./configure
-				if [ $? -ne 0 ];then
-					printerror "configuring Spine, you will need to use cmd.php..."
-				fi
-				make
-				if [ $? -ne 0 ];then
-					printerror "making Spine, you will need to use cmd.php..."
-				fi
-				sudo make install
-				if [ $? -ne 0 ];then
-					printerror "installing Spine, you will need to use cmd.php..."
-				fi
-				sudo chown root:root /usr/local/spine/bin/spine && sudo chmod +s /usr/local/spine/bin/spine
-				sudo mv /usr/local/spine/etc/spine.conf.dist /usr/local/spine/etc/spine.conf
-				sudo sed -i 's/cactiuser/cacti/g' /usr/local/spine/etc/spine.conf
-				cd
-				rm -rf cacti-spine-$prod_version
-			fi
-}
-
 printinfo "Welcome to Kevin's Cacti install script!"
 
 printinfo "Updating $os_name, this may take a while..."
@@ -298,33 +265,6 @@ case $os_name in
 	;;
 esac
 
-#if [[ $os_dist == "raspbian" ]]; then
-#	printinfo "Setting up Cacti user, get ready to enter a password!!"
-#	sudo adduser cacti 
-#	if [ $? -ne 0 ];then
-#		printerror "Something went wrong setting up Cacti user, exiting..."
-#		exit 1
-#	else
-#		sudo usermod -aG sudo cacti && sudo usermod -aG www-data cacti
-#		if [ $? -ne 0 ];then
-#			printerror "Something went wrong adding Cacti user groups, exiting..."
-#			exit 1
-#		fi
-#	fi
-#elif [[ $os_dist == "centos" ]]; then
-#	printinfo "Checking Cacti user groups..."
-#	groups | grep -q wheel
-#	if [ $? -ne 0 ];then
-#		printerror "Cacti is not in the suoders group, cannot proceed..."
-#		exit 1
-#	else
-#		sudo usermod -a -G apache cacti
-#		if [ $? -ne 0 ];then
-#			printerror "Something went wrong adding Cacti user to apache group, exiting..."
-#			exit 1
-#		fi
-#	fi
-#fi
 case $os_dist in 
 	raspbian)
 	printinfo "Setting up Cacti user, get ready to enter a password!!"
@@ -608,8 +548,9 @@ sudo systemctl restart $webserver
 }
 update-php
 
-#installSpine
-bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $2 install
+# Install Spine...
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) --pick-version $prod_version
+printinfo
 
 printinfo "Setting up Plugins..."
 # plugins
@@ -669,13 +610,8 @@ case $os_name in
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
 		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
-	CentOS8)
-		func_smokeask
-		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
-		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
-	;;
 	AlmaLinux|RockyLinux)
-		#func_smokeask
+		func_smokeask
 		printinfo "Be sure to check for Cacti updates. After login in as the Cacti user run ~./cacti-update.sh"
 		printwarn "You must complete installation via web interface before doing an upgrade to the current version"
 	;;
