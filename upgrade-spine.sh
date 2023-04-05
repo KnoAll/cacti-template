@@ -30,7 +30,7 @@ exit_trap() {
 		printerror "Command [$lc] on $LINENO exited with code [$rc]"
 		fi
 }
-trap exit_trap EXIT
+#trap exit_trap EXIT
 
 case $(whoami) in
         root)
