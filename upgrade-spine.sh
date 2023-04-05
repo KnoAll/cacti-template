@@ -22,19 +22,6 @@ printerror() {
 	printf "${red}!!! ERROR: %s${reset}\n" "$(date +%a_%R): $@"
 }
 
-#ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-        ;;
-        *) break
-    esac
-    shift
-done
 # error handling
 #set -eE
 exit_trap() {
@@ -90,28 +77,6 @@ function checkSpine() {
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		fi
 }
-
-#ingest options
-while :; do
-    case $1 in
-        debug|-debug|--debug)
-                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
-		checkSpine
-        ;;
-        dev|-dev|--dev)
-                branch="dev"
-		checkSpine
-        ;;
-	install)
-		spinever=1.2.21
-		install_spine=1
-	;;
-        *) 
-		checkSpine
-		break
-    esac
-    shift
-done
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
@@ -196,6 +161,28 @@ function copyConfig() {
 	fi
 }
 
+
+#ingest options
+while :; do
+    case $1 in
+        debug|-debug|--debug)
+                trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+		checkSpine
+        ;;
+        dev|-dev|--dev)
+                branch="dev"
+		checkSpine
+        ;;
+	install)
+		spinever=1.2.21
+		install_spine=1
+	;;
+        *) 
+		checkSpine
+		break
+    esac
+    shift
+done
 if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
