@@ -1,21 +1,21 @@
 ![Cacti Logo](/cacti.png)
 
 # Initial Cacti installation
-If you do not already have Cacti installed, you can install into a clean unused CentOS7 minimal or Raspian Stretch Lite using my
+If you do not already have Cacti installed, you can install into a clean unused AlmaLinux or RockyLinux minimal using my
 [Cacti installation script](install/)
 
 # Cacti template upgrade
-:warning: **[This upgrade script assumes you have Kevin's CentOS7 Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
+:warning: **[This upgrade script assumes you have Kevin's CentOS7 or AlmaLinux Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
 
-If you do not have Kevin's CentOS7 virtual appliance you can read more about it here.
-http://www.kevinnoall.com/blog/cacti
+If you do not have Kevin's Cacti virtual appliance you can read more about it here.
+http://www.kevinnoall.com
 
 ## Issues
 This is all still actively being worked on, so you may see changes to how things work and interact.
 If you run into trouble with the script please [submit an issue](../../issues/) in the GitHub system above.
 
 ## Initial Upgrade Setup Instructions
-Based on a Kevin's CentOS/AlmaLinux/RockyLinux Cacti Template virtual appliance v1.1.6 or greater, this script will upgrade to the current release:
+Based on a Kevin's CentOS/AlmaLinux/RockyLinux Cacti Template virtual appliance with Cacti v1.1.6 or greater, this script will upgrade to the current release:
 Run this from the command line...
 
 ```bash
