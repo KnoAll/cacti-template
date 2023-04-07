@@ -87,6 +87,7 @@ backupData() {
 		cp /usr/local/spine/etc/spine.conf /"$storepath"/cacti_$cactiver
 		echo $cactiver > /"$storepath"/cacti_$cactiver/.cacti-backup
 		printinfo
+		backupSmokePing
 		printinfo "Compressing files..."
                 tar -pczf /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/ cacti_$cactiver
 		printinfo "Removing temp files..."
