@@ -225,6 +225,40 @@ cleanup-after () {
 	rm -rf /"$storepath"/$restoreFolder
 }
 
+
+restoreSmokePing() {
+	if [ -e /opt/smokeping/bin/smokeping ]; then
+		if [ -e /"$storepath"/$restoreFolder/smokeping ]; then
+			read -p "SmokePing install found, do you want to restore? [y/N] " yn
+			case "$yn" in
+				y | Y | yes | YES| Yes ) 
+				read -p "Are you REALLY sure you want to restore? This will destructively overwrite the existing SmokePing installation and is irreversible. [y/N] " yn
+					case "$yn" in
+						y | Y | yes | YES| Yes ) 
+							printinfo "Restoring SmokePing from backup..."
+							rm -rf /opt/smokeping
+							mv /"$storepath"/$restoreFolder/smokeping /opt/
+						;;
+						* ) 
+							printerror "NOT restoring SmokePing. Compressing and moving files to $storepath..."
+							tar -pczf /"$storepath"/backup_smokeping_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/$restoreFolder/ smokeping
+						;;
+					esac
+				;;
+				* ) 
+				printerror "NOT restoring Cacti v$restoreVersion. Leaving unpacked files in $restoreFolder in place."
+				exit 1
+				;;
+			esac
+		else
+			printwarn "SmokePing install found on target system, but no SmokePing backup found. Cannot restore."
+		fi
+	elif [ -e /"$storepath"/$restoreFolder/smokeping ]; then
+		printwarn "SmokePing backup found but SmokePing not installed. Cannot restore, leaving files in $storepath..."
+		tar -pczf /"$storepath"/backup_smokeping_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/$restoreFolder/ smokeping
+	fi
+}
+
 check-cacti
 
 #ingest options
