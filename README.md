@@ -4,7 +4,7 @@
 If you do not already have Cacti installed, you can install into a clean unused AlmaLinux or RockyLinux minimal using my
 [Cacti installation script](install/)
 
-# Cacti template upgrade
+# Cacti upgrade
 :warning: **[This upgrade script assumes you have Kevin's CentOS7 or AlmaLinux Cacti Template virtual appliance template] If you have gotten your Cacti install from Kevin's virtual appliance template .ova then this will work for you. You must not have made any changes to the Cacti directories or Apache settings. If you have installed Cacti via your own method or adjusted the template this will break your Cacti install!! :warning:
 
 If you do not have Kevin's Cacti virtual appliance you can read more about it here.
@@ -50,3 +50,6 @@ The script will:
 
 Once the upgrade has been done, you must complete the installation from the Cacti web gui.
 After the gui install has been done, you must go to Utilities > System Utilities and select 'Rebuild Poller Cache' or you will see errors in the cacti log
+
+## Migrating to a new OS..
+Moving your Cacti installation can be done by doing a backup from the source install using the --backup-data switch in the script. you can then do a fresh install on your new target AlmaLinux or RockyLinux clean system. Once it is installed and running you can restore your previous backup with --restore-data.
