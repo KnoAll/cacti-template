@@ -96,9 +96,8 @@ backupData() {
 }
 
 backupSmokePing() {
-	printwarn "checking smokeping"
 	if [ -e /opt/smokeping/bin/smokeping ]; then
-		printwarn "smokeping found, backing up"
+		printinfo "SmokePing install found, backing up..."
 		rsync -raq /opt/smokeping /"$storepath"/cacti_$cactiver/
 	fi
 }
