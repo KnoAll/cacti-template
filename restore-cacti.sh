@@ -236,9 +236,16 @@ restoreSmokePing() {
 					case "$yn" in
 						y | Y | yes | YES| Yes ) 
 							printinfo "Restoring SmokePing from backup..."
-							sudo rm -rf /opt/smokeping
+							sudo mv /opt/smokeping /opt/smokeping.OLD
 							sudo mv /"$storepath"/$restoreFolder/smokeping /opt/
-							bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+							if [ $? -ne 0 ];then
+								bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+								printinfo "SmokePing restored from backup"
+								sudo rm -rf /opt/smokeping.OLD
+							else
+								printerror "SmokePing did NOT restore from backup, reverting to original install..."
+								sudo mv /opt/smokeping.OLD /opt/smokeping
+							fi
 						;;
 						* ) 
 							printerror "NOT restoring SmokePing. Compressing and moving files to $storepath..."
@@ -247,7 +254,7 @@ restoreSmokePing() {
 					esac
 				;;
 				* ) 
-				printerror "NOT restoring Cacti v$restoreVersion. Leaving unpacked files in $restoreFolder in place."
+				printerror "NOT restoring SmokePing. Leaving unpacked files in $restoreFolder in place."
 				exit 1
 				;;
 			esac
