@@ -37,16 +37,6 @@ if [[ "$#" > 0 ]]; then
 	done
 fi
 
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-trap exit_trap EXIT
-
 if which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
