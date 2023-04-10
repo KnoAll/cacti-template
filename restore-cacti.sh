@@ -237,7 +237,7 @@ restoreSmokePing() {
 						y | Y | yes | YES| Yes ) 
 							printinfo "Restoring SmokePing from backup..."
 							sudo rm -rf /opt/smokeping
-							mv /"$storepath"/$restoreFolder/smokeping /opt/
+							sudo mv /"$storepath"/$restoreFolder/smokeping /opt/
 						;;
 						* ) 
 							printerror "NOT restoring SmokePing. Compressing and moving files to $storepath..."
