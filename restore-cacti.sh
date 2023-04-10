@@ -165,7 +165,7 @@ unpack-check() {
 				exit 1
 			fi
 		fi
-
+	printinfo
 	read -p "Cacti v$restoreVersion found, is that what you want to restore? [y/N] " yn
 	case "$yn" in
 		y | Y | yes | YES| Yes ) 
@@ -199,30 +199,35 @@ drop-restore () {
 			exit 1
 		fi
 	fi
+	printinfo
 }
 
 replace-rra () {
 	printinfo "Restoring RRA data..."
 	rm -rf /var/www/html/cacti/rra
 	mv /"$storepath"/$restoreFolder/rra /var/www/html/cacti/
+	printinfo
 }
 
 restore-config () {
 	printinfo "Restoring Config..."
 	mv /"$storepath"/$restoreFolder/config.php /var/www/html/cacti/include/
 	sudo mv /"$storepath"/$restoreFolder/spine.conf /usr/local/spine/etc/
+	printinfo
 }
 
 # Check file permissions
 fix-permissions () {
 	printinfo "Checking file permissions..."
 	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh)
+	printinfo
 }
 
 # Cleaup files
 cleanup-after () {
 	printinfo "Cleaning up source files..."
 	rm -rf /"$storepath"/$restoreFolder
+	printinfo
 }
 
 
@@ -239,31 +244,38 @@ restoreSmokePing() {
 							sudo mv /opt/smokeping /opt/smokeping.OLD
 							sudo mv /"$storepath"/$restoreFolder/smokeping /opt/
 							if [ $? -ne 0 ];then
+								printerror "SmokePing did NOT restore from backup, reverting to original install..."
+								sudo mv /opt/smokeping.OLD /opt/smokeping
+								printinfo
+							else
 								bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
 								printinfo "SmokePing restored from backup"
 								sudo rm -rf /opt/smokeping.OLD
-							else
-								printerror "SmokePing did NOT restore from backup, reverting to original install..."
-								sudo mv /opt/smokeping.OLD /opt/smokeping
+								printinfo
+
 							fi
 						;;
 						* ) 
 							printerror "NOT restoring SmokePing. Compressing and moving files to $storepath..."
 							tar -pczf /"$storepath"/backup_smokeping_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/$restoreFolder/ smokeping
+							printinfo
 						;;
 					esac
 				;;
 				* ) 
 				printerror "NOT restoring SmokePing. Leaving unpacked files in $restoreFolder in place."
+				printinfo
 				exit 1
 				;;
 			esac
 		else
 			printwarn "SmokePing install found on target system, but no SmokePing backup found. Cannot restore."
+			printinfo
 		fi
 	elif [ -e /"$storepath"/$restoreFolder/smokeping ]; then
 		printwarn "SmokePing backup found but SmokePing not installed. Cannot restore, leaving files in $storepath..."
 		tar -pczf /"$storepath"/backup_smokeping_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/$restoreFolder/ smokeping
+		printinfo
 	fi
 }
 
