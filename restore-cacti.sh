@@ -236,7 +236,7 @@ restoreSmokePing() {
 					case "$yn" in
 						y | Y | yes | YES| Yes ) 
 							printinfo "Restoring SmokePing from backup..."
-							rm -rf /opt/smokeping
+							sudo rm -rf /opt/smokeping
 							mv /"$storepath"/$restoreFolder/smokeping /opt/
 						;;
 						* ) 
