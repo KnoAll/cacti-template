@@ -295,6 +295,7 @@ if [ -f  /"$storepath"/$restoreFolder/config.php ]; then
 	restore-config	
 fi
 #fix-permissions
+restoreSmokePing
 cleanup-after
 	
 printinfo "Cacti v$restoreVersion was successfully restored. You may now proceed to the web interface."
