@@ -79,7 +79,7 @@ backupData() {
 			fi
 		fi
 		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
-                [ -e "$file" ]
+		rsync -raq /var/www/html/cacti/rra /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/resource /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/scripts /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/include/themes /"$storepath"/cacti_$cactiver/
