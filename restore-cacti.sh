@@ -238,6 +238,7 @@ restoreSmokePing() {
 							printinfo "Restoring SmokePing from backup..."
 							sudo rm -rf /opt/smokeping
 							sudo mv /"$storepath"/$restoreFolder/smokeping /opt/
+							bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
 						;;
 						* ) 
 							printerror "NOT restoring SmokePing. Compressing and moving files to $storepath..."
