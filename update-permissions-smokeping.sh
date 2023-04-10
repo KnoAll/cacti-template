@@ -31,6 +31,7 @@ if [[ "$#" > 0 ]]; then
 		;;
 		dev|-dev|--dev)
 			branch="dev"
+			printwarn "Now on DEV branch..."
 		;;
 	    esac
 	done
