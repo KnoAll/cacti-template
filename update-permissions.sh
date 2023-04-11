@@ -36,15 +36,14 @@ if [[ "$#" > 0 ]]; then
 	done
 fi
 
-if which dnf >/dev/null; then
+if [ -x "$(command -v dnf)" ]; then
 	pkg_mgr=dnf
-	printinfo pkgmgr=dnf
-elif which yum >/dev/null; then
+elif [ -x "$(command -v yum)" ]; then
 	pkg_mgr=yum
-elif which apt >/dev/null; then
+elif [ -x "$(command -v apt)" ]; then
 	pkg_mgr=apt
 else
-	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+	printerror "You seem to be on something other than CentOS/Alma/Rocky or Raspian, cannot proceed..."
 	exit 1
 fi
 
