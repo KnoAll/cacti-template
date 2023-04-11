@@ -25,7 +25,7 @@ if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
-			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			trap 'printwarn "DEBUG: $BASH_COMMAND on line $LINENO exited with code: $?"' DEBUG
 		;;
 		dev|-dev|--dev)
 			branch="dev"
@@ -85,4 +85,7 @@ chmod g+w /var/www/html/cacti/log/cacti.log
 
 printinfo
 sudo systemctl restart httpd
-exit
+
+if [ -e /opt/smokeping/bin/smokeping ]; then
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh)
+fi
