@@ -25,6 +25,7 @@ if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
+			printwarn "Now DEBUGGING!"
 			trap 'printwarn "DEBUG: $BASH_COMMAND on line $LINENO exited with code: $?"' DEBUG
 		;;
 		dev|-dev|--dev)
