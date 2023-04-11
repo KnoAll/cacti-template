@@ -37,24 +37,33 @@ if [[ "$#" > 0 ]]; then
 	done
 fi
 
-if which yum >/dev/null; then
+if which dnf >/dev/null; then
+	pkg_mgr=dnf
+	printinfo pkgmgr=dnf
+elif which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
 	pkg_mgr=apt
 else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
+	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+	exit 1
 fi
 
-printinfo "Fixing file permissions..."
-if [[ $pkg_mgr == "yum" ]]; then
-	perm_grp=apache
-else
-	perm_grp=www-data
-fi
-groups | grep -q '\$permgrp\b'
+printinfo "Fixing SmokePing permissions..."
+case $pkg_mgr in
+	yum)
+		perm_grp=apache
+	;;
+	apt)
+		perm_grp=www-data
+	;;
+	dnf)
+		perm_grp=apache
+	;;
+esac
+groups | grep -q '\$perm_grp\b'
 if [ $? -ne 0 ];then
-sudo usermod -a -G $perm_grp cacti
+	sudo usermod -a -G $perm_grp cacti
 fi
 
 sudo chown -R cacti /opt
