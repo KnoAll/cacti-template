@@ -1,17 +1,5 @@
 #!/bin/bash
-#bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh)
-
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on line $LINENO exited with code [$rc]"
-		# cleanup temp files
-		rm -rf cacti_$cactiver
-		fi
-}
-#trap exit_trap EXIT
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/backup-cacti.sh) dev
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
@@ -91,7 +79,7 @@ backupData() {
 			fi
 		fi
 		printinfo "Grabbing configs, RRA files, resources, scripts, etc...."
-                cp -R /var/www/html/cacti/rra /"$storepath"/cacti_$cactiver/rra
+		rsync -raq /var/www/html/cacti/rra /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/resource /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/scripts /"$storepath"/cacti_$cactiver/
 		rsync -raq /var/www/html/cacti/include/themes /"$storepath"/cacti_$cactiver/
@@ -99,11 +87,19 @@ backupData() {
 		cp /usr/local/spine/etc/spine.conf /"$storepath"/cacti_$cactiver
 		echo $cactiver > /"$storepath"/cacti_$cactiver/.cacti-backup
 		printinfo
+		backupSmokePing
 		printinfo "Compressing files..."
                 tar -pczf /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/ cacti_$cactiver
 		printinfo "Removing temp files..."
 		rm -rf /"$storepath"/cacti_$cactiver
 		printinfo "Cacti v$cactiver backed up into /"$storepath"/backup_cacti-$cactiver_$(date +\%Y\%m\%d).tar.gz"
+}
+
+backupSmokePing() {
+	if [ -e /opt/smokeping/bin/smokeping ]; then
+		printinfo "SmokePing install found, backing up..."
+		rsync -raq /opt/smokeping /"$storepath"/cacti_$cactiver/
+	fi
 }
 
 #ingest options

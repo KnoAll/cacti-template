@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh)
+# bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/update-permissions-smokeping.sh) dev
 green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
@@ -27,43 +27,40 @@ if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
-			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			trap 'printwarn "DEBUG: $BASH_COMMAND on line $LINENO exited with code: $?"' DEBUG
 		;;
 		dev|-dev|--dev)
 			branch="dev"
+			printwarn "Now on DEV branch..."
 		;;
 	    esac
 	done
 fi
 
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-trap exit_trap EXIT
-
-if which yum >/dev/null; then
+if [ -x "$(command -v dnf)" ]; then
+	pkg_mgr=dnf
+elif [ -x "$(command -v yum)" ]; then
 	pkg_mgr=yum
-elif which apt >/dev/null; then
+elif [ -x "$(command -v apt)" ]; then
 	pkg_mgr=apt
 else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
+	printerror "You seem to be on something other than CentOS/Alma/Rocky or Raspian, cannot proceed..."
+	exit 1
 fi
 
-printinfo "Fixing file permissions..."
-if [[ $pkg_mgr == "yum" ]]; then
-	perm_grp=apache
-else
-	perm_grp=www-data
-fi
-groups | grep -q '\$permgrp\b'
+printinfo "Fixing SmokePing permissions..."
+case $pkg_mgr in
+	dnf|yum)
+		perm_grp=apache
+	;;
+	apt)
+		perm_grp=www-data
+	;;
+esac
+
+groups | grep -q '\$perm_grp\b'
 if [ $? -ne 0 ];then
-sudo usermod -a -G $perm_grp cacti
+	sudo usermod -a -G $perm_grp cacti
 fi
 
 sudo chown -R cacti /opt
@@ -73,5 +70,3 @@ sudo find /opt -type f -exec chmod g+rw {} +
 sudo find /opt -type d -exec chmod u+rwx {} +
 sudo find /opt -type f -exec chmod u+rw {} +
 sudo find /opt -type d -exec chmod g+s {} +
-
-exit

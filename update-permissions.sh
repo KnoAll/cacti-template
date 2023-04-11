@@ -4,7 +4,7 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
-errorcount=0
+branch=master
 
 printinfo() {
 	if [ -z "$1" ]; then
@@ -25,46 +25,40 @@ if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
-			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			printwarn "Now DEBUGGING!"
+			trap 'printwarn "DEBUG: $BASH_COMMAND on line $LINENO exited with code: $?"' DEBUG
 		;;
 		dev|-dev|--dev)
 			branch="dev"
+			printwarn "Now on DEV branch..."
 		;;
 	    esac
 	done
 fi
 
-if which yum >/dev/null; then
-	pkg_mgr=yum
-elif which apt >/dev/null; then
-	pkg_mgr=apt
-elif which dnf >/dev/null; then
+if [ -x "$(command -v dnf)" ]; then
 	pkg_mgr=dnf
-	printinfo pkgmgr=dnf
+elif [ -x "$(command -v yum)" ]; then
+	pkg_mgr=yum
+elif [ -x "$(command -v apt)" ]; then
+	pkg_mgr=apt
 else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
+	printerror "You seem to be on something other than CentOS/Alma/Rocky or Raspian, cannot proceed..."
+	exit 1
 fi
 
-printinfo "Fixing file permissions..."
-#if [[ $pkg_mgr == "yum" ]]; then
-#	perm_grp=apache
-#else
-#	perm_grp=www-data
-#fi
+printinfo "Fixing Cacti permissions..."
+
 case $pkg_mgr in
-	yum)
+	dnf|yum)
 		perm_grp=apache
 	;;
 	apt)
 		perm_grp=www-data
 	;;
-	dnf)
-		perm_grp=apache
-	;;
 esac
 
-groups | grep -q '\$permgrp\b'
+groups | grep -q '\$perm_grp\b'
 if [ $? -ne 0 ];then
 sudo usermod -a -G $perm_grp cacti
 fi
@@ -85,4 +79,7 @@ chmod g+w /var/www/html/cacti/log/cacti.log
 
 printinfo
 sudo systemctl restart httpd
-exit
+
+if [ -e /opt/smokeping/bin/smokeping ]; then
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh) $1 $2 $3
+fi
