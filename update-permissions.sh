@@ -36,29 +36,26 @@ if [[ "$#" > 0 ]]; then
 	done
 fi
 
-if which yum >/dev/null; then
+if which dnf >/dev/null; then
+	pkg_mgr=dnf
+	printinfo pkgmgr=dnf
+elif which yum >/dev/null; then
 	pkg_mgr=yum
 elif which apt >/dev/null; then
 	pkg_mgr=apt
-elif which dnf >/dev/null; then
-	pkg_mgr=dnf
-	printinfo pkgmgr=dnf
 else
-		printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
-		exit 1
+	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+	exit 1
 fi
 
 printinfo "Fixing Cacti permissions..."
 
 case $pkg_mgr in
-	yum)
+	dnf|yum)
 		perm_grp=apache
 	;;
 	apt)
 		perm_grp=www-data
-	;;
-	dnf)
-		perm_grp=apache
 	;;
 esac
 
