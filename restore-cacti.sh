@@ -287,7 +287,7 @@ if [[ "$#" > 0 ]]; then
 	    case $var in
 		debug|-debug|--debug)
 			printwarn "Now DEBUGGING"
-			trap 'printwarn "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
+			trap 'printwarn "$BASH_COMMAND on line $LINENO exited with code: $?"' DEBUG
 		;;
 		dev|-dev|--dev)
 			branch=dev
