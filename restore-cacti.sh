@@ -263,8 +263,8 @@ restoreSmokePing() {
 					esac
 				;;
 				* ) 
-				printerror "NOT restoring SmokePing. Leaving unpacked files in $restoreFolder in place."
-				printinfo
+					printerror "NOT restoring SmokePing. Leaving unpacked files in $restoreFolder in place."
+					printinfo
 				exit 1
 				;;
 			esac
@@ -286,8 +286,8 @@ if [[ "$#" > 0 ]]; then
 	for var in "$@"; do
 	    case $var in
 		debug|-debug|--debug)
-			trap 'echo cmd: "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
 			printwarn "Now DEBUGGING"
+			trap 'printwarn "$BASH_COMMAND" on line $LINENO exited with code: $?' DEBUG
 		;;
 		dev|-dev|--dev)
 			branch=dev
