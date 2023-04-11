@@ -4,7 +4,7 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 tan=$(tput setaf 3)
 reset=$(tput sgr0)
-errorcount=0
+branch=master
 
 printinfo() {
 	if [ -z "$1" ]; then
@@ -29,6 +29,7 @@ if [[ "$#" > 0 ]]; then
 		;;
 		dev|-dev|--dev)
 			branch="dev"
+			printwarn "Now on DEV branch..."
 		;;
 	    esac
 	done
