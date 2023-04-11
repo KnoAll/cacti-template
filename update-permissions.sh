@@ -47,12 +47,8 @@ else
 		exit 1
 fi
 
-printinfo "Fixing file permissions..."
-#if [[ $pkg_mgr == "yum" ]]; then
-#	perm_grp=apache
-#else
-#	perm_grp=www-data
-#fi
+printinfo "Fixing Cacti permissions..."
+
 case $pkg_mgr in
 	yum)
 		perm_grp=apache
@@ -65,7 +61,7 @@ case $pkg_mgr in
 	;;
 esac
 
-groups | grep -q '\$permgrp\b'
+groups | grep -q '\$perm_grp\b'
 if [ $? -ne 0 ];then
 sudo usermod -a -G $perm_grp cacti
 fi
