@@ -73,5 +73,3 @@ sudo find /opt -type f -exec chmod g+rw {} +
 sudo find /opt -type d -exec chmod u+rwx {} +
 sudo find /opt -type f -exec chmod u+rw {} +
 sudo find /opt -type d -exec chmod g+s {} +
-
-exit
