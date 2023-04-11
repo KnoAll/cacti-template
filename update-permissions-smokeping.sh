@@ -51,16 +51,14 @@ fi
 
 printinfo "Fixing SmokePing permissions..."
 case $pkg_mgr in
-	yum)
+	dnf|yum)
 		perm_grp=apache
 	;;
 	apt)
 		perm_grp=www-data
 	;;
-	dnf)
-		perm_grp=apache
-	;;
 esac
+
 groups | grep -q '\$perm_grp\b'
 if [ $? -ne 0 ];then
 	sudo usermod -a -G $perm_grp cacti
