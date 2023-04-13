@@ -43,28 +43,26 @@ esac
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 
 #determine the os pkg version
-if [ -f /usr/bin/dnf ]; then
+if [ -x "$(command -v dnf)" ]; then
 	pkg_mgr=dnf
 	os_dist=almalinux
-elif [ -f /usr/bin/apt ]; then
+elif [ -x "$(command -v apt)" ]; then
 	pkg_mgr=apt
 	os_dist=raspbian
-elif [ -f /usr/bin/yum ]; then
+elif [ -x "$(command -v yum)" ]; then
 	pkg_mgr=yum
 	os_dist=centos
 else
-	printerror "You seem to be on something other than CentOS or Raspian, cannot proceed..."
+	printerror "You seem to be on something other than CentOS/Alma/Rocky or Raspian, cannot proceed..."
 	exit 1
 fi
 
 function checkSpine() {
 	#check that spine is installed, if so get the version
-	test -f /usr/local/spine/bin/spine
-		if [ $? -ne 0 ];then
-			printerror "Spine does not appear to be installed..."
-			# exit 1
-		else
+	if [ -e /usr/local/spine/bin/spine ]; then
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
+		else
+			printerror "Spine does not appear to be installed..."
 		fi
 }
 
