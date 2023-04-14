@@ -47,16 +47,6 @@ else
 	printinfo
 fi
 
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-#trap exit_trap EXIT
-
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
