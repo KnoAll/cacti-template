@@ -485,7 +485,7 @@ function compress-delete () {
 			fi
 		;;
 		n | N | no | NO | No )
-			printinfo
+			printwarn "Original Cacti directory will be left at /var/www/html/cacti_$cactiver. This could take up a lot of space."
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"
