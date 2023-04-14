@@ -139,7 +139,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	if [ -f /opt/smokeping/bin/smokeping ]
+	if [ -f /opt/smokeping/bin/smokeping ];then
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch $2
 		smokeping_onoff
 	else
