@@ -59,7 +59,7 @@ fi
 
 function checkSpine() {
 	#check that spine is installed, if so get the version
-	if [ -e /usr/local/spine/bin/spine ]; then
+	if [ -f /usr/local/spine/bin/spine ]; then
 			spinever=$(/usr/local/spine/bin/spine -v | cut -c 7-12)
 		else
 			printerror "Spine does not appear to be installed..."
