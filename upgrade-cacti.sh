@@ -47,16 +47,6 @@ else
 	printinfo
 fi
 
-# error handling
-#set -eE
-exit_trap() {
-		local lc="$BASH_COMMAND" rc=$?
-		if [ $rc -ne 0 ]; then
-		printerror "Command [$lc] on $LINENO exited with code [$rc]"
-		fi
-}
-trap exit_trap EXIT
-
 case $(whoami) in
         root)
 		printerror "You ran me as root! Do not run me as root!"
@@ -99,7 +89,7 @@ fi
 
 cd ~
 file="template"
-if [ -e "$file" ]
+if [ -f "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-template&write=0 )
 	printinfo
@@ -109,7 +99,7 @@ else
 fi
 
 file=".install"
-if [ -e "$file" ]
+if [ -f "$file" ]
 then
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-install&write=0 )
 	printinfo
@@ -139,13 +129,12 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function check-smokeping () {
-	test -e /opt/smokeping/bin/smokeping
-	if [ $? -ne 0 ];then
-		smokever=nosmoke
-		printinfo
-	else
+	if [ -f /opt/smokeping/bin/smokeping ];then
 		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch $2
 		smokeping_onoff
+	else
+		smokever=nosmoke
+		printinfo
 	fi
 }
 
@@ -486,7 +475,7 @@ function compress-delete () {
 			fi
 		;;
 		n | N | no | NO | No )
-			printinfo
+			printwarn "Original Cacti directory will be left at /var/www/html/cacti_$cactiver. This could take up a lot of space."
 		;;
 		* ) 
 			printwarn "You have entered an invallid selection!"

@@ -80,6 +80,6 @@ chmod g+w /var/www/html/cacti/log/cacti.log
 printinfo
 sudo systemctl restart httpd
 
-if [ -e /opt/smokeping/bin/smokeping ]; then
+if [ -f /opt/smokeping/bin/smokeping ]; then
 	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions-smokeping.sh) $1 $2 $3
 fi
