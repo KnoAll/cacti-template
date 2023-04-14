@@ -232,8 +232,8 @@ cleanup-after () {
 
 
 restoreSmokePing() {
-	if [ -e /opt/smokeping/bin/smokeping ]; then
-		if [ -e /"$storepath"/$restoreFolder/smokeping ]; then
+	if [ -f /opt/smokeping/bin/smokeping ]; then
+		if [ -f /"$storepath"/$restoreFolder/smokeping ]; then
 			read -p "SmokePing install found, do you want to restore? [y/N] " yn
 			case "$yn" in
 				y | Y | yes | YES| Yes ) 
@@ -272,7 +272,7 @@ restoreSmokePing() {
 			printwarn "SmokePing install found on target system, but no SmokePing backup found. Cannot restore."
 			printinfo
 		fi
-	elif [ -e /"$storepath"/$restoreFolder/smokeping ]; then
+	elif [ -f /"$storepath"/$restoreFolder/smokeping ]; then
 		printwarn "SmokePing backup found but SmokePing not installed. Cannot restore, leaving files in $storepath..."
 		tar -pczf /"$storepath"/backup_smokeping_$(date +\%Y\%m\%d).tar.gz -C /"$storepath"/$restoreFolder/ smokeping
 		printinfo
