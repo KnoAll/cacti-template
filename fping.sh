@@ -41,6 +41,8 @@ function check-fping () {
 		cd
 		rm -rf fping
 		[ -x "$(command -v fping)" ] && printinfo "fping setup..." || printerror "fping did not install, please attempt manually."
+		[ $branch == "master" ] && counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=fping&write=0 )
+		printinfo
 	fi
 }
 
