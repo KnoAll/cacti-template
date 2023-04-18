@@ -23,10 +23,10 @@ printerror() {
 }
 
 function check-fping () {
-	printinfo "Checking fping version..."
-if [ -x "$(command -v fping)" ]; then
-  printinfo "fping version OK, moving on..."
-else
+	printinfo "Checking for fping..."
+	if [ -x "$(command -v fping)" ]; then
+		printinfo "fping OK, moving on..."
+	else
 		printinfo "Setting up fping..."
 		cd
 		git clone https://github.com/schweikert/fping.git
@@ -37,9 +37,9 @@ else
 		sudo make
 		sudo make install
 		sudo chmod +s /usr/sbin/fping
+		sudo setcap cap_net_raw+ep /usr/sbin/fping
 		cd
 		rm -rf fping
-
 	fi
 }
 
