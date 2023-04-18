@@ -40,6 +40,7 @@ function check-fping () {
 		sudo setcap cap_net_raw+ep /usr/sbin/fping
 		cd
 		rm -rf fping
+		[ -x "$(command -v fping)" ] && printinfo "fping setup..." || printerror "fping did not install, please attempt manually."
 	fi
 }
 
