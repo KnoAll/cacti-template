@@ -506,6 +506,7 @@ upgrade-cacti $2
 update-php
 update-mysqld
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $param1 $param2
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/fping.sh) $param1 $param2
 cron enable
 upgrade-plugins
 update-permissions
