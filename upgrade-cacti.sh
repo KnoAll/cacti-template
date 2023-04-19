@@ -130,7 +130,7 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 function check-smokeping () {
 	if [ -f /opt/smokeping/bin/smokeping ];then
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-smokeping.sh) $branch $param2
 		smokeping_onoff
 	else
 		smokever=nosmoke
@@ -182,7 +182,7 @@ function upgrade-plugins() {
 	case "$plugup" in
 		y | Y | yes | YES| Yes ) 
 			printinfo
-			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch $2
+			bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-plugins.sh) $branch $param2
 		;;
 		n | N | no | NO | No )
 			printinfo "OK, no plug-up today..."
@@ -224,7 +224,7 @@ if version_ge $cactiver $upgrade_version; then
 		printinfo
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $param2
 		upgrade-plugins
 		check-smokeping
 		printinfo "All done!"
@@ -232,7 +232,7 @@ if version_ge $cactiver $upgrade_version; then
         else
 		printNotices
 		#check for PHP version upgrade
-		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $2
+		bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-php.sh) $param1 $param2
 		phpStatus=$?
 		case "$phpStatus" in
 		167 )
@@ -399,34 +399,22 @@ function cron () {
 function upgrade-cacti () {
 printinfo "Beginning Cacti upgrade..."
 cd /var/www/html/
-if [[ $1 == "develop" ]]; then
-	printinfo "Cloning from Git..."
-	mv cacti/ cacti_$cactiver/
-	git clone https://github.com/Cacti/cacti.git
-	if [ $? -ne 0 ]; then
-		printerror "Git clone error, exiting..."
+wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
+if [ $? -ne 0 ];then
+		printerror "Cacti download error cannot install, exiting..."
+		exit 1
+else
+	tar -xzf $prod_version.tar.gz
+	if [ $? -ne 0 ];then
+		printerror "Cacti unpack error cannot install, exiting..."
 		exit 1
 	else
-		git checkout $1
-	fi
-else
-	wget -q https://github.com/Cacti/cacti/archive/release/$prod_version.tar.gz
-	if [ $? -ne 0 ];then
-			printerror "Cacti download error cannot install, exiting..."
-			exit 1
-	else
-		tar -xzf $prod_version.tar.gz
-		if [ $? -ne 0 ];then
-			printerror "Cacti unpack error cannot install, exiting..."
-			exit 1
-		else
-			sudo $pkg_mgr install -y -q php-gmp sendmail php-intl
-			sudo systemctl restart httpd
-			mv cacti/ cacti_$cactiver/
-			rm $prod_version.tar.gz
-			mv cacti-release-$prod_version cacti
-			cp cacti_$cactiver/include/config.php cacti/include/
-		fi
+		sudo $pkg_mgr install -y -q php-gmp sendmail php-intl
+		sudo systemctl restart httpd
+		mv cacti/ cacti_$cactiver/
+		rm $prod_version.tar.gz
+		mv cacti-release-$prod_version cacti
+		cp cacti_$cactiver/include/config.php cacti/include/
 	fi
 fi
 printinfo "Restoring data"
@@ -450,12 +438,10 @@ else
 	mv cacti/include/config.php.dist $config_path
 	sed -i 's/cactiuser/cacti/g' $config_path
 fi
-#4-9-2020: fix for cookie domains in 1.2.11. can be removed after fix is confirmed.
-sudo sed -i 's/$cacti_cookie_domain/#$cacti_cookie_domain/g' $config_path
 }
 
 function update-permissions () {
-	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh) $1 $2
+	bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/update-permissions.sh) $param1 $param2
 }
 
 function compress-delete () {
@@ -502,7 +488,7 @@ check-permissions
 cron disable
 backup-db
 update-cactidir
-upgrade-cacti $2
+upgrade-cacti $param2
 update-php
 update-mysqld
 bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/upgrade-spine.sh) $param1 $param2
