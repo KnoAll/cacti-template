@@ -46,7 +46,7 @@ welcomeMessage() {
 
 EOF
   echo -n "${reset}"
-  echo "Welcome to the Kevin's Cacti script!"
+  echo "Welcome to Kevin's Cacti script!"
   echo
 }
 
