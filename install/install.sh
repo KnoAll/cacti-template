@@ -51,17 +51,7 @@ welcomeMessage
 if [[ `whoami` == "root" ]]; then
     printerror "You ran me as root! Do not run me as root!"
     exit 1
-elif grep -q "Raspbian GNU/Linux 9" /etc/os-release; then
-	if [[ `whoami` != "pi" ]]; then
-		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
-		exit 1
-	else
-		os_dist=raspbian
-		os_name=Raspbian
-		webserver=apache2
-		verphp="$(php -v | grep -Po '(?<=PHP )([0-7.]+)' | cut -c-3)"
-	fi
-elif grep -q "Raspbian GNU/Linux 10" /etc/os-release; then
+elif grep -q "Raspbian GNU" /etc/os-release; then
 	if [[ `whoami` != "pi" ]]; then
 		printerror "Uh-oh. You are not logged in as the default pi user. Exiting..."
 		exit 1
