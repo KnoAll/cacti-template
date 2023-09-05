@@ -80,7 +80,7 @@ function upgrade-spine () {
 		printinfo "Bootstrapping spine..."
 		./bootstrap
 	else
-		wget -q https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
+		wget -q --no-check-certificate https://www.cacti.net/downloads/spine/cacti-spine-$cactiver.tar.gz
 		if [ $? -ne 0 ];then
 				printerror "Spine download error cannot install, exiting. You will need to manually upgrade Spine."
 				rm -rf *spine*
