@@ -205,7 +205,8 @@ function compress-delete () {
 
 checkVer
 update-permissions
-upgrade-fping
+#upgrade-fping
+bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/$branch/fping.sh)
 upgrade-smokeping
 update-permissions
 compress-delete
