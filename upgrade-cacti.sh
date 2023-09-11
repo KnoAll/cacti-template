@@ -365,6 +365,10 @@ function update-mysqld () {
 function backup-db () {
 	printinfo "Backing up DB..."
 	mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+ 		if [[ $? -ne 0 ]];then
+			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
+			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+   		fi
 	printinfo
 }
 
