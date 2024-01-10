@@ -68,7 +68,7 @@ esac
 upgrade_version=1.1.6
 # get ready for dynamic update
 #prod_version=$( curl -s https://raw.githubusercontent.com/Cacti/cacti/master/include/cacti_version )
-prod_version=1.2.25
+prod_version=1.2.26
 symlink_cactidir=1.1.28
 cactiver=$( cat /var/www/html/cacti/include/cacti_version )
 config_path=/var/www/html/cacti/include/config.php
@@ -365,6 +365,10 @@ function update-mysqld () {
 function backup-db () {
 	printinfo "Backing up DB..."
 	mysqldump --user=cacti --password=cacti -l --add-drop-table cacti |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+ 		if [[ $? -ne 0 ]];then
+			printwarn "Error backing up default Cacti db, trying to backup alternate db cactimain"
+			mysqldump --user=cacti --password=cacti -l --add-drop-table cactimain |gzip > /var/www/html/cacti/mysql.cacti_$(date +\%Y\%m\%d).sql.gz
+   		fi
 	printinfo
 }
 
