@@ -456,7 +456,8 @@ function compress-delete () {
 		y | Y | yes | YES | Yes ) 
 			printinfo
 			printinfo "Creating compressed archive..."
-			tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
+			rm -rf /var/www/html/cacti_$cactiver/log/*log*
+   			tar -pczf ~/backup_cacti-$cactiver.tar.gz -C /var/www/html/ cacti_$cactiver
 			if [ $? -ne 0 ];then
 				printwarn "Archive creation failed."
 			else
