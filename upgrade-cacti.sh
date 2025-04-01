@@ -508,7 +508,7 @@ if [[ $branch == dev ]]; then
 else
 	if version_lt $cactiver 1.2.0; then
  		printerror "display $cactiver"
-   		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-"=<1.1.38"&write=0 )
+   		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-1.1.x&write=0 )
  	fi
 	counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-$cactiver-$prod_version&write=0 )
 	printinfo
