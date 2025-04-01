@@ -520,8 +520,4 @@ check-smokeping
 
 printinfo "Cacti upgraded to v$prod_version. Proceed to the web interface to complete upgrade..."
 printinfo "For script errors or troubleshooting please check the Github page at https://github.com/KnoAll/cacti-template. "
-	if version_lt $cactiver 1.2.28; then
- 		printerror "display $cactiver"
-   		counter=$( curl -s http://www.kevinnoall.com/cgi-bin/counter/unicounter.pl?name=cacti-1.1.x&write=0 )
- 	fi
 exit 0
