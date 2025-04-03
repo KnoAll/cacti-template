@@ -97,11 +97,12 @@ elif grep -q "AlmaLinux 9" /etc/os-release; then
 		printinfo
 		exit
 	else
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
 		os_dist=almalinux
 		os_name=AlmaLinux
 		webserver=httpd
 		pkg_mgr=dnf
-		remi=remi-release-9.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "Rocky Linux 9" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -109,11 +110,12 @@ elif grep -q "Rocky Linux 9" /etc/os-release; then
 		printinfo
 		exit
 	else
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')	
 		os_dist=rockylinux
 		os_name=RockyLinux
 		webserver=httpd
 		pkg_mgr=dnf
-		remi=remi-release-9.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -121,11 +123,12 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		printinfo
 		exit
 	else
-		os_dist=centos
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
+  		os_dist=centos
 		os_name=CentOS7
 		webserver=httpd
 		pkg_mgr=yum
-		remi=remi-release-7.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   #printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
@@ -136,11 +139,12 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		printinfo
 		exit
 	else
-		os_dist=centos
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
+  		os_dist=centos
 		os_name=CentOS8
 		webserver=httpd
 		pkg_mgr=yum
-		remi=remi-release-8.rpm
+		remi=remi-release-$release_ver.rpm
 		php_version=remi-7.4
 	fi	
 else
