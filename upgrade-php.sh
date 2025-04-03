@@ -217,7 +217,7 @@ upgradeAsk () {
 upgradePHP() {
 		printinfo "Setting up repo"
 		sudo $pkg_mgr install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo $pkg_mgr install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
+		sudo $pkg_mgr install -y -q yum-utils php$stable_major$stable_minor-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
 			CentOS8|AlmaLinux|RockyLinux )
