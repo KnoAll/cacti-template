@@ -227,7 +227,7 @@ upgradePHP() {
 			CentOS8|AlmaLinux|RockyLinux )
    				sudo $pkg_mgr -y -q install https://rpms.remirepo.net/enterprise/remi-release-9.2.rpm
 				sudo $pkg_mgr -y -q module reset php
-				sudo dnf module install php:remi-$release_ver
+				sudo dnf module install php:remi-$stable_php
 				sudo dnf update -y
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
