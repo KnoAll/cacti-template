@@ -225,9 +225,10 @@ upgradePHP() {
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
 			CentOS8|AlmaLinux|RockyLinux )
+   				sudo $pkg_mgr -y -q install https://rpms.remirepo.net/enterprise/remi-release-9.2.rpm
 				sudo $pkg_mgr -y -q module reset php
-				sudo $pkg_mgr module -y -q enable php:$php_version
-				sudo dnf -y -q install php
+				sudo dnf module install php:remi-$release_ver
+				sudo dnf update -y
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
 				else
