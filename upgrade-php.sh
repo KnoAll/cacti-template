@@ -53,7 +53,7 @@ upgrade_version=1.2.18
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
 php_minimum=7.2
-stable_php=8.3
+stable_php=8.4
 stable_major=8
 stable_minor=3
 
