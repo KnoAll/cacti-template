@@ -53,6 +53,9 @@ upgrade_version=1.2.18
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
 php_minimum=7.2
+stable_php=8.3
+stable_major=8
+stable_minor=3
 
 printinfo "Checking for PHP upgrade..."
 printinfo
@@ -151,9 +154,9 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 if version_ge $cactiver $upgrade_version; then
 	# cacti must be at least v1.2.18 to go to php7.4
 	#set upgrade version
-	php_version=php74
-	php_description="v7.4.x"
-	php_num=7.4
+	php_version=php$stable_major$stable_minor
+	php_description="v$stable_major.$stable_minor.x"
+	php_num=$stable_php
 else
 	# php7.3 for =< v1.2.17
 	#set upgrade version
