@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 # bash <(curl -s https://raw.githubusercontent.com/KnoAll/cacti-template/dev/upgrade-php.sh)
 
 #ingest options
@@ -53,6 +53,9 @@ upgrade_version=1.2.18
 php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
 php_minimum=7.2
+stable_major=8
+stable_minor=3
+stable_php=$stable_major.$stable_minor
 
 printinfo "Checking for PHP upgrade..."
 printinfo
@@ -94,11 +97,12 @@ elif grep -q "AlmaLinux 9" /etc/os-release; then
 		printinfo
 		exit
 	else
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
 		os_dist=almalinux
 		os_name=AlmaLinux
 		webserver=httpd
 		pkg_mgr=dnf
-		remi=remi-release-9.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "Rocky Linux 9" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -106,11 +110,12 @@ elif grep -q "Rocky Linux 9" /etc/os-release; then
 		printinfo
 		exit
 	else
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')	
 		os_dist=rockylinux
 		os_name=RockyLinux
 		webserver=httpd
 		pkg_mgr=dnf
-		remi=remi-release-9.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "CentOS Linux 7" /etc/os-release; then
 	if [[ `whoami` != "cacti" ]]; then
@@ -118,11 +123,12 @@ elif grep -q "CentOS Linux 7" /etc/os-release; then
 		printinfo
 		exit
 	else
-		os_dist=centos
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
+  		os_dist=centos
 		os_name=CentOS7
 		webserver=httpd
 		pkg_mgr=yum
-		remi=remi-release-7.rpm
+		remi=remi-release-$release_ver.rpm
 	fi
 elif grep -q "CentOS Linux 8" /etc/os-release; then
   #printerror "Sorry, CentOS8 not supported for PHP upgrade yet, cannot proceed..."
@@ -133,11 +139,12 @@ elif grep -q "CentOS Linux 8" /etc/os-release; then
 		printinfo
 		exit
 	else
-		os_dist=centos
+		release_ver=$(grep -ioP '^VERSION_ID=\K.+' /etc/os-release) && release_ver=$(echo $release_ver | tr -d '"')
+  		os_dist=centos
 		os_name=CentOS8
 		webserver=httpd
 		pkg_mgr=yum
-		remi=remi-release-8.rpm
+		remi=remi-release-$release_ver.rpm
 		php_version=remi-7.4
 	fi	
 else
@@ -147,13 +154,14 @@ else
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
 	# cacti must be at least v1.2.18 to go to php7.4
 	#set upgrade version
-	php_version=php74
-	php_description="v7.4.x"
-	php_num=7.4
+	php_version=php$stable_major$stable_minor
+	php_description="v$stable_major.$stable_minor.x"
+	php_num=$stable_php
 else
 	# php7.3 for =< v1.2.17
 	#set upgrade version
@@ -163,8 +171,8 @@ else
 fi
 
 phpMinimum() {
-	if version_ge $smphp_ver $php_minimum; then
-		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2. Cacti can still be upgraded, but not by this script."
+	if version_lt $smphp_ver $php_minimum; then
+		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2. Current version is $smphp_ver/$php_ver. Cacti can still be upgraded, but not by this script."
 		read -p "Are you sure want to cancel upgrading PHP? y/N: " minAsk
 		case "$minAsk" in
 		y | Y | yes | YES| Yes ) 
@@ -214,13 +222,14 @@ upgradeAsk () {
 upgradePHP() {
 		printinfo "Setting up repo"
 		sudo $pkg_mgr install -y -q http://rpms.remirepo.net/enterprise/$remi
-		sudo $pkg_mgr install -y -q yum-utils php72-php-xml php-gmp php-xml php-simplexml
+		sudo $pkg_mgr install -y -q yum-utils php$stable_major$stable_minor-php-xml php-gmp php-xml php-simplexml
 		printinfo "Enabling new $php_description"
 		case "$os_name" in
 			CentOS8|AlmaLinux|RockyLinux )
+   				sudo $pkg_mgr -y -q install https://rpms.remirepo.net/enterprise/remi-release-9.2.rpm
 				sudo $pkg_mgr -y -q module reset php
-				sudo $pkg_mgr module -y -q enable php:$php_version
-				sudo dnf -y -q install php
+				sudo dnf module install php:remi-$stable_php -yq
+				sudo dnf update -y
 				if [ $? -ne 0 ];then
 					printerror "ERROR upgrading PHP version."
 				else
