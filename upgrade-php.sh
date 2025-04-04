@@ -54,7 +54,7 @@ php_ver=v$( php -r 'echo PHP_VERSION;' )
 smphp_ver=$(echo $php_ver | cut -c-4)
 php_minimum=7.2
 stable_major=8
-stable_minor=1
+stable_minor=2
 stable_php=$stable_major.$stable_minor
 
 printinfo "Checking for PHP upgrade..."
