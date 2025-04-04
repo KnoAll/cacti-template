@@ -154,6 +154,7 @@ else
 fi
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 if version_ge $cactiver $upgrade_version; then
 	# cacti must be at least v1.2.18 to go to php7.4
@@ -170,7 +171,7 @@ else
 fi
 
 phpMinimum() {
-	if version_ge $smphp_ver $php_minimum; then
+	if version_lt $smphp_ver $php_minimum; then
 		printwarn "To automatically upgrade Cacti you must now be at minimum PHP v7.2. Current version is $smphp_ver/$php_ver. Cacti can still be upgraded, but not by this script."
 		read -p "Are you sure want to cancel upgrading PHP? y/N: " minAsk
 		case "$minAsk" in
